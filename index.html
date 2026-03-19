@@ -492,6 +492,8 @@
       justify-content: center;
       margin-bottom: 18px;
       font-size: 20px;
+      /* Inter’s webfont subset often omits geometric/symbol blocks; fall back for single-char icons */
+      font-family: 'Inter', 'Segoe UI Symbol', 'Apple Symbols', ui-sans-serif, sans-serif;
     }
 
     .feature-card h3,
@@ -1293,32 +1295,32 @@
         </div>
         <div class="features-grid">
           <div class="feature-card reveal">
-            <div class="feature-icon">📄</div>
+            <div class="feature-icon" aria-hidden="true">📄</div>
             <h3 data-i18n="feature1Title">Documents with structure</h3>
             <p data-i18n="feature1Body">Drop in PDFs, Excel sheets, scanned invoices, or work orders. Oktavius reads, extracts, and structures the data automatically.</p>
           </div>
           <div class="feature-card reveal">
-            <div class="feature-icon">✦</div>
+            <div class="feature-icon" aria-hidden="true">🤖</div>
             <h3 data-i18n="feature2Title">Built-in AI agent</h3>
             <p data-i18n="feature2Body">A persistent AI assistant lives inside every workspace. Hand it documents, ask questions, and trigger workflows in natural language.</p>
           </div>
           <div class="feature-card reveal">
-            <div class="feature-icon">⚙</div>
+            <div class="feature-icon" aria-hidden="true">⚙️</div>
             <h3 data-i18n="feature3Title">Automated output</h3>
             <p data-i18n="feature3Body">Invoices, reports, notifications, and export files are generated from your data and queued for review.</p>
           </div>
           <div class="feature-card reveal">
-            <div class="feature-icon">✉</div>
+            <div class="feature-icon" aria-hidden="true">📧</div>
             <h3 data-i18n="feature4Title">Email integration</h3>
             <p data-i18n="feature4Body">Incoming emails are parsed, classified, and routed. Outgoing correspondence is drafted and queued for your approval.</p>
           </div>
           <div class="feature-card reveal">
-            <div class="feature-icon">⇄</div>
+            <div class="feature-icon" aria-hidden="true">🧩</div>
             <h3 data-i18n="feature5Title">Industry-specific modules</h3>
             <p data-i18n="feature5Body">Modules are tailored to trades, property management, tax advisory, agencies, e-commerce, and more.</p>
           </div>
           <div class="feature-card reveal">
-            <div class="feature-icon">▣</div>
+            <div class="feature-icon" aria-hidden="true">🔗</div>
             <h3 data-i18n="feature6Title">One system, no fragmentation</h3>
             <p data-i18n="feature6Body">CRM, invoicing, project management, document archive, and calendar stay in one business OS instead of across ten tools.</p>
           </div>
@@ -1634,7 +1636,7 @@
         step3Title: 'Prüfen und versenden',
         step3Body: 'Rechnungen, Berichte und Kommunikation werden vorbereitet. Sie geben mit einem Klick frei.',
         industriesLabel: 'Branchen',
-        industriesTitle: 'Gebaut für Teams,<br>die unterschiedlich arbeiten.',
+        industriesTitle: 'Gebaut für Teams, die unterschiedlich arbeiten.',
         industriesSubtitle: 'Der Kern bleibt gleich, während sich Abläufe, Datensätze und Module an jedes Unternehmen anpassen.',
         pill1: 'Handwerk',
         pill2: 'Hausverwaltung',
