@@ -179,6 +179,26 @@
       color: var(--text);
     }
 
+    .lang-toggle {
+      display: none;
+      min-width: 52px;
+      padding: 8px 12px;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -905,6 +925,7 @@
       background: rgba(255, 255, 255, 0.02);
       font-size: 14px;
       color: var(--text-secondary);
+      cursor: pointer;
       transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
@@ -912,6 +933,12 @@
       border-color: rgba(163, 145, 255, 0.24);
       color: var(--text);
       background: rgba(139, 124, 255, 0.08);
+    }
+
+    .pill:focus-visible,
+    .lang-toggle:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(139, 124, 255, 0.4);
     }
 
     .industry-grid {
@@ -1054,18 +1081,38 @@
     }
 
     @media (max-width: 720px) {
+      section { padding: 84px 0; }
+
       .nav-links a:not(.btn) { display: none; }
 
       .nav-links {
         gap: 12px;
       }
 
+      .nav-links .btn {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
       .hero {
-        padding: 150px 0 76px;
+        padding: 144px 0 68px;
       }
 
       .hero h1 {
         max-width: 720px;
+      }
+
+      .section-header {
+        margin-bottom: 42px;
+      }
+
+      .proof {
+        padding: 28px 0;
+      }
+
+      .cta {
+        padding: 96px 0;
       }
 
       .demo-topbar,
@@ -1091,8 +1138,8 @@
         font-size: 15px;
       }
 
-      .btn,
-      .btn-large {
+      .hero-ctas .btn,
+      .cta .btn-large {
         width: 100%;
       }
 
@@ -1100,12 +1147,55 @@
         flex-direction: column;
       }
 
-      .demo-time-entry {
-        grid-template-columns: 1fr;
+      nav .container {
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 8px;
+      }
+
+      .nav-links .btn {
+        padding: 9px 14px;
       }
 
       .lang-switch {
-        order: -1;
+        display: none;
+      }
+
+      .lang-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      section {
+        padding: 72px 0;
+      }
+
+      .hero {
+        padding: 136px 0 60px;
+      }
+
+      .section-header {
+        margin-bottom: 32px;
+      }
+
+      .section-subtitle {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .proof {
+        padding: 22px 0;
+      }
+
+      .cta {
+        padding: 80px 0;
+      }
+
+      .demo-time-entry {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1166,7 +1256,8 @@
             <button type="button" class="lang-btn active" data-lang="en">EN</button>
             <button type="button" class="lang-btn" data-lang="de">DE</button>
           </div>
-          <a href="https://texterous.com/en/contact/" class="btn btn-primary" data-i18n="navCta">Get early access</a>
+          <button type="button" class="lang-toggle" data-lang-toggle aria-label="Switch language" title="Switch language">DE</button>
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary" data-i18n="navCta" data-contact-link>Contact</a>
         </div>
       </div>
     </nav>
@@ -1180,7 +1271,7 @@
         <h1 class="reveal" data-i18n-html="heroTitle">Your Back Office<br><span class="gradient">Fully Automated</span></h1>
         <p class="reveal" data-i18n="heroBody">Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.</p>
         <div class="hero-ctas reveal">
-          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="heroCtaPrimary">Get early access</a>
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="heroCtaPrimary" data-contact-link>Get early access</a>
           <a href="#how" class="btn btn-ghost btn-large" data-i18n="heroCtaSecondary">How it works</a>
         </div>
       </div>
@@ -1267,39 +1358,39 @@
           <p class="section-subtitle" data-i18n="industriesSubtitle">The core stays the same while workflows, records, and modules adapt to each business.</p>
         </div>
 
-        <div class="industries-pills reveal">
-          <span class="pill active" data-i18n="pill1">Trades</span>
-          <span class="pill" data-i18n="pill2">Property management</span>
-          <span class="pill" data-i18n="pill3">Tax advisory</span>
-          <span class="pill" data-i18n="pill4">Agencies</span>
-          <span class="pill" data-i18n="pill5">E-commerce</span>
-          <span class="pill" data-i18n="pill6">Funeral services</span>
+        <div class="industries-pills reveal" aria-label="Industry switcher">
+          <button type="button" class="pill active" data-i18n="pill1" data-industry-index="0" aria-pressed="true">Trades</button>
+          <button type="button" class="pill" data-i18n="pill2" data-industry-index="1" aria-pressed="false">Property management</button>
+          <button type="button" class="pill" data-i18n="pill3" data-industry-index="2" aria-pressed="false">Tax advisory</button>
+          <button type="button" class="pill" data-i18n="pill4" data-industry-index="3" aria-pressed="false">Agencies</button>
+          <button type="button" class="pill" data-i18n="pill5" data-industry-index="4" aria-pressed="false">E-commerce</button>
+          <button type="button" class="pill" data-i18n="pill6" data-industry-index="5" aria-pressed="false">Funeral services</button>
         </div>
 
         <div class="industry-grid">
           <div class="industry-card reveal">
-            <h3 data-i18n="industry1Title">Order capture</h3>
-            <p data-i18n="industry1Body">Turn calls, emails, and documents into structured work without entering the same info twice.</p>
+            <h3 data-i18n="industry1Title" data-industry-title>Order capture</h3>
+            <p data-i18n="industry1Body" data-industry-body>Turn calls, emails, and documents into structured work without entering the same info twice.</p>
           </div>
           <div class="industry-card reveal">
-            <h3 data-i18n="industry2Title">Materials and inventory</h3>
-            <p data-i18n="industry2Body">Track stock, required materials, and project usage across teams and locations.</p>
+            <h3 data-i18n="industry2Title" data-industry-title>Materials and inventory</h3>
+            <p data-i18n="industry2Body" data-industry-body>Track stock, required materials, and project usage across teams and locations.</p>
           </div>
           <div class="industry-card reveal">
-            <h3 data-i18n="industry3Title">Time and mileage</h3>
-            <p data-i18n="industry3Body">Capture hours and travel in the workflow, then link them to the right project and invoice.</p>
+            <h3 data-i18n="industry3Title" data-industry-title>Time and mileage</h3>
+            <p data-i18n="industry3Body" data-industry-body>Capture hours and travel in the workflow, then link them to the right project and invoice.</p>
           </div>
           <div class="industry-card reveal">
-            <h3 data-i18n="industry4Title">Quotes and invoices</h3>
-            <p data-i18n="industry4Body">Prepare commercial documents from existing data and keep approvals clear.</p>
+            <h3 data-i18n="industry4Title" data-industry-title>Quotes and invoices</h3>
+            <p data-i18n="industry4Body" data-industry-body>Prepare commercial documents from existing data and keep approvals clear.</p>
           </div>
           <div class="industry-card reveal">
-            <h3 data-i18n="industry5Title">Customer history</h3>
-            <p data-i18n="industry5Body">See documents, messages, tasks, and decisions in one timeline.</p>
+            <h3 data-i18n="industry5Title" data-industry-title>Customer history</h3>
+            <p data-i18n="industry5Body" data-industry-body>See documents, messages, tasks, and decisions in one timeline.</p>
           </div>
           <div class="industry-card reveal">
-            <h3 data-i18n="industry6Title">Company-specific modules</h3>
-            <p data-i18n="industry6Body">Oktavius can handle special cases without forcing a generic setup.</p>
+            <h3 data-i18n="industry6Title" data-industry-title>Company-specific modules</h3>
+            <p data-i18n="industry6Body" data-industry-body>Oktavius can handle special cases without forcing a generic setup.</p>
           </div>
         </div>
       </div>
@@ -1336,7 +1427,7 @@
         <h2 class="reveal" data-i18n-html="ctaTitle">See your business OS<br><span class="gradient">inside Oktavius.</span></h2>
         <p class="reveal" data-i18n="ctaBody">Get early access and see how Oktavius can be tailored to your workflows, data model, and industry.</p>
         <div class="reveal">
-          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="ctaButton">Get early access</a>
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="ctaButton" data-contact-link>Get early access</a>
         </div>
       </div>
     </section>
@@ -1345,7 +1436,7 @@
       <div class="container">
         <p data-i18n-html="footerText">&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
         <div class="footer-links">
-          <a href="https://texterous.com/en/contact/" data-i18n="footerContact">Contact</a>
+          <a href="https://texterous.com/en/contact/" data-i18n="footerContact" data-contact-link>Contact</a>
           <a href="https://texterous.com" data-i18n="footerTexterous">Texterous</a>
         </div>
       </div>
@@ -1360,7 +1451,7 @@
         navFeatures: 'Features',
         navHow: 'How it works',
         navIndustries: 'Industries',
-        navCta: 'Get early access',
+        navCta: 'Contact',
         heroBadge: 'Now live for early teams',
         heroTitle: 'Your Back Office<br><span class="gradient">Fully Automated</span>',
         heroBody: 'Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.',
@@ -1463,7 +1554,9 @@
         ctaButton: 'Get early access',
         footerText: '&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
         footerContact: 'Contact',
-        footerTexterous: 'Texterous'
+        footerTexterous: 'Texterous',
+        contactHref: 'https://texterous.com/en/contact/',
+        languageToggleLabel: 'Switch language'
       },
       de: {
         title: 'Oktavius — Ihr Backoffice voll automatisiert',
@@ -1471,7 +1564,7 @@
         navFeatures: 'Funktionen',
         navHow: 'So funktioniert\'s',
         navIndustries: 'Branchen',
-        navCta: 'Frühzugang anfragen',
+        navCta: 'Kontakt',
         heroBadge: 'Jetzt live für erste Teams',
         heroTitle: 'Ihr Backoffice<br><span class="gradient">voll automatisiert</span>',
         heroBody: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die zu Ihrem Unternehmen passen.',
@@ -1574,14 +1667,145 @@
         ctaButton: 'Frühzugang anfragen',
         footerText: '&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
         footerContact: 'Kontakt',
-        footerTexterous: 'Texterous'
+        footerTexterous: 'Texterous',
+        contactHref: 'https://texterous.com/de/contact/',
+        languageToggleLabel: 'Sprache wechseln'
       }
+    };
+
+    const industryContent = {
+      en: [
+        [
+          { title: 'Order capture', body: 'Turn calls, emails, and documents into structured work without entering the same info twice.' },
+          { title: 'Materials and inventory', body: 'Track stock, required materials, and project usage across teams and locations.' },
+          { title: 'Time and mileage', body: 'Capture hours and travel in the workflow, then link them to the right project and invoice.' },
+          { title: 'Quotes and invoices', body: 'Prepare commercial documents from existing data and keep approvals clear.' },
+          { title: 'Customer history', body: 'See documents, messages, tasks, and decisions in one timeline.' },
+          { title: 'Company-specific modules', body: 'Oktavius can handle special cases without forcing a generic setup.' }
+        ],
+        [
+          { title: 'Tenant requests', body: 'Capture maintenance requests from email, phone, or portals and route them to the right property and unit.' },
+          { title: 'Work orders and vendors', body: 'Coordinate external trades, approvals, and status updates without losing context between teams.' },
+          { title: 'Service charges', body: 'Prepare billable costs, recurring fees, and supporting documents from one workflow.' },
+          { title: 'Object files', body: 'Keep leases, handover reports, photos, and correspondence tied to each building and tenant.' },
+          { title: 'Maintenance cycles', body: 'Track inspections, deadlines, and recurring tasks before they turn into fire drills.' },
+          { title: 'Owner reporting', body: 'Generate summaries, activity logs, and key figures for each property without manual consolidation.' }
+        ],
+        [
+          { title: 'Document intake', body: 'Collect statements, invoices, and receipts from clients and structure them as they arrive.' },
+          { title: 'Booking suggestions', body: 'Prepare proposed entries with extracted data, checks, and source references for review.' },
+          { title: 'VAT and compliance checks', body: 'Flag missing fields, unusual tax treatments, and items that need an expert look.' },
+          { title: 'Deadline tracking', body: 'Keep filing dates, open questions, and client dependencies visible across the team.' },
+          { title: 'Client communication', body: 'Draft follow-ups, request missing documents, and log every interaction in one place.' },
+          { title: 'Audit trail', body: 'Maintain clear source links, approval history, and export-ready records for every case.' }
+        ],
+        [
+          { title: 'Leads and briefs', body: 'Turn inbound requests, emails, and notes into structured opportunities and project briefs.' },
+          { title: 'Scopes and deliverables', body: 'Keep offers, timelines, approvals, and project tasks aligned from kickoff to delivery.' },
+          { title: 'Resource planning', body: 'Match people, skills, and availability across client work without juggling spreadsheets.' },
+          { title: 'Time and budget control', body: 'Track effort, burn, and change requests while work is still in motion.' },
+          { title: 'Review loops', body: 'Centralize feedback, versions, and client approvals so nothing gets buried in threads.' },
+          { title: 'Performance reporting', body: 'Pull campaign, project, and billing updates into client-ready status summaries.' }
+        ],
+        [
+          { title: 'Orders and returns', body: 'Capture orders, cancellations, and returns from every channel in one operational flow.' },
+          { title: 'Inventory sync', body: 'Keep stock levels, replenishment needs, and warehouse actions aligned in real time.' },
+          { title: 'Supplier documents', body: 'Process delivery notes, purchase invoices, and product data without manual re-entry.' },
+          { title: 'Customer support workflows', body: 'Route inquiries, order issues, and refund cases with full order context attached.' },
+          { title: 'Margin visibility', body: 'See product, shipping, and discount effects quickly instead of stitching reports together.' },
+          { title: 'Finance exports', body: 'Prepare reconciled summaries and downstream exports for accounting and operations.' }
+        ],
+        [
+          { title: 'Case intake', body: 'Capture first-call details, family preferences, and service requirements in one structured record.' },
+          { title: 'Family communication', body: 'Keep promises, updates, and sensitive coordination visible to the right team members.' },
+          { title: 'Document coordination', body: 'Track certificates, authorizations, and municipal paperwork without missed steps.' },
+          { title: 'Service planning', body: 'Coordinate ceremony details, transport, timing, and internal tasks from one workflow.' },
+          { title: 'Supplier orchestration', body: 'Manage florists, venues, transport, and other partners with clear status tracking.' },
+          { title: 'Billing and records', body: 'Prepare invoices, cost overviews, and case documentation with less administrative effort.' }
+        ]
+      ],
+      de: [
+        [
+          { title: 'Auftragserfassung', body: 'Machen Sie aus Anrufen, E-Mails und Dokumenten strukturierte Arbeit, ohne Infos doppelt zu erfassen.' },
+          { title: 'Material und Bestand', body: 'Behalten Sie Lagerstände, Materialbedarf und projektbezogenen Verbrauch über Teams und Standorte hinweg im Blick.' },
+          { title: 'Zeit und Kilometer', body: 'Erfassen Sie Stunden und Fahrten im Ablauf und verknüpfen Sie sie mit Projekt und Rechnung.' },
+          { title: 'Angebote und Rechnungen', body: 'Erstellen Sie kaufmännische Dokumente aus vorhandenen Daten und behalten Sie Freigaben im Blick.' },
+          { title: 'Kundenhistorie', body: 'Sehen Sie Dokumente, Nachrichten, Aufgaben und Entscheidungen in einer gemeinsamen Zeitleiste.' },
+          { title: 'Unternehmensspezifische Module', body: 'Oktavius bildet Sonderfälle ab, ohne Ihr Team in ein generisches Setup zu zwingen.' }
+        ],
+        [
+          { title: 'Mieteranliegen', body: 'Erfassen Sie Wartungsanfragen aus E-Mail, Telefon oder Portalen und ordnen Sie sie sofort Objekt und Einheit zu.' },
+          { title: 'Aufträge und Dienstleister', body: 'Koordinieren Sie externe Gewerke, Freigaben und Statusupdates, ohne Kontext zwischen Teams zu verlieren.' },
+          { title: 'Betriebskosten', body: 'Bereiten Sie verrechenbare Kosten, wiederkehrende Gebühren und Belege in einem Ablauf auf.' },
+          { title: 'Objektakten', body: 'Halten Sie Verträge, Uebergabeprotokolle, Fotos und Kommunikation je Gebaeude und Mieter zusammen.' },
+          { title: 'Wartungszyklen', body: 'Behalten Sie Pruefungen, Fristen und wiederkehrende Aufgaben im Blick, bevor es dringend wird.' },
+          { title: 'Eigentuemer-Reporting', body: 'Erstellen Sie Berichte, Aktivitaetsprotokolle und Kennzahlen je Objekt ohne manuelle Konsolidierung.' }
+        ],
+        [
+          { title: 'Dokumenteneingang', body: 'Sammeln Sie Kontoauszuege, Rechnungen und Belege Ihrer Mandanten und strukturieren Sie sie beim Eingang.' },
+          { title: 'Buchungsvorschlaege', body: 'Bereiten Sie vorgeschlagene Buchungen mit extrahierten Daten, Pruefungen und Quellen fuer die Freigabe vor.' },
+          { title: 'USt- und Compliance-Pruefung', body: 'Markieren Sie fehlende Angaben, ungewoehnliche Steuerfaelle und Positionen mit Beratungsbedarf.' },
+          { title: 'Fristensteuerung', body: 'Halten Sie Abgabetermine, offene Punkte und Mandantenabhaengigkeiten teamweit sichtbar.' },
+          { title: 'Mandantenkommunikation', body: 'Formulieren Sie Rueckfragen, fordern Sie Unterlagen an und dokumentieren Sie jede Interaktion an einem Ort.' },
+          { title: 'Nachvollziehbarkeit', body: 'Sichern Sie Quellen, Freigaben und exportierbare Unterlagen fuer jeden Fall transparent ab.' }
+        ],
+        [
+          { title: 'Anfragen und Briefings', body: 'Machen Sie aus Leads, E-Mails und Notizen strukturierte Chancen und Projektbriefings.' },
+          { title: 'Umfang und Deliverables', body: 'Halten Sie Angebote, Timings, Freigaben und Aufgaben von Kickoff bis Lieferung abgestimmt.' },
+          { title: 'Ressourcenplanung', body: 'Ordnen Sie Personen, Skills und Verfuegbarkeiten ueber Kundenprojekte hinweg ohne Tabellenchaos zu.' },
+          { title: 'Zeit- und Budgetkontrolle', body: 'Verfolgen Sie Aufwand, Budgetverbrauch und Aenderungen, solange das Projekt noch laeuft.' },
+          { title: 'Feedback-Schleifen', body: 'Bündeln Sie Rueckmeldungen, Versionen und Kundenfreigaben, statt sie in Threads zu verlieren.' },
+          { title: 'Performance-Reporting', body: 'Ziehen Sie Kampagnen-, Projekt- und Abrechnungsupdates in saubere Statusberichte fuer Kunden.' }
+        ],
+        [
+          { title: 'Bestellungen und Retouren', body: 'Fuehren Sie Bestellungen, Stornos und Retouren aus allen Kanaelen in einem operativen Ablauf zusammen.' },
+          { title: 'Bestandssynchronisierung', body: 'Halten Sie Lagerstaende, Nachbestellungen und Lageraktivitaeten in Echtzeit aufeinander abgestimmt.' },
+          { title: 'Lieferantendokumente', body: 'Verarbeiten Sie Lieferscheine, Einkaufsrechnungen und Produktdaten ohne manuelle Doppelerfassung.' },
+          { title: 'Support-Workflows', body: 'Leiten Sie Anfragen, Bestellprobleme und Rueckerstattungen mit vollem Bestellkontext weiter.' },
+          { title: 'Margenuebersicht', body: 'Sehen Sie Produkt-, Versand- und Rabattwirkungen schnell, statt Reports zusammenzubauen.' },
+          { title: 'Finanzexporte', body: 'Bereiten Sie abgestimmte Uebersichten und Folgeexporte fuer Buchhaltung und Operations vor.' }
+        ],
+        [
+          { title: 'Falldaten erfassen', body: 'Erfassen Sie Angaben aus dem Erstgespraech, Wuensche der Familie und Leistungsbedarf in einem strukturierten Fall.' },
+          { title: 'Kommunikation mit Familien', body: 'Halten Sie Zusagen, Updates und sensible Abstimmungen fuer das richtige Team sichtbar.' },
+          { title: 'Dokumentenkoordination', body: 'Verfolgen Sie Urkunden, Genehmigungen und behoerdliche Unterlagen ohne uebersehene Schritte.' },
+          { title: 'Ablaufplanung', body: 'Koordinieren Sie Zeremonie, Transport, Zeitplan und interne Aufgaben in einem Workflow.' },
+          { title: 'Partnersteuerung', body: 'Steuern Sie Floristik, Orte, Transporte und weitere Partner mit klaren Statusangaben.' },
+          { title: 'Abrechnung und Akten', body: 'Bereiten Sie Rechnungen, Kostenuebersichten und Falldokumentation mit weniger Verwaltungsaufwand vor.' }
+        ]
+      ]
     };
 
     const nav = document.getElementById('nav');
     const metaDescription = document.querySelector('meta[name="description"]');
     const langButtons = document.querySelectorAll('.lang-btn');
+    const langToggle = document.querySelector('[data-lang-toggle]');
+    const contactLinks = document.querySelectorAll('[data-contact-link]');
+    const industryPills = document.querySelectorAll('[data-industry-index]');
+    const industryCards = document.querySelectorAll('.industry-card');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let activeIndustry = 0;
+
+    function renderIndustry(index, lang) {
+      const sets = industryContent[lang] || industryContent.en;
+      activeIndustry = Math.max(0, Math.min(index, sets.length - 1));
+      const cards = sets[activeIndustry] || sets[0];
+
+      industryPills.forEach((pill, pillIndex) => {
+        const isActive = pillIndex === activeIndustry;
+        pill.classList.toggle('active', isActive);
+        pill.setAttribute('aria-pressed', String(isActive));
+      });
+
+      industryCards.forEach((card, cardIndex) => {
+        const title = card.querySelector('[data-industry-title]');
+        const body = card.querySelector('[data-industry-body]');
+        const item = cards[cardIndex];
+        if (!title || !body || !item) return;
+        title.textContent = item.title;
+        body.textContent = item.body;
+      });
+    }
 
     function applyTranslations(lang) {
       const copy = translations[lang] || translations.en;
@@ -1608,6 +1832,18 @@
         button.classList.toggle('active', button.dataset.lang === lang);
       });
 
+      if (langToggle) {
+        langToggle.textContent = lang === 'de' ? 'EN' : 'DE';
+        langToggle.setAttribute('aria-label', copy.languageToggleLabel || 'Switch language');
+        langToggle.setAttribute('title', copy.languageToggleLabel || 'Switch language');
+      }
+
+      contactLinks.forEach((link) => {
+        link.href = copy.contactHref || translations.en.contactHref;
+      });
+
+      renderIndustry(activeIndustry, lang);
+
       window.localStorage.setItem('oktavius-language', lang);
     }
 
@@ -1618,6 +1854,18 @@
 
     langButtons.forEach((button) => {
       button.addEventListener('click', () => applyTranslations(button.dataset.lang));
+    });
+
+    if (langToggle) {
+      langToggle.addEventListener('click', () => {
+        applyTranslations(document.documentElement.lang === 'de' ? 'en' : 'de');
+      });
+    }
+
+    industryPills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        renderIndustry(parseInt(pill.dataset.industryIndex || '0', 10), document.documentElement.lang === 'de' ? 'de' : 'en');
+      });
     });
 
     window.addEventListener('scroll', () => {
