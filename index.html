@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oktavius — The ERP Agent</title>
-  <meta name="description" content="Oktavius brings projects, documents, communication, and follow-ups into one workspace. Keep work moving with less manual admin.">
+  <title>Oktavius — Your Back Office Fully Automated</title>
+  <meta name="description" content="Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,26 +62,36 @@
         radial-gradient(420px circle at 86% 6%, rgba(95, 155, 255, 0.09), transparent 28%);
     }
 
-    .page-background::before,
     .page-background::after {
       content: '';
       position: absolute;
       inset: 0;
-    }
-
-    .page-background::before {
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, transparent 78%);
-      opacity: 0.16;
-    }
-
-    .page-background::after {
       background:
         linear-gradient(180deg, rgba(7, 7, 13, 0.08) 0%, rgba(7, 7, 13, 0.74) 100%),
         radial-gradient(circle at center, transparent 0%, rgba(7, 7, 13, 0.16) 72%, rgba(7, 7, 13, 0.38) 100%);
+    }
+
+    #constellation {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.03;
+      background-repeat: repeat;
+      mix-blend-mode: overlay;
+    }
+
+    @property --badge-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
     }
 
     .page-shell {
@@ -146,29 +156,27 @@
     .lang-switch {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 4px;
-      border-radius: 999px;
+      gap: 2px;
+      padding: 2px;
+      border-radius: 0.375rem;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
     }
 
     .lang-btn {
-      min-width: 42px;
-      padding: 8px 12px;
-      border-radius: 999px;
+      min-width: 40px;
+      padding: 6px 10px;
+      border-radius: 0.25rem;
       font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .lang-btn.active {
-      background: rgba(139, 124, 255, 0.18);
+      background: rgba(139, 124, 255, 0.12);
       color: var(--text);
-      box-shadow: 0 8px 24px rgba(139, 124, 255, 0.18);
     }
 
     .btn {
@@ -177,40 +185,71 @@
       justify-content: center;
       gap: 8px;
       padding: 10px 18px;
-      border-radius: 999px;
+      border-radius: 0.5rem;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .btn:hover { transform: translateY(-1px); }
 
     .btn-primary {
       color: #fff;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 100%);
-      box-shadow: 0 12px 32px rgba(106, 110, 255, 0.22);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 50%, var(--accent) 100%);
+      background-size: 200% 200%;
+      background-position: 0% 50%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(139, 124, 255, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.5s ease, border-color 0.2s ease;
     }
 
     .btn-primary:hover {
-      box-shadow: 0 14px 36px rgba(106, 110, 255, 0.3);
+      background-position: 100% 50%;
+      box-shadow: 0 4px 12px rgba(139, 124, 255, 0.2);
+      border-color: rgba(163, 145, 255, 0.3);
     }
 
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.03);
+      position: relative;
+      background: transparent;
       color: var(--text);
       border-color: var(--border);
+      overflow: hidden;
+    }
+
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-cyan));
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.25s ease;
     }
 
     .btn-ghost:hover {
       border-color: var(--border-strong);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-ghost:hover::before {
+      transform: scaleY(1);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(139, 124, 255, 0.4);
     }
 
     .btn-large {
-      padding: 14px 24px;
+      padding: 12px 24px;
       font-size: 15px;
+      border-radius: 0.5rem;
     }
 
     section { padding: 104px 0; }
@@ -221,15 +260,21 @@
       position: relative;
     }
 
+    .hero .container {
+      max-width: 1320px;
+      position: relative;
+      z-index: 1;
+    }
+
     .hero::before {
       content: '';
       position: absolute;
       inset: -40px auto auto 50%;
       transform: translateX(-50%);
-      width: min(920px, 92vw);
-      height: 640px;
-      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.16) 0%, transparent 70%);
-      filter: blur(18px);
+      width: min(1120px, 94vw);
+      height: 700px;
+      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.17) 0%, rgba(95, 155, 255, 0.08) 38%, transparent 72%);
+      filter: blur(22px);
       pointer-events: none;
     }
 
@@ -237,14 +282,20 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 12px;
+      border-radius: 0.375rem;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(rgba(9, 9, 16, 0.92), rgba(9, 9, 16, 0.92)) padding-box,
+        conic-gradient(from var(--badge-angle), transparent 25%, rgba(139, 124, 255, 0.45) 50%, rgba(95, 155, 255, 0.3) 55%, transparent 75%) border-box;
       font-size: 13px;
       color: var(--text-secondary);
       margin-bottom: 28px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      animation: badgeSpin 6s linear infinite;
+    }
+
+    @keyframes badgeSpin {
+      to { --badge-angle: 360deg; }
     }
 
     .hero-badge .dot {
@@ -262,27 +313,35 @@
     }
 
     .hero h1 {
-      font-size: clamp(52px, 8vw, 92px);
+      font-size: clamp(42px, 6.3vw, 76px);
       font-weight: 700;
-      letter-spacing: -0.05em;
-      line-height: 0.96;
-      max-width: 640px;
-      margin: 0 auto 22px;
+      letter-spacing: -0.045em;
+      line-height: 1.01;
+      max-width: 920px;
+      margin: 0 auto 18px;
+      text-wrap: balance;
     }
 
     .gradient {
-      background: linear-gradient(135deg, var(--accent-strong) 0%, #d3ccff 40%, var(--accent-cyan) 100%);
+      background: linear-gradient(90deg, var(--accent-strong) 0%, #d3ccff 30%, var(--accent-cyan) 60%, var(--accent-strong) 100%);
+      background-size: 200% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: textShimmer 8s ease-in-out infinite;
+    }
+
+    @keyframes textShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .hero p {
-      font-size: clamp(17px, 2vw, 20px);
+      font-size: clamp(16px, 1.5vw, 18px);
       color: var(--text-secondary);
-      max-width: 700px;
-      margin: 0 auto 34px;
-      line-height: 1.75;
+      max-width: 760px;
+      margin: 0 auto 30px;
+      line-height: 1.68;
     }
 
     .hero-ctas {
@@ -298,7 +357,7 @@
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       text-align: center;
-      background: rgba(255, 255, 255, 0.02);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0%, rgba(255, 255, 255, 0.028) 100%);
     }
 
     .proof p {
@@ -356,10 +415,14 @@
     .step,
     .diff-card,
     .industry-card {
-      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(23, 23, 31, 0.86) 0%, rgba(16, 16, 23, 0.92) 100%);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      background: linear-gradient(180deg, rgba(24, 24, 34, 0.82) 0%, rgba(15, 15, 23, 0.9) 100%);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
@@ -371,17 +434,39 @@
     .step:hover,
     .industry-card:hover,
     .diff-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(163, 145, 255, 0.3);
-      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+      border-color: rgba(163, 145, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-card::after,
+    .step::after,
+    .diff-card::after,
+    .industry-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(139, 124, 255, 0.12), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .feature-card:hover::after,
+    .step:hover::after,
+    .diff-card:hover::after,
+    .industry-card:hover::after {
+      opacity: 1;
     }
 
     .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(139, 124, 255, 0.18) 0%, rgba(95, 155, 255, 0.12) 100%);
-      border: 1px solid rgba(139, 124, 255, 0.22);
+      width: 44px;
+      height: 44px;
+      border-radius: 0.5rem;
+      background: rgba(139, 124, 255, 0.08);
+      border: 1px solid rgba(139, 124, 255, 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -415,11 +500,11 @@
     .demo-window {
       max-width: 1120px;
       margin: 0 auto;
-      border-radius: 30px;
+      border-radius: 1rem;
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: linear-gradient(180deg, rgba(18, 18, 25, 0.92) 0%, rgba(13, 13, 20, 0.98) 100%);
       overflow: hidden;
-      box-shadow: 0 30px 120px rgba(0, 0, 0, 0.42);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.15);
     }
 
     .demo-titlebar {
@@ -540,8 +625,8 @@
       display: inline-flex;
       align-items: center;
       padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.25rem;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.06);
       font-size: 12px;
       color: #d7d7df;
@@ -567,19 +652,26 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 8px 14px;
+      border-radius: 0.5rem;
       border: 1px solid rgba(255, 255, 255, 0.07);
       background: rgba(255, 255, 255, 0.04);
       font-size: 13px;
       font-weight: 600;
       color: #ececf4;
       white-space: nowrap;
+      transition: background 0.25s ease, border-color 0.25s ease, background-position 0.4s ease;
     }
 
     .demo-inline-btn.primary {
-      background: linear-gradient(135deg, rgba(139, 124, 255, 0.28) 0%, rgba(95, 155, 255, 0.22) 100%);
-      border-color: rgba(139, 124, 255, 0.25);
+      background: linear-gradient(135deg, rgba(139, 124, 255, 0.14) 0%, rgba(95, 155, 255, 0.1) 100%);
+      background-size: 200% 200%;
+      background-position: 0% 50%;
+      border-color: rgba(139, 124, 255, 0.2);
+    }
+
+    .demo-inline-btn.primary:hover {
+      background-position: 100% 50%;
     }
 
     .demo-panels {
@@ -646,11 +738,11 @@
 
     .demo-task-tag {
       padding: 2px 8px;
-      border-radius: 999px;
+      border-radius: 0.25rem;
       font-size: 11px;
       color: #cec6ff;
-      background: rgba(139, 124, 255, 0.14);
-      border: 1px solid rgba(139, 124, 255, 0.2);
+      background: rgba(139, 124, 255, 0.12);
+      border: 1px solid rgba(139, 124, 255, 0.18);
     }
 
     .demo-grid-two {
@@ -807,18 +899,19 @@
     }
 
     .pill {
-      padding: 10px 18px;
-      border-radius: 999px;
+      padding: 8px 14px;
+      border-radius: 0.5rem;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       font-size: 14px;
       color: var(--text-secondary);
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
     .pill.active {
-      border-color: rgba(163, 145, 255, 0.26);
+      border-color: rgba(163, 145, 255, 0.24);
       color: var(--text);
-      background: rgba(139, 124, 255, 0.12);
+      background: rgba(139, 124, 255, 0.08);
     }
 
     .industry-grid {
@@ -971,6 +1064,10 @@
         padding: 150px 0 76px;
       }
 
+      .hero h1 {
+        max-width: 720px;
+      }
+
       .demo-topbar,
       footer .container {
         flex-direction: column;
@@ -984,6 +1081,15 @@
 
     @media (max-width: 560px) {
       .container { padding: 0 18px; }
+
+      .hero h1 {
+        font-size: clamp(38px, 11vw, 52px);
+        line-height: 1.02;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
 
       .btn,
       .btn-large {
@@ -1006,9 +1112,13 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
 
+      #constellation { display: none; }
+
       .hero-badge .dot,
+      .hero-badge,
+      .gradient,
       .reveal {
-        animation: none;
+        animation: none !important;
         transition: none;
       }
 
@@ -1016,11 +1126,33 @@
         opacity: 1;
         transform: none;
       }
+
+      .hero-badge {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .btn-primary,
+      .btn-ghost::before,
+      .demo-inline-btn.primary {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+
+      .btn-primary:hover,
+      .demo-inline-btn.primary:hover {
+        background-position: 0% 50%;
+      }
+
+      .btn-ghost:hover::before {
+        transform: scaleY(0);
+      }
     }
   </style>
 </head>
 <body>
+  <canvas id="constellation" aria-hidden="true"></canvas>
   <div class="page-background" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <div class="page-shell">
     <nav id="nav">
@@ -1045,11 +1177,11 @@
           <span class="dot"></span>
           <span data-i18n="heroBadge">Now live for early teams</span>
         </div>
-        <h1 class="reveal" data-i18n-html="heroTitle">The<br><span class="gradient">ERP Agent</span></h1>
-        <p class="reveal" data-i18n="heroBody">Oktavius keeps projects, documents, communication, and follow-ups in one place, so your team spends less time on admin.</p>
+        <h1 class="reveal" data-i18n-html="heroTitle">Your Back Office<br><span class="gradient">Fully Automated</span></h1>
+        <p class="reveal" data-i18n="heroBody">Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.</p>
         <div class="hero-ctas reveal">
           <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="heroCtaPrimary">Get early access</a>
-          <a href="#features" class="btn btn-ghost btn-large" data-i18n="heroCtaSecondary">See the product</a>
+          <a href="#how" class="btn btn-ghost btn-large" data-i18n="heroCtaSecondary">How it works</a>
         </div>
       </div>
     </section>
@@ -1057,7 +1189,7 @@
     <div class="proof reveal">
       <div class="container">
         <p data-i18n="proofLabel">A product by</p>
-        <span class="proof-logo" data-i18n="proofBody">Texterous. We build software people keep using.</span>
+        <span class="proof-logo" data-i18n="proofBody">Texterous. We build AI that people actually use.</span>
       </div>
     </div>
 
@@ -1065,169 +1197,39 @@
       <div class="container">
         <div class="section-header section-header-center reveal">
           <p class="section-label" data-i18n="featuresLabel">Capabilities</p>
-          <h2 class="section-title" data-i18n-html="featuresTitle">Core workflows,<br>in one system.</h2>
-          <p class="section-subtitle" data-i18n="featuresSubtitle">Projects, documents, communication, and output stay in one place instead of across tools.</p>
+          <h2 class="section-title" data-i18n-html="featuresTitle">AI-native business management,<br>in one system.</h2>
+          <p class="section-subtitle" data-i18n="featuresSubtitle">One AI-native platform replaces spreadsheets, email folders, and disconnected tools with workflows tailored to your industry.</p>
         </div>
         <div class="features-grid">
           <div class="feature-card reveal">
             <div class="feature-icon">📄</div>
             <h3 data-i18n="feature1Title">Documents with structure</h3>
-            <p data-i18n="feature1Body">Drop in PDFs, scans, spreadsheets, or work orders. Oktavius reads them and links them to the right customer, project, and next step.</p>
+            <p data-i18n="feature1Body">Drop in PDFs, Excel sheets, scanned invoices, or work orders. Oktavius reads, extracts, and structures the data automatically.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon">✦</div>
-            <h3 data-i18n="feature2Title">Assistant in context</h3>
-            <p data-i18n="feature2Body">Ask questions, draft replies, and start workflows where the work happens.</p>
+            <h3 data-i18n="feature2Title">Built-in AI agent</h3>
+            <p data-i18n="feature2Body">A persistent AI assistant lives inside every workspace. Hand it documents, ask questions, and trigger workflows in natural language.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon">⚙</div>
-            <h3 data-i18n="feature3Title">Output that keeps moving</h3>
-            <p data-i18n="feature3Body">Create invoices, reports, emails, and exports from existing data, then review or send them.</p>
+            <h3 data-i18n="feature3Title">Automated output</h3>
+            <p data-i18n="feature3Body">Invoices, reports, notifications, and export files are generated from your data and queued for review.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon">✉</div>
-            <h3 data-i18n="feature4Title">Email tied to the record</h3>
-            <p data-i18n="feature4Body">Messages are matched to the right customer or project. Replies, notes, and files stay together.</p>
+            <h3 data-i18n="feature4Title">Email integration</h3>
+            <p data-i18n="feature4Body">Incoming emails are parsed, classified, and routed. Outgoing correspondence is drafted and queued for your approval.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon">⇄</div>
-            <h3 data-i18n="feature5Title">Flexible workflows</h3>
-            <p data-i18n="feature5Body">Oktavius adapts to your process without a heavy setup.</p>
+            <h3 data-i18n="feature5Title">Industry-specific modules</h3>
+            <p data-i18n="feature5Body">Modules are tailored to trades, property management, tax advisory, agencies, e-commerce, and more.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon">▣</div>
-            <h3 data-i18n="feature6Title">One shared workspace</h3>
-            <p data-i18n="feature6Body">Projects, contacts, notes, files, time entries, and follow-ups stay connected.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="demo">
-      <div class="container">
-        <div class="demo-window reveal">
-          <div class="demo-titlebar">
-            <div class="demo-titlebar-left">
-              <span class="demo-dot"></span>
-              <span class="demo-dot"></span>
-              <span class="demo-dot"></span>
-              <span class="demo-titlebar-label">Oktavius</span>
-            </div>
-            <div class="demo-titlebar-right">
-              <span class="demo-titlebar-label" data-i18n="demoWindowLabel">Project workspace</span>
-            </div>
-          </div>
-
-          <div class="demo-body">
-            <aside class="demo-sidebar">
-              <div class="demo-brand">
-                <span class="demo-brand-mark"></span>
-                <span>Oktavius</span>
-              </div>
-
-              <div class="demo-sidebar-group">
-                <div class="demo-sidebar-label" data-i18n="demoSidebarLabel1">Workspace</div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarDashboard">Dashboard</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarAssistant">Oktavius</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarGroupChat">Group chat</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarSupport">Support</span></div>
-              </div>
-
-              <div class="demo-sidebar-group">
-                <div class="demo-sidebar-label" data-i18n="demoSidebarLabel2">Modules</div>
-                <div class="demo-sidebar-item active"><span>◌</span><span data-i18n="demoSidebarProjects">Projects</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarContacts">Contacts</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarStaff">Staff</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarCatalog">Catalog</span></div>
-                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarStorage">Storage</span></div>
-              </div>
-            </aside>
-
-            <main class="demo-main">
-              <div class="demo-topbar">
-                <div>
-                  <div class="demo-back" data-i18n="demoBack">← Back</div>
-                  <div class="demo-status" data-i18n="demoStatus">Planned</div>
-                  <div class="demo-project-title" data-i18n="demoProjectTitle">P-2026-0010 - Electrical renovation, Gasthof Goldener Hirsch Steyr</div>
-                </div>
-
-                <div class="demo-actions">
-                  <div class="demo-inline-btn primary" data-i18n="demoActionStart">▶ Start project</div>
-                  <div class="demo-inline-btn" data-i18n="demoActionEdit">✎ Edit</div>
-                </div>
-              </div>
-
-              <div class="demo-panels">
-                <div class="demo-grid-two">
-                  <div class="demo-panel">
-                    <div class="demo-panel-title">
-                      <span>⌖</span>
-                      <span data-i18n="demoLocationTitle">Location</span>
-                    </div>
-                    <p>Stadtplatz 12, 4400 Steyr</p>
-                  </div>
-
-                  <div class="demo-panel">
-                    <div class="demo-panel-title">
-                      <span>✓</span>
-                      <span data-i18n="demoTasksTitle">Tasks</span>
-                    </div>
-                    <div class="demo-task">
-                      <span data-i18n="demoTaskLine">Local inspection certificate - Gasthof Goldener Hirsch Steyr</span>
-                      <span class="demo-task-meta">19.03.2026 <span class="demo-task-tag" data-i18n="demoTaskTag">open</span></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="demo-panel">
-                  <div class="demo-panel-title">
-                    <span>◷</span>
-                    <span data-i18n="demoTimeTitle">Time entries</span>
-                  </div>
-                  <p data-i18n="demoTimeEmpty">No time entries yet.</p>
-                  <div class="demo-time-entry">
-                    <div class="demo-input">19 / 03 / 2026</div>
-                    <div class="demo-input" data-i18n="demoTimePlaceholder">What did you work on?</div>
-                    <div class="demo-input">60</div>
-                    <div class="demo-check"><span class="check"></span><span data-i18n="demoBillable">Billable</span></div>
-                  </div>
-                </div>
-
-                <div class="demo-panel">
-                  <div class="demo-panel-title">
-                    <span>✎</span>
-                    <span data-i18n="demoNotesTitle">Notes</span>
-                  </div>
-                  <p data-i18n="demoNotesEmpty">No notes yet.</p>
-                  <div class="demo-note" data-i18n="demoNoteBody">First contact: Email from thomas.wagner@gasthof-goldener-hirsch.at. Requested construction start at the beginning of April 2026. Site inspection certificate to be arranged.</div>
-                  <div class="demo-note-add">
-                    <div class="demo-input" data-i18n="demoNotesPlaceholder">Add a note...</div>
-                    <div class="demo-inline-btn primary" data-i18n="demoAddNote">➜ Add note</div>
-                  </div>
-                </div>
-              </div>
-            </main>
-
-            <aside class="demo-chat">
-              <div class="assistant-header">
-                <span class="assistant-mark">✦</span>
-                <span>Oktavius</span>
-              </div>
-              <div>
-                <div class="assistant-title" data-i18n="assistantTitle">How can I help?</div>
-                <div class="assistant-lead" data-i18n="assistantLead">Ask me about customers, open items, or what should happen next.</div>
-              </div>
-              <div class="assistant-suggestions">
-                <div class="assistant-suggestion" data-i18n="assistantSuggestion1">Show me today's sales overview</div>
-                <div class="assistant-suggestion" data-i18n="assistantSuggestion2">Find overdue invoices</div>
-                <div class="assistant-suggestion" data-i18n="assistantSuggestion3">Help me create a new supplier</div>
-                <div class="assistant-suggestion" data-i18n="assistantSuggestion4">What were our top products this month?</div>
-              </div>
-              <div class="assistant-input">
-                <span data-i18n="assistantInput">Ask me anything...</span>
-                <span class="assistant-tools">⌕ ⊕ ➤</span>
-              </div>
-            </aside>
+            <h3 data-i18n="feature6Title">One system, no fragmentation</h3>
+            <p data-i18n="feature6Body">CRM, invoicing, project management, document archive, and calendar stay in one business OS instead of across ten tools.</p>
           </div>
         </div>
       </div>
@@ -1237,21 +1239,21 @@
       <div class="container">
         <div class="section-header section-header-center reveal">
           <p class="section-label" data-i18n="howLabel">How it works</p>
-          <h2 class="section-title" data-i18n="howTitle">Bring work in.<br>Keep it moving.</h2>
-          <p class="section-subtitle" data-i18n="howSubtitle">Files, messages, and follow-ups stay in one flow, so teams spend less time switching context.</p>
+          <h2 class="section-title" data-i18n-html="howTitle">Documents in.<br>Invoices out.</h2>
+          <p class="section-subtitle" data-i18n="howSubtitle">Upload files, forward emails, or connect existing systems. Oktavius processes, structures, and queues the output for review.</p>
         </div>
         <div class="steps">
           <div class="step reveal">
-            <h3 data-i18n="step1Title">Collect the incoming work</h3>
-            <p data-i18n="step1Body">Bring in files, emails, notes, and requests from your existing channels. Context stays attached from the start.</p>
+            <h3 data-i18n="step1Title">Connect your documents</h3>
+            <p data-i18n="step1Body">Upload files, forward emails, or connect existing systems. Oktavius ingests everything.</p>
           </div>
           <div class="step reveal">
-            <h3 data-i18n="step2Title">Structure it once</h3>
-            <p data-i18n="step2Body">Key details are captured, linked to the right records, and prepared for the next step.</p>
+            <h3 data-i18n="step2Title">AI processes and structures</h3>
+            <p data-i18n="step2Body">Data extraction, classification, calculation, and cross-referencing happen automatically. The AI agent handles edge cases and flags anything that needs your attention.</p>
           </div>
           <div class="step reveal">
-            <h3 data-i18n="step3Title">Move the process forward</h3>
-            <p data-i18n="step3Body">Send the document, create the invoice, or hand off the task with the groundwork already done.</p>
+            <h3 data-i18n="step3Title">Review and send</h3>
+            <p data-i18n="step3Body">Invoices, reports, and correspondence are generated and queued. You approve with one click.</p>
           </div>
         </div>
       </div>
@@ -1307,22 +1309,22 @@
       <div class="container">
         <div class="diff-grid">
           <div class="diff-card reveal">
-            <blockquote data-i18n-html="diffQuote">Software that fits the way<br><span class="gradient">your team already works.</span></blockquote>
-            <p data-i18n="diffBody">Oktavius keeps workflows, records, and the assistant in one place, so the system fits the way your team works.</p>
+            <blockquote data-i18n-html="diffQuote">The business OS that<br><span class="gradient">adapts to your workflow.</span></blockquote>
+            <p data-i18n="diffBody">Oktavius combines an AI agent, records, and workflows in one system tailored to your company instead of forcing a generic template.</p>
           </div>
 
           <div class="diff-points reveal">
             <div class="diff-point">
-              <h3 data-i18n="diffPoint1Title">Work stays close to the record</h3>
-              <p data-i18n="diffPoint1Body">Projects, notes, files, communication, and next steps stay connected.</p>
+              <h3 data-i18n="diffPoint1Title">Built around your workflow</h3>
+              <p data-i18n="diffPoint1Body">Oktavius adapts to company-specific processes as simply as writing a prompt.</p>
             </div>
             <div class="diff-point">
-              <h3 data-i18n="diffPoint2Title">Less admin between steps</h3>
-              <p data-i18n="diffPoint2Body">Repetitive work runs in the background, so teams spend less time copying.</p>
+              <h3 data-i18n="diffPoint2Title">AI-native from input to output</h3>
+              <p data-i18n="diffPoint2Body">Documents are processed, data is structured, and invoices, reports, or emails are prepared automatically.</p>
             </div>
             <div class="diff-point">
-              <h3 data-i18n="diffPoint3Title">Configurable without becoming heavy</h3>
-              <p data-i18n="diffPoint3Body">Oktavius adapts to company-specific workflows without getting heavy.</p>
+              <h3 data-i18n="diffPoint3Title">Tailored modules, not generic SaaS</h3>
+              <p data-i18n="diffPoint3Body">Industry and company-specific modules keep the system useful without turning it into a patchwork.</p>
             </div>
           </div>
         </div>
@@ -1331,8 +1333,8 @@
 
     <section class="cta">
       <div class="container">
-        <h2 class="reveal" data-i18n-html="ctaTitle">See your workflow<br><span class="gradient">inside Oktavius.</span></h2>
-        <p class="reveal" data-i18n="ctaBody">Get early access and see how Oktavius fits your workflow and data model.</p>
+        <h2 class="reveal" data-i18n-html="ctaTitle">See your business OS<br><span class="gradient">inside Oktavius.</span></h2>
+        <p class="reveal" data-i18n="ctaBody">Get early access and see how Oktavius can be tailored to your workflows, data model, and industry.</p>
         <div class="reveal">
           <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="ctaButton">Get early access</a>
         </div>
@@ -1353,34 +1355,34 @@
   <script>
     const translations = {
       en: {
-        title: 'Oktavius — The ERP Agent',
-        description: 'Oktavius brings projects, documents, communication, and follow-ups into one workspace. Keep work moving with less manual admin.',
+        title: 'Oktavius — Your Back Office Fully Automated',
+        description: 'Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.',
         navFeatures: 'Features',
         navHow: 'How it works',
         navIndustries: 'Industries',
         navCta: 'Get early access',
         heroBadge: 'Now live for early teams',
-        heroTitle: 'The<br><span class="gradient">ERP Agent</span>',
-        heroBody: 'Oktavius keeps projects, documents, communication, and follow-ups in one place, so your team spends less time on admin.',
+        heroTitle: 'Your Back Office<br><span class="gradient">Fully Automated</span>',
+        heroBody: 'Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.',
         heroCtaPrimary: 'Get early access',
-        heroCtaSecondary: 'See the product',
+        heroCtaSecondary: 'How it works',
         proofLabel: 'A product by',
-        proofBody: 'Texterous. We build software people keep using.',
+        proofBody: 'Texterous. We build AI that people actually use.',
         featuresLabel: 'Capabilities',
-        featuresTitle: 'Core workflows,<br>in one system.',
-        featuresSubtitle: 'Projects, documents, communication, and output stay in one place instead of across tools.',
+        featuresTitle: 'AI-native business management,<br>in one system.',
+        featuresSubtitle: 'One AI-native platform replaces spreadsheets, email folders, and disconnected tools with workflows tailored to your industry.',
         feature1Title: 'Documents with structure',
-        feature1Body: 'Drop in PDFs, scans, spreadsheets, or work orders. Oktavius reads them and links them to the right customer, project, and next step.',
-        feature2Title: 'Assistant in context',
-        feature2Body: 'Ask questions, draft replies, and start workflows where the work happens.',
-        feature3Title: 'Output that keeps moving',
-        feature3Body: 'Create invoices, reports, emails, and exports from existing data, then review or send them.',
-        feature4Title: 'Email tied to the record',
-        feature4Body: 'Messages are matched to the right customer or project. Replies, notes, and files stay together.',
-        feature5Title: 'Flexible workflows',
-        feature5Body: 'Oktavius adapts to your process without a heavy setup.',
-        feature6Title: 'One shared workspace',
-        feature6Body: 'Projects, contacts, notes, files, time entries, and follow-ups stay connected.',
+        feature1Body: 'Drop in PDFs, Excel sheets, scanned invoices, or work orders. Oktavius reads, extracts, and structures the data automatically.',
+        feature2Title: 'Built-in AI agent',
+        feature2Body: 'A persistent AI assistant lives inside every workspace. Hand it documents, ask questions, and trigger workflows in natural language.',
+        feature3Title: 'Automated output',
+        feature3Body: 'Invoices, reports, notifications, and export files are generated from your data and queued for review.',
+        feature4Title: 'Email integration',
+        feature4Body: 'Incoming emails are parsed, classified, and routed. Outgoing correspondence is drafted and queued for your approval.',
+        feature5Title: 'Industry-specific modules',
+        feature5Body: 'Modules are tailored to trades, property management, tax advisory, agencies, e-commerce, and more.',
+        feature6Title: 'One system, no fragmentation',
+        feature6Body: 'CRM, invoicing, project management, document archive, and calendar stay in one business OS instead of across ten tools.',
         demoWindowLabel: 'Project workspace',
         demoSidebarLabel1: 'Workspace',
         demoSidebarDashboard: 'Dashboard',
@@ -1419,14 +1421,14 @@
         assistantSuggestion4: 'What were our top products this month?',
         assistantInput: 'Ask me anything...',
         howLabel: 'How it works',
-        howTitle: 'Bring work in.<br>Keep it moving.',
-        howSubtitle: 'Files, messages, and follow-ups stay in one flow, so teams spend less time switching context.',
-        step1Title: 'Collect the incoming work',
-        step1Body: 'Bring in files, emails, notes, and requests from your existing channels. Context stays attached from the start.',
-        step2Title: 'Structure it once',
-        step2Body: 'Key details are captured, linked to the right records, and prepared for the next step.',
-        step3Title: 'Move the process forward',
-        step3Body: 'Send the document, create the invoice, or hand off the task with the groundwork already done.',
+        howTitle: 'Documents in.<br>Invoices out.',
+        howSubtitle: 'Upload files, forward emails, or connect existing systems. Oktavius processes, structures, and queues the output for review.',
+        step1Title: 'Connect your documents',
+        step1Body: 'Upload files, forward emails, or connect existing systems. Oktavius ingests everything.',
+        step2Title: 'AI processes and structures',
+        step2Body: 'Data extraction, classification, calculation, and cross-referencing happen automatically. The AI agent handles edge cases and flags anything that needs your attention.',
+        step3Title: 'Review and send',
+        step3Body: 'Invoices, reports, and correspondence are generated and queued. You approve with one click.',
         industriesLabel: 'Industries',
         industriesTitle: 'Built for the way each team works.',
         industriesSubtitle: 'The core stays the same while workflows, records, and modules adapt to each business.',
@@ -1448,50 +1450,50 @@
         industry5Body: 'See documents, messages, tasks, and decisions in one timeline.',
         industry6Title: 'Company-specific modules',
         industry6Body: 'Oktavius can handle special cases without forcing a generic setup.',
-        diffQuote: 'Software that fits the way<br><span class="gradient">your team already works.</span>',
-        diffBody: 'Oktavius keeps workflows, records, and the assistant in one place, so the system fits the way your team works.',
-        diffPoint1Title: 'Work stays close to the record',
-        diffPoint1Body: 'Projects, notes, files, communication, and next steps stay connected.',
-        diffPoint2Title: 'Less admin between steps',
-        diffPoint2Body: 'Repetitive work runs in the background, so teams spend less time copying.',
-        diffPoint3Title: 'Configurable without becoming heavy',
-        diffPoint3Body: 'Oktavius adapts to company-specific workflows without getting heavy.',
-        ctaTitle: 'See your workflow<br><span class="gradient">inside Oktavius.</span>',
-        ctaBody: 'Get early access and see how Oktavius fits your workflow and data model.',
+        diffQuote: 'The business OS that<br><span class="gradient">adapts to your workflow.</span>',
+        diffBody: 'Oktavius combines an AI agent, records, and workflows in one system tailored to your company instead of forcing a generic template.',
+        diffPoint1Title: 'Built around your workflow',
+        diffPoint1Body: 'Oktavius adapts to company-specific processes as simply as writing a prompt.',
+        diffPoint2Title: 'AI-native from input to output',
+        diffPoint2Body: 'Documents are processed, data is structured, and invoices, reports, or emails are prepared automatically.',
+        diffPoint3Title: 'Tailored modules, not generic SaaS',
+        diffPoint3Body: 'Industry and company-specific modules keep the system useful without turning it into a patchwork.',
+        ctaTitle: 'See your business OS<br><span class="gradient">inside Oktavius.</span>',
+        ctaBody: 'Get early access and see how Oktavius can be tailored to your workflows, data model, and industry.',
         ctaButton: 'Get early access',
         footerText: '&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
         footerContact: 'Contact',
         footerTexterous: 'Texterous'
       },
       de: {
-        title: 'Oktavius — Der ERP-Agent',
-        description: 'Oktavius vereint Projekte, Dokumente, Kommunikation und Aufgaben in einem Workspace. Weniger manuelle Verwaltung, mehr Fortschritt im Alltag.',
+        title: 'Oktavius — Ihr Backoffice voll automatisiert',
+        description: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die zu Ihrem Unternehmen passen.',
         navFeatures: 'Funktionen',
         navHow: 'So funktioniert\'s',
         navIndustries: 'Branchen',
         navCta: 'Frühzugang anfragen',
         heroBadge: 'Jetzt live für erste Teams',
-        heroTitle: 'Der<br><span class="gradient">ERP-Agent</span>',
-        heroBody: 'Oktavius vereint Projekte, Dokumente, Kommunikation und nächste Schritte an einem Ort. So verbringt Ihr Team weniger Zeit mit Verwaltung.',
+        heroTitle: 'Ihr Backoffice<br><span class="gradient">voll automatisiert</span>',
+        heroBody: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die zu Ihrem Unternehmen passen.',
         heroCtaPrimary: 'Frühzugang anfragen',
-        heroCtaSecondary: 'Produkt ansehen',
+        heroCtaSecondary: 'So funktioniert\'s',
         proofLabel: 'Ein Produkt von',
-        proofBody: 'Texterous. Wir entwickeln Software, die Teams gern und dauerhaft nutzen.',
+        proofBody: 'Texterous. Wir entwickeln KI, die Menschen wirklich nutzen.',
         featuresLabel: 'Funktionen',
-        featuresTitle: 'Zentrale Abläufe.<br>Ein System.',
-        featuresSubtitle: 'Projekte, Dokumente, Kommunikation und Ergebnisse bleiben an einem Ort statt in mehreren Tools.',
+        featuresTitle: 'KI-native Geschäftsprozesse,<br>in einem System.',
+        featuresSubtitle: 'Eine KI-native Plattform ersetzt Tabellen, E-Mail-Ordner und getrennte Tools durch Abläufe, die zu Ihrer Branche passen.',
         feature1Title: 'Dokumente mit System',
-        feature1Body: 'Laden Sie PDFs, Scans, Tabellen oder Arbeitsaufträge hoch. Oktavius liest sie aus und ordnet sie dem richtigen Kunden, Projekt und nächsten Schritt zu.',
-        feature2Title: 'Assistent im Kontext',
-        feature2Body: 'Stellen Sie Fragen, formulieren Sie Antworten und starten Sie Abläufe direkt im Kontext.',
-        feature3Title: 'Dokumente direkt weitergeben',
-        feature3Body: 'Erstellen Sie Rechnungen, Berichte, E-Mails und Exporte aus vorhandenen Daten und geben Sie sie direkt weiter.',
-        feature4Title: 'E-Mail im richtigen Kontext',
-        feature4Body: 'Nachrichten landen beim richtigen Kunden oder Projekt. Antworten, Notizen und Dateien bleiben zusammen.',
-        feature5Title: 'Flexible Prozesse',
-        feature5Body: 'Oktavius passt sich Ihren Prozessen an, ohne aufwendige Einrichtung.',
-        feature6Title: 'Alles in einem Workspace',
-        feature6Body: 'Projekte, Kontakte, Notizen, Dateien, Zeiteinträge und Aufgaben bleiben verknüpft.',
+        feature1Body: 'Laden Sie PDFs, Excel-Dateien, eingescannte Rechnungen oder Arbeitsaufträge hoch. Oktavius liest aus, extrahiert und strukturiert die Daten automatisch.',
+        feature2Title: 'Integrierter KI-Agent',
+        feature2Body: 'Ein persistenter KI-Assistent lebt in jedem Workspace. Geben Sie Dokumente hinein, stellen Sie Fragen und starten Sie Abläufe in natürlicher Sprache.',
+        feature3Title: 'Automatisierte Ausgabe',
+        feature3Body: 'Rechnungen, Berichte, Benachrichtigungen und Exportdateien entstehen aus Ihren Daten und werden zur Freigabe vorbereitet.',
+        feature4Title: 'E-Mail-Integration',
+        feature4Body: 'Eingehende E-Mails werden erfasst, klassifiziert und weitergeleitet. Ausgehende Kommunikation wird zur Freigabe vorbereitet.',
+        feature5Title: 'Branchenspezifische Module',
+        feature5Body: 'Module passen sich Handwerk, Hausverwaltung, Steuerberatung, Agenturen, E-Commerce und weiteren Branchen an.',
+        feature6Title: 'Ein System ohne Brüche',
+        feature6Body: 'CRM, Faktura, Projektsteuerung, Dokumentenarchiv und Kalender bleiben in einem Business-OS statt in zehn getrennten Tools.',
         demoWindowLabel: 'Projektbereich',
         demoSidebarLabel1: 'Arbeitsbereich',
         demoSidebarDashboard: 'Dashboard',
@@ -1530,14 +1532,14 @@
         assistantSuggestion4: 'Welche Produkte liefen diesen Monat am besten?',
         assistantInput: 'Stellen Sie eine Frage...',
         howLabel: 'So funktioniert\'s',
-        howTitle: 'Arbeit rein.<br>Der Prozess läuft weiter.',
-        howSubtitle: 'Dateien, Nachrichten und Aufgaben bleiben in einem Fluss. So geht weniger Zeit durch Kontextwechsel verloren.',
-        step1Title: 'Eingänge erfassen',
-        step1Body: 'Holen Sie Dateien, E-Mails, Notizen und Anfragen aus Ihren bestehenden Kanälen hinein. Der Kontext bleibt von Anfang an erhalten.',
-        step2Title: 'Einmal strukturieren',
-        step2Body: 'Wichtige Details werden erfasst, mit den richtigen Datensätzen verknüpft und für den nächsten Schritt vorbereitet.',
-        step3Title: 'Prozess fortführen',
-        step3Body: 'Senden Sie Dokumente, erstellen Sie Rechnungen oder geben Sie Aufgaben weiter, sobald die Grundlage steht.',
+        howTitle: 'Dokumente rein.<br>Rechnungen raus.',
+        howSubtitle: 'Laden Sie Dateien hoch, leiten Sie E-Mails weiter oder verbinden Sie bestehende Systeme. Oktavius verarbeitet, strukturiert und bereitet die Ausgabe zur Prüfung vor.',
+        step1Title: 'Dokumente verbinden',
+        step1Body: 'Laden Sie Dateien hoch, leiten Sie E-Mails weiter oder binden Sie bestehende Systeme an. Oktavius übernimmt alles.',
+        step2Title: 'KI verarbeitet und strukturiert',
+        step2Body: 'Extraktion, Klassifizierung, Berechnung und Verknüpfung laufen automatisch. Der KI-Agent behandelt Sonderfälle und markiert, was Aufmerksamkeit braucht.',
+        step3Title: 'Prüfen und versenden',
+        step3Body: 'Rechnungen, Berichte und Kommunikation werden vorbereitet. Sie geben mit einem Klick frei.',
         industriesLabel: 'Branchen',
         industriesTitle: 'Gebaut für Teams,<br>die unterschiedlich arbeiten.',
         industriesSubtitle: 'Der Kern bleibt gleich, während sich Abläufe, Datensätze und Module an jedes Unternehmen anpassen.',
@@ -1559,16 +1561,16 @@
         industry5Body: 'Sehen Sie Dokumente, Nachrichten, Aufgaben und Entscheidungen in einer gemeinsamen Zeitleiste.',
         industry6Title: 'Unternehmensspezifische Module',
         industry6Body: 'Oktavius bildet Sonderfälle ab, ohne Ihr Team in ein generisches Setup zu zwingen.',
-        diffQuote: 'Software, die sich anpasst,<br><span class="gradient">statt Ihr Team zu verbiegen.</span>',
-        diffBody: 'Oktavius hält Prozesse, Datensätze und den Assistenten an einem Ort, damit die Software zu Ihrem Team passt.',
-        diffPoint1Title: 'Arbeit bleibt im Kontext',
-        diffPoint1Body: 'Projekte, Notizen, Dateien, Kommunikation und nächste Schritte bleiben verbunden.',
-        diffPoint2Title: 'Weniger Verwaltung dazwischen',
-        diffPoint2Body: 'Wiederkehrende Schritte laufen im Hintergrund, sodass Ihr Team weniger kopiert.',
-        diffPoint3Title: 'Anpassbar ohne Ballast',
-        diffPoint3Body: 'Oktavius bildet individuelle Abläufe ab, ohne schwerfällig zu werden.',
-        ctaTitle: 'Erleben Sie Ihren Workflow<br><span class="gradient">in Oktavius.</span>',
-        ctaBody: 'Fordern Sie Frühzugang an und sehen Sie, wie Oktavius zu Ihrem Workflow und Ihrer Datenstruktur passt.',
+        diffQuote: 'Das Business-OS,<br><span class="gradient">das sich Ihrem Workflow anpasst.</span>',
+        diffBody: 'Oktavius verbindet KI-Agent, Datensätze und Abläufe in einem System, das auf Ihr Unternehmen zugeschnitten ist, statt Sie in ein generisches Template zu zwingen.',
+        diffPoint1Title: 'Um Ihren Workflow gebaut',
+        diffPoint1Body: 'Oktavius passt sich unternehmensspezifischen Prozessen so einfach an wie ein Prompt.',
+        diffPoint2Title: 'KI-nativ von Eingang bis Ausgabe',
+        diffPoint2Body: 'Dokumente werden verarbeitet, Daten strukturiert und Rechnungen, Berichte oder E-Mails automatisch vorbereitet.',
+        diffPoint3Title: 'Module statt generischer SaaS',
+        diffPoint3Body: 'Branchen- und firmenspezifische Module halten das System nützlich, ohne zum Flickwerk zu werden.',
+        ctaTitle: 'Sehen Sie Ihr Business-OS<br><span class="gradient">in Oktavius.</span>',
+        ctaBody: 'Fordern Sie Frühzugang an und sehen Sie, wie Oktavius an Ihre Abläufe, Datenstruktur und Branche angepasst wird.',
         ctaButton: 'Frühzugang anfragen',
         footerText: '&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
         footerContact: 'Kontakt',
@@ -1637,11 +1639,23 @@
       }, { passive: true });
     }
 
+    document.querySelectorAll('.features-grid, .steps, .industry-grid').forEach(function(grid) {
+      var items = grid.querySelectorAll('.reveal');
+      for (var i = 0; i < items.length; i++) {
+        items[i].dataset.stagger = String(i * 75);
+      }
+    });
+
     if (!reduceMotion) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            const delay = parseInt(entry.target.dataset.stagger || '0', 10);
+            if (delay > 0) {
+              setTimeout(() => entry.target.classList.add('visible'), delay);
+            } else {
+              entry.target.classList.add('visible');
+            }
             observer.unobserve(entry.target);
           }
         });
@@ -1651,6 +1665,133 @@
     } else {
       document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
     }
+
+    if (!reduceMotion) {
+      (function() {
+        var canvas = document.getElementById('constellation');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w, h, particles = [];
+        var mouse = { x: -9999, y: -9999 };
+
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+
+        function createParticles() {
+          var count = Math.min(Math.floor((w * h) / 16000), 140);
+          particles = [];
+          for (var i = 0; i < count; i++) {
+            var isBlue = Math.random() > 0.72;
+            particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.24,
+              vy: (Math.random() - 0.5) * 0.24,
+              r: Math.random() * 1.2 + 0.4,
+              baseAlpha: Math.random() * 0.18 + 0.05,
+              rgb: isBlue ? '95,155,255' : '163,145,255'
+            });
+          }
+        }
+
+        function frame() {
+          ctx.clearRect(0, 0, w, h);
+          var mRadius = 220;
+          var cRadius = 130;
+
+          for (var k = 0; k < particles.length; k++) {
+            var p = particles[k];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < -10) p.x = w + 10;
+            if (p.x > w + 10) p.x = -10;
+            if (p.y < -10) p.y = h + 10;
+            if (p.y > h + 10) p.y = -10;
+
+            var dx = p.x - mouse.x;
+            var dy = p.y - mouse.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var prox = Math.max(0, 1 - dist / mRadius);
+            var alpha = p.baseAlpha + prox * 0.5;
+            var radius = p.r + prox * 1.6;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, 6.2832);
+            ctx.fillStyle = 'rgba(' + p.rgb + ',' + alpha + ')';
+            ctx.fill();
+          }
+
+          for (var i = 0; i < particles.length; i++) {
+            var a = particles[i];
+            var dax = a.x - mouse.x;
+            var day = a.y - mouse.y;
+            var daDist = Math.sqrt(dax * dax + day * day);
+            if (daDist > mRadius) continue;
+            for (var j = i + 1; j < particles.length; j++) {
+              var b = particles[j];
+              var dbx = b.x - mouse.x;
+              var dby = b.y - mouse.y;
+              var dbDist = Math.sqrt(dbx * dbx + dby * dby);
+              if (dbDist > mRadius) continue;
+              var abx = a.x - b.x;
+              var aby = a.y - b.y;
+              var abDist = Math.sqrt(abx * abx + aby * aby);
+              if (abDist < cRadius) {
+                var lineAlpha = (1 - abDist / cRadius) * 0.18;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = 'rgba(139,124,255,' + lineAlpha + ')';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+              }
+            }
+          }
+
+          requestAnimationFrame(frame);
+        }
+
+        resize();
+        createParticles();
+        frame();
+
+        window.addEventListener('resize', function() {
+          resize();
+          createParticles();
+        });
+
+        window.addEventListener('pointermove', function(e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        }, { passive: true });
+      })();
+    }
+
+    (function() {
+      var overlay = document.querySelector('.noise-overlay');
+      if (!overlay) return;
+      var c = document.createElement('canvas');
+      c.width = c.height = 128;
+      var nctx = c.getContext('2d');
+      var img = nctx.createImageData(128, 128);
+      for (var i = 0; i < img.data.length; i += 4) {
+        var v = Math.random() * 255;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+        img.data[i + 3] = 255;
+      }
+      nctx.putImageData(img, 0, 0);
+      overlay.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
+    })();
+
+    document.querySelectorAll('.feature-card, .step, .diff-card, .industry-card').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty('--spotlight-x', (e.clientX - rect.left) + 'px');
+        card.style.setProperty('--spotlight-y', (e.clientY - rect.top) + 'px');
+      }, { passive: true });
+    });
   </script>
 </body>
 </html>
