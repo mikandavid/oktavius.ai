@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oktavius — The ERP Agent</title>
+  <meta name="description" content="Oktavius brings projects, documents, communication, and follow-ups into one workspace. Keep work moving with less manual admin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #090910;
+      --bg-elevated: rgba(21, 21, 30, 0.86);
+      --bg-card: rgba(20, 20, 28, 0.82);
+      --bg-card-strong: rgba(26, 26, 36, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text: #f7f7fb;
+      --text-secondary: #a4a6b6;
+      --accent: #8b7cff;
+      --accent-strong: #a391ff;
+      --accent-cyan: #5f9bff;
+      --accent-glow: rgba(139, 124, 255, 0.16);
+      --accent-glow-strong: rgba(139, 124, 255, 0.3);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      --mouse-x: 50%;
+      --mouse-y: 20%;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, #06070c 0%, #090910 42%, #07070d 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+    }
+
+    .page-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(720px circle at var(--mouse-x) var(--mouse-y), rgba(139, 124, 255, 0.12), transparent 36%),
+        radial-gradient(520px circle at 14% 16%, rgba(139, 124, 255, 0.11), transparent 32%),
+        radial-gradient(420px circle at 86% 6%, rgba(95, 155, 255, 0.09), transparent 28%);
+    }
+
+    .page-background::before,
+    .page-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .page-background::before {
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, transparent 78%);
+      opacity: 0.16;
+    }
+
+    .page-background::after {
+      background:
+        linear-gradient(180deg, rgba(7, 7, 13, 0.08) 0%, rgba(7, 7, 13, 0.74) 100%),
+        radial-gradient(circle at center, transparent 0%, rgba(7, 7, 13, 0.16) 72%, rgba(7, 7, 13, 0.38) 100%);
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(9, 9, 16, 0.7);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      background: rgba(9, 9, 16, 0.84);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a:not(.btn) {
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:not(.btn):hover { color: var(--text); }
+
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .lang-btn {
+      min-width: 42px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: rgba(139, 124, 255, 0.18);
+      color: var(--text);
+      box-shadow: 0 8px 24px rgba(139, 124, 255, 0.18);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 100%);
+      box-shadow: 0 12px 32px rgba(106, 110, 255, 0.22);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 14px 36px rgba(106, 110, 255, 0.3);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-large {
+      padding: 14px 24px;
+      font-size: 15px;
+    }
+
+    section { padding: 104px 0; }
+
+    .hero {
+      padding: 176px 0 92px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: -40px auto auto 50%;
+      transform: translateX(-50%);
+      width: min(920px, 92vw);
+      height: 640px;
+      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.16) 0%, transparent 70%);
+      filter: blur(18px);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #5ce1a5;
+      box-shadow: 0 0 0 6px rgba(92, 225, 165, 0.12);
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.56; transform: scale(0.92); }
+    }
+
+    .hero h1 {
+      font-size: clamp(52px, 8vw, 92px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 0.96;
+      max-width: 640px;
+      margin: 0 auto 22px;
+    }
+
+    .gradient {
+      background: linear-gradient(135deg, var(--accent-strong) 0%, #d3ccff 40%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(17px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 34px;
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .proof {
+      padding: 34px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .proof p {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .proof-logo {
+      font-size: 17px;
+      font-weight: 600;
+      color: #c7c8d3;
+      opacity: 0.82;
+    }
+
+    .section-header { margin-bottom: 56px; }
+
+    .section-header-center { text-align: center; }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #b2a6ff;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.14;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 650px;
+      line-height: 1.75;
+    }
+
+    .section-header-center .section-subtitle { margin: 0 auto; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card,
+    .step,
+    .diff-card,
+    .industry-card {
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(23, 23, 31, 0.86) 0%, rgba(16, 16, 23, 0.92) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .feature-card {
+      padding: 30px;
+    }
+
+    .feature-card:hover,
+    .step:hover,
+    .industry-card:hover,
+    .diff-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(163, 145, 255, 0.3);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(139, 124, 255, 0.18) 0%, rgba(95, 155, 255, 0.12) 100%);
+      border: 1px solid rgba(139, 124, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .feature-card h3,
+    .step h3,
+    .industry-card h3,
+    .diff-point h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p,
+    .step p,
+    .industry-card p,
+    .diff-point p,
+    .diff-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .demo {
+      padding-top: 24px;
+    }
+
+    .demo-window {
+      max-width: 1120px;
+      margin: 0 auto;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(18, 18, 25, 0.92) 0%, rgba(13, 13, 20, 0.98) 100%);
+      overflow: hidden;
+      box-shadow: 0 30px 120px rgba(0, 0, 0, 0.42);
+    }
+
+    .demo-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .demo-titlebar-left,
+    .demo-titlebar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .demo-titlebar-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .demo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .demo-dot:nth-child(1) { background: #ff5f57; }
+    .demo-dot:nth-child(2) { background: #febc2e; }
+    .demo-dot:nth-child(3) { background: #28c840; }
+
+    .demo-body {
+      display: grid;
+      grid-template-columns: 214px minmax(0, 1fr) 300px;
+      min-height: 620px;
+    }
+
+    .demo-sidebar {
+      padding: 22px 16px;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .demo-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .demo-brand-mark {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 100%);
+      box-shadow: 0 0 0 6px rgba(139, 124, 255, 0.1);
+    }
+
+    .demo-sidebar-group {
+      margin-bottom: 18px;
+    }
+
+    .demo-sidebar-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #7d8191;
+      margin: 0 10px 8px;
+    }
+
+    .demo-sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: default;
+      margin-bottom: 4px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .demo-sidebar-item.active {
+      background: rgba(139, 124, 255, 0.14);
+      color: var(--text);
+      border: 1px solid rgba(139, 124, 255, 0.18);
+    }
+
+    .demo-main {
+      padding: 24px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, transparent 100%);
+    }
+
+    .demo-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .demo-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .demo-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      color: #d7d7df;
+      margin-bottom: 12px;
+    }
+
+    .demo-project-title {
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.03em;
+      max-width: 640px;
+    }
+
+    .demo-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .demo-inline-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 13px;
+      font-weight: 600;
+      color: #ececf4;
+      white-space: nowrap;
+    }
+
+    .demo-inline-btn.primary {
+      background: linear-gradient(135deg, rgba(139, 124, 255, 0.28) 0%, rgba(95, 155, 255, 0.22) 100%);
+      border-color: rgba(139, 124, 255, 0.25);
+    }
+
+    .demo-panels {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .demo-panel {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .demo-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .demo-panel-title small {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .demo-panel p,
+    .demo-panel li,
+    .demo-panel td,
+    .demo-panel th,
+    .demo-input,
+    .demo-note,
+    .assistant-lead {
+      font-size: 13px;
+    }
+
+    .demo-panel p,
+    .demo-note,
+    .assistant-lead {
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .demo-task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .demo-task-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .demo-task-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #cec6ff;
+      background: rgba(139, 124, 255, 0.14);
+      border: 1px solid rgba(139, 124, 255, 0.2);
+    }
+
+    .demo-grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .demo-time-entry {
+      display: grid;
+      grid-template-columns: 118px 1fr 82px auto;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .demo-input,
+    .demo-check,
+    .assistant-input {
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(7, 7, 13, 0.42);
+      color: #d9dae3;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .demo-check {
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .demo-check .check {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, rgba(139, 124, 255, 0.9) 0%, rgba(95, 155, 255, 0.7) 100%);
+      box-shadow: inset 0 0 0 2px rgba(8, 8, 14, 0.45);
+    }
+
+    .demo-note {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 12px;
+    }
+
+    .demo-note-add {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .demo-chat {
+      padding: 24px 18px;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .assistant-mark {
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(139, 124, 255, 0.16);
+      border: 1px solid rgba(139, 124, 255, 0.18);
+      color: #dcd4ff;
+      font-size: 14px;
+    }
+
+    .assistant-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .assistant-title {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .assistant-lead {
+      margin-top: 4px;
+    }
+
+    .assistant-suggestions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .assistant-suggestion {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      color: #d8d9e2;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .assistant-input {
+      margin-top: auto;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-secondary);
+    }
+
+    .assistant-tools {
+      display: inline-flex;
+      gap: 8px;
+      color: #c3c5d1;
+      letter-spacing: 0.02em;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      counter-reset: step;
+    }
+
+    .step {
+      counter-increment: step;
+      padding: 30px;
+      position: relative;
+    }
+
+    .step::before {
+      content: counter(step, decimal-leading-zero);
+      display: block;
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 16px;
+      color: rgba(163, 145, 255, 0.36);
+    }
+
+    .industries-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .pill {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .pill.active {
+      border-color: rgba(163, 145, 255, 0.26);
+      color: var(--text);
+      background: rgba(139, 124, 255, 0.12);
+    }
+
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .industry-card { padding: 28px; }
+
+    .diff {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    .diff-card {
+      padding: 42px;
+    }
+
+    .diff-card blockquote {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .diff-points {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .cta {
+      text-align: center;
+      padding: 118px 0;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: min(760px, 90vw);
+      height: 420px;
+      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.16) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 34px;
+    }
+
+    footer {
+      padding: 34px 0 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    footer p,
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .demo-body {
+        grid-template-columns: 200px minmax(0, 1fr);
+      }
+
+      .demo-chat { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .features-grid,
+      .steps,
+      .industry-grid,
+      .demo-grid-two,
+      .diff-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-body {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-sidebar {
+        display: none;
+      }
+
+      .demo-time-entry {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .demo-note-add {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links a:not(.btn) { display: none; }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .hero {
+        padding: 150px 0 76px;
+      }
+
+      .demo-topbar,
+      footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .demo-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 18px; }
+
+      .btn,
+      .btn-large {
+        width: 100%;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+      }
+
+      .demo-time-entry {
+        grid-template-columns: 1fr;
+      }
+
+      .lang-switch {
+        order: -1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      .hero-badge .dot,
+      .reveal {
+        animation: none;
+        transition: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-background" aria-hidden="true"></div>
+
+  <div class="page-shell">
+    <nav id="nav">
+      <div class="container">
+        <a href="#" class="logo">oktavius<span>.</span></a>
+        <div class="nav-links">
+          <a href="#features" data-i18n="navFeatures">Features</a>
+          <a href="#how" data-i18n="navHow">How it works</a>
+          <a href="#industries" data-i18n="navIndustries">Industries</a>
+          <div class="lang-switch" aria-label="Language switcher">
+            <button type="button" class="lang-btn active" data-lang="en">EN</button>
+            <button type="button" class="lang-btn" data-lang="de">DE</button>
+          </div>
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary" data-i18n="navCta">Get early access</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge reveal">
+          <span class="dot"></span>
+          <span data-i18n="heroBadge">Now live for early teams</span>
+        </div>
+        <h1 class="reveal" data-i18n-html="heroTitle">The<br><span class="gradient">ERP Agent</span></h1>
+        <p class="reveal" data-i18n="heroBody">Oktavius keeps projects, documents, communication, and follow-ups in one place, so your team spends less time on admin.</p>
+        <div class="hero-ctas reveal">
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="heroCtaPrimary">Get early access</a>
+          <a href="#features" class="btn btn-ghost btn-large" data-i18n="heroCtaSecondary">See the product</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="proof reveal">
+      <div class="container">
+        <p data-i18n="proofLabel">A product by</p>
+        <span class="proof-logo" data-i18n="proofBody">Texterous. We build software people keep using.</span>
+      </div>
+    </div>
+
+    <section id="features" class="features">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label" data-i18n="featuresLabel">Capabilities</p>
+          <h2 class="section-title" data-i18n-html="featuresTitle">Core workflows,<br>in one system.</h2>
+          <p class="section-subtitle" data-i18n="featuresSubtitle">Projects, documents, communication, and output stay in one place instead of across tools.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon">📄</div>
+            <h3 data-i18n="feature1Title">Documents with structure</h3>
+            <p data-i18n="feature1Body">Drop in PDFs, scans, spreadsheets, or work orders. Oktavius reads them and links them to the right customer, project, and next step.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">✦</div>
+            <h3 data-i18n="feature2Title">Assistant in context</h3>
+            <p data-i18n="feature2Body">Ask questions, draft replies, and start workflows where the work happens.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">⚙</div>
+            <h3 data-i18n="feature3Title">Output that keeps moving</h3>
+            <p data-i18n="feature3Body">Create invoices, reports, emails, and exports from existing data, then review or send them.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">✉</div>
+            <h3 data-i18n="feature4Title">Email tied to the record</h3>
+            <p data-i18n="feature4Body">Messages are matched to the right customer or project. Replies, notes, and files stay together.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">⇄</div>
+            <h3 data-i18n="feature5Title">Flexible workflows</h3>
+            <p data-i18n="feature5Body">Oktavius adapts to your process without a heavy setup.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">▣</div>
+            <h3 data-i18n="feature6Title">One shared workspace</h3>
+            <p data-i18n="feature6Body">Projects, contacts, notes, files, time entries, and follow-ups stay connected.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo">
+      <div class="container">
+        <div class="demo-window reveal">
+          <div class="demo-titlebar">
+            <div class="demo-titlebar-left">
+              <span class="demo-dot"></span>
+              <span class="demo-dot"></span>
+              <span class="demo-dot"></span>
+              <span class="demo-titlebar-label">Oktavius</span>
+            </div>
+            <div class="demo-titlebar-right">
+              <span class="demo-titlebar-label" data-i18n="demoWindowLabel">Project workspace</span>
+            </div>
+          </div>
+
+          <div class="demo-body">
+            <aside class="demo-sidebar">
+              <div class="demo-brand">
+                <span class="demo-brand-mark"></span>
+                <span>Oktavius</span>
+              </div>
+
+              <div class="demo-sidebar-group">
+                <div class="demo-sidebar-label" data-i18n="demoSidebarLabel1">Workspace</div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarDashboard">Dashboard</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarAssistant">Oktavius</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarGroupChat">Group chat</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarSupport">Support</span></div>
+              </div>
+
+              <div class="demo-sidebar-group">
+                <div class="demo-sidebar-label" data-i18n="demoSidebarLabel2">Modules</div>
+                <div class="demo-sidebar-item active"><span>◌</span><span data-i18n="demoSidebarProjects">Projects</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarContacts">Contacts</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarStaff">Staff</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarCatalog">Catalog</span></div>
+                <div class="demo-sidebar-item"><span>◌</span><span data-i18n="demoSidebarStorage">Storage</span></div>
+              </div>
+            </aside>
+
+            <main class="demo-main">
+              <div class="demo-topbar">
+                <div>
+                  <div class="demo-back" data-i18n="demoBack">← Back</div>
+                  <div class="demo-status" data-i18n="demoStatus">Planned</div>
+                  <div class="demo-project-title" data-i18n="demoProjectTitle">P-2026-0010 - Electrical renovation, Gasthof Goldener Hirsch Steyr</div>
+                </div>
+
+                <div class="demo-actions">
+                  <div class="demo-inline-btn primary" data-i18n="demoActionStart">▶ Start project</div>
+                  <div class="demo-inline-btn" data-i18n="demoActionEdit">✎ Edit</div>
+                </div>
+              </div>
+
+              <div class="demo-panels">
+                <div class="demo-grid-two">
+                  <div class="demo-panel">
+                    <div class="demo-panel-title">
+                      <span>⌖</span>
+                      <span data-i18n="demoLocationTitle">Location</span>
+                    </div>
+                    <p>Stadtplatz 12, 4400 Steyr</p>
+                  </div>
+
+                  <div class="demo-panel">
+                    <div class="demo-panel-title">
+                      <span>✓</span>
+                      <span data-i18n="demoTasksTitle">Tasks</span>
+                    </div>
+                    <div class="demo-task">
+                      <span data-i18n="demoTaskLine">Local inspection certificate - Gasthof Goldener Hirsch Steyr</span>
+                      <span class="demo-task-meta">19.03.2026 <span class="demo-task-tag" data-i18n="demoTaskTag">open</span></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="demo-panel">
+                  <div class="demo-panel-title">
+                    <span>◷</span>
+                    <span data-i18n="demoTimeTitle">Time entries</span>
+                  </div>
+                  <p data-i18n="demoTimeEmpty">No time entries yet.</p>
+                  <div class="demo-time-entry">
+                    <div class="demo-input">19 / 03 / 2026</div>
+                    <div class="demo-input" data-i18n="demoTimePlaceholder">What did you work on?</div>
+                    <div class="demo-input">60</div>
+                    <div class="demo-check"><span class="check"></span><span data-i18n="demoBillable">Billable</span></div>
+                  </div>
+                </div>
+
+                <div class="demo-panel">
+                  <div class="demo-panel-title">
+                    <span>✎</span>
+                    <span data-i18n="demoNotesTitle">Notes</span>
+                  </div>
+                  <p data-i18n="demoNotesEmpty">No notes yet.</p>
+                  <div class="demo-note" data-i18n="demoNoteBody">First contact: Email from thomas.wagner@gasthof-goldener-hirsch.at. Requested construction start at the beginning of April 2026. Site inspection certificate to be arranged.</div>
+                  <div class="demo-note-add">
+                    <div class="demo-input" data-i18n="demoNotesPlaceholder">Add a note...</div>
+                    <div class="demo-inline-btn primary" data-i18n="demoAddNote">➜ Add note</div>
+                  </div>
+                </div>
+              </div>
+            </main>
+
+            <aside class="demo-chat">
+              <div class="assistant-header">
+                <span class="assistant-mark">✦</span>
+                <span>Oktavius</span>
+              </div>
+              <div>
+                <div class="assistant-title" data-i18n="assistantTitle">How can I help?</div>
+                <div class="assistant-lead" data-i18n="assistantLead">Ask me about customers, open items, or what should happen next.</div>
+              </div>
+              <div class="assistant-suggestions">
+                <div class="assistant-suggestion" data-i18n="assistantSuggestion1">Show me today's sales overview</div>
+                <div class="assistant-suggestion" data-i18n="assistantSuggestion2">Find overdue invoices</div>
+                <div class="assistant-suggestion" data-i18n="assistantSuggestion3">Help me create a new supplier</div>
+                <div class="assistant-suggestion" data-i18n="assistantSuggestion4">What were our top products this month?</div>
+              </div>
+              <div class="assistant-input">
+                <span data-i18n="assistantInput">Ask me anything...</span>
+                <span class="assistant-tools">⌕ ⊕ ➤</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label" data-i18n="howLabel">How it works</p>
+          <h2 class="section-title" data-i18n="howTitle">Bring work in.<br>Keep it moving.</h2>
+          <p class="section-subtitle" data-i18n="howSubtitle">Files, messages, and follow-ups stay in one flow, so teams spend less time switching context.</p>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <h3 data-i18n="step1Title">Collect the incoming work</h3>
+            <p data-i18n="step1Body">Bring in files, emails, notes, and requests from your existing channels. Context stays attached from the start.</p>
+          </div>
+          <div class="step reveal">
+            <h3 data-i18n="step2Title">Structure it once</h3>
+            <p data-i18n="step2Body">Key details are captured, linked to the right records, and prepared for the next step.</p>
+          </div>
+          <div class="step reveal">
+            <h3 data-i18n="step3Title">Move the process forward</h3>
+            <p data-i18n="step3Body">Send the document, create the invoice, or hand off the task with the groundwork already done.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="industries">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-label" data-i18n="industriesLabel">Industries</p>
+          <h2 class="section-title" data-i18n="industriesTitle">Built for the way each team works.</h2>
+          <p class="section-subtitle" data-i18n="industriesSubtitle">The core stays the same while workflows, records, and modules adapt to each business.</p>
+        </div>
+
+        <div class="industries-pills reveal">
+          <span class="pill active" data-i18n="pill1">Trades</span>
+          <span class="pill" data-i18n="pill2">Property management</span>
+          <span class="pill" data-i18n="pill3">Tax advisory</span>
+          <span class="pill" data-i18n="pill4">Agencies</span>
+          <span class="pill" data-i18n="pill5">E-commerce</span>
+          <span class="pill" data-i18n="pill6">Funeral services</span>
+        </div>
+
+        <div class="industry-grid">
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry1Title">Order capture</h3>
+            <p data-i18n="industry1Body">Turn calls, emails, and documents into structured work without entering the same info twice.</p>
+          </div>
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry2Title">Materials and inventory</h3>
+            <p data-i18n="industry2Body">Track stock, required materials, and project usage across teams and locations.</p>
+          </div>
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry3Title">Time and mileage</h3>
+            <p data-i18n="industry3Body">Capture hours and travel in the workflow, then link them to the right project and invoice.</p>
+          </div>
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry4Title">Quotes and invoices</h3>
+            <p data-i18n="industry4Body">Prepare commercial documents from existing data and keep approvals clear.</p>
+          </div>
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry5Title">Customer history</h3>
+            <p data-i18n="industry5Body">See documents, messages, tasks, and decisions in one timeline.</p>
+          </div>
+          <div class="industry-card reveal">
+            <h3 data-i18n="industry6Title">Company-specific modules</h3>
+            <p data-i18n="industry6Body">Oktavius can handle special cases without forcing a generic setup.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="diff">
+      <div class="container">
+        <div class="diff-grid">
+          <div class="diff-card reveal">
+            <blockquote data-i18n-html="diffQuote">Software that fits the way<br><span class="gradient">your team already works.</span></blockquote>
+            <p data-i18n="diffBody">Oktavius keeps workflows, records, and the assistant in one place, so the system fits the way your team works.</p>
+          </div>
+
+          <div class="diff-points reveal">
+            <div class="diff-point">
+              <h3 data-i18n="diffPoint1Title">Work stays close to the record</h3>
+              <p data-i18n="diffPoint1Body">Projects, notes, files, communication, and next steps stay connected.</p>
+            </div>
+            <div class="diff-point">
+              <h3 data-i18n="diffPoint2Title">Less admin between steps</h3>
+              <p data-i18n="diffPoint2Body">Repetitive work runs in the background, so teams spend less time copying.</p>
+            </div>
+            <div class="diff-point">
+              <h3 data-i18n="diffPoint3Title">Configurable without becoming heavy</h3>
+              <p data-i18n="diffPoint3Body">Oktavius adapts to company-specific workflows without getting heavy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2 class="reveal" data-i18n-html="ctaTitle">See your workflow<br><span class="gradient">inside Oktavius.</span></h2>
+        <p class="reveal" data-i18n="ctaBody">Get early access and see how Oktavius fits your workflow and data model.</p>
+        <div class="reveal">
+          <a href="https://texterous.com/en/contact/" class="btn btn-primary btn-large" data-i18n="ctaButton">Get early access</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p data-i18n-html="footerText">&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+        <div class="footer-links">
+          <a href="https://texterous.com/en/contact/" data-i18n="footerContact">Contact</a>
+          <a href="https://texterous.com" data-i18n="footerTexterous">Texterous</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: 'Oktavius — The ERP Agent',
+        description: 'Oktavius brings projects, documents, communication, and follow-ups into one workspace. Keep work moving with less manual admin.',
+        navFeatures: 'Features',
+        navHow: 'How it works',
+        navIndustries: 'Industries',
+        navCta: 'Get early access',
+        heroBadge: 'Now live for early teams',
+        heroTitle: 'The<br><span class="gradient">ERP Agent</span>',
+        heroBody: 'Oktavius keeps projects, documents, communication, and follow-ups in one place, so your team spends less time on admin.',
+        heroCtaPrimary: 'Get early access',
+        heroCtaSecondary: 'See the product',
+        proofLabel: 'A product by',
+        proofBody: 'Texterous. We build software people keep using.',
+        featuresLabel: 'Capabilities',
+        featuresTitle: 'Core workflows,<br>in one system.',
+        featuresSubtitle: 'Projects, documents, communication, and output stay in one place instead of across tools.',
+        feature1Title: 'Documents with structure',
+        feature1Body: 'Drop in PDFs, scans, spreadsheets, or work orders. Oktavius reads them and links them to the right customer, project, and next step.',
+        feature2Title: 'Assistant in context',
+        feature2Body: 'Ask questions, draft replies, and start workflows where the work happens.',
+        feature3Title: 'Output that keeps moving',
+        feature3Body: 'Create invoices, reports, emails, and exports from existing data, then review or send them.',
+        feature4Title: 'Email tied to the record',
+        feature4Body: 'Messages are matched to the right customer or project. Replies, notes, and files stay together.',
+        feature5Title: 'Flexible workflows',
+        feature5Body: 'Oktavius adapts to your process without a heavy setup.',
+        feature6Title: 'One shared workspace',
+        feature6Body: 'Projects, contacts, notes, files, time entries, and follow-ups stay connected.',
+        demoWindowLabel: 'Project workspace',
+        demoSidebarLabel1: 'Workspace',
+        demoSidebarDashboard: 'Dashboard',
+        demoSidebarAssistant: 'Oktavius',
+        demoSidebarGroupChat: 'Group chat',
+        demoSidebarSupport: 'Support',
+        demoSidebarLabel2: 'Modules',
+        demoSidebarProjects: 'Projects',
+        demoSidebarContacts: 'Contacts',
+        demoSidebarStaff: 'Staff',
+        demoSidebarCatalog: 'Catalog',
+        demoSidebarStorage: 'Storage',
+        demoBack: '← Back',
+        demoStatus: 'Planned',
+        demoProjectTitle: 'P-2026-0010 - Electrical renovation, Gasthof Goldener Hirsch Steyr',
+        demoActionStart: '▶ Start project',
+        demoActionEdit: '✎ Edit',
+        demoLocationTitle: 'Location',
+        demoTasksTitle: 'Tasks',
+        demoTaskLine: 'Local inspection certificate - Gasthof Goldener Hirsch Steyr',
+        demoTaskTag: 'open',
+        demoTimeTitle: 'Time entries',
+        demoTimeEmpty: 'No time entries yet.',
+        demoTimePlaceholder: 'What did you work on?',
+        demoBillable: 'Billable',
+        demoNotesTitle: 'Notes',
+        demoNotesEmpty: 'No notes yet.',
+        demoNoteBody: 'First contact: Email from thomas.wagner@gasthof-goldener-hirsch.at. Requested construction start at the beginning of April 2026. Site inspection certificate to be arranged.',
+        demoNotesPlaceholder: 'Add a note...',
+        demoAddNote: '➜ Add note',
+        assistantTitle: 'How can I help?',
+        assistantLead: 'Ask me about customers, open items, or what should happen next.',
+        assistantSuggestion1: "Show me today's sales overview",
+        assistantSuggestion2: 'Find overdue invoices',
+        assistantSuggestion3: 'Help me create a new supplier',
+        assistantSuggestion4: 'What were our top products this month?',
+        assistantInput: 'Ask me anything...',
+        howLabel: 'How it works',
+        howTitle: 'Bring work in.<br>Keep it moving.',
+        howSubtitle: 'Files, messages, and follow-ups stay in one flow, so teams spend less time switching context.',
+        step1Title: 'Collect the incoming work',
+        step1Body: 'Bring in files, emails, notes, and requests from your existing channels. Context stays attached from the start.',
+        step2Title: 'Structure it once',
+        step2Body: 'Key details are captured, linked to the right records, and prepared for the next step.',
+        step3Title: 'Move the process forward',
+        step3Body: 'Send the document, create the invoice, or hand off the task with the groundwork already done.',
+        industriesLabel: 'Industries',
+        industriesTitle: 'Built for the way each team works.',
+        industriesSubtitle: 'The core stays the same while workflows, records, and modules adapt to each business.',
+        pill1: 'Trades',
+        pill2: 'Property management',
+        pill3: 'Tax advisory',
+        pill4: 'Agencies',
+        pill5: 'E-commerce',
+        pill6: 'Funeral services',
+        industry1Title: 'Order capture',
+        industry1Body: 'Turn calls, emails, and documents into structured work without entering the same info twice.',
+        industry2Title: 'Materials and inventory',
+        industry2Body: 'Track stock, required materials, and project usage across teams and locations.',
+        industry3Title: 'Time and mileage',
+        industry3Body: 'Capture hours and travel in the workflow, then link them to the right project and invoice.',
+        industry4Title: 'Quotes and invoices',
+        industry4Body: 'Prepare commercial documents from existing data and keep approvals clear.',
+        industry5Title: 'Customer history',
+        industry5Body: 'See documents, messages, tasks, and decisions in one timeline.',
+        industry6Title: 'Company-specific modules',
+        industry6Body: 'Oktavius can handle special cases without forcing a generic setup.',
+        diffQuote: 'Software that fits the way<br><span class="gradient">your team already works.</span>',
+        diffBody: 'Oktavius keeps workflows, records, and the assistant in one place, so the system fits the way your team works.',
+        diffPoint1Title: 'Work stays close to the record',
+        diffPoint1Body: 'Projects, notes, files, communication, and next steps stay connected.',
+        diffPoint2Title: 'Less admin between steps',
+        diffPoint2Body: 'Repetitive work runs in the background, so teams spend less time copying.',
+        diffPoint3Title: 'Configurable without becoming heavy',
+        diffPoint3Body: 'Oktavius adapts to company-specific workflows without getting heavy.',
+        ctaTitle: 'See your workflow<br><span class="gradient">inside Oktavius.</span>',
+        ctaBody: 'Get early access and see how Oktavius fits your workflow and data model.',
+        ctaButton: 'Get early access',
+        footerText: '&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
+        footerContact: 'Contact',
+        footerTexterous: 'Texterous'
+      },
+      de: {
+        title: 'Oktavius — Der ERP-Agent',
+        description: 'Oktavius vereint Projekte, Dokumente, Kommunikation und Aufgaben in einem Workspace. Weniger manuelle Verwaltung, mehr Fortschritt im Alltag.',
+        navFeatures: 'Funktionen',
+        navHow: 'So funktioniert\'s',
+        navIndustries: 'Branchen',
+        navCta: 'Frühzugang anfragen',
+        heroBadge: 'Jetzt live für erste Teams',
+        heroTitle: 'Der<br><span class="gradient">ERP-Agent</span>',
+        heroBody: 'Oktavius vereint Projekte, Dokumente, Kommunikation und nächste Schritte an einem Ort. So verbringt Ihr Team weniger Zeit mit Verwaltung.',
+        heroCtaPrimary: 'Frühzugang anfragen',
+        heroCtaSecondary: 'Produkt ansehen',
+        proofLabel: 'Ein Produkt von',
+        proofBody: 'Texterous. Wir entwickeln Software, die Teams gern und dauerhaft nutzen.',
+        featuresLabel: 'Funktionen',
+        featuresTitle: 'Zentrale Abläufe.<br>Ein System.',
+        featuresSubtitle: 'Projekte, Dokumente, Kommunikation und Ergebnisse bleiben an einem Ort statt in mehreren Tools.',
+        feature1Title: 'Dokumente mit System',
+        feature1Body: 'Laden Sie PDFs, Scans, Tabellen oder Arbeitsaufträge hoch. Oktavius liest sie aus und ordnet sie dem richtigen Kunden, Projekt und nächsten Schritt zu.',
+        feature2Title: 'Assistent im Kontext',
+        feature2Body: 'Stellen Sie Fragen, formulieren Sie Antworten und starten Sie Abläufe direkt im Kontext.',
+        feature3Title: 'Dokumente direkt weitergeben',
+        feature3Body: 'Erstellen Sie Rechnungen, Berichte, E-Mails und Exporte aus vorhandenen Daten und geben Sie sie direkt weiter.',
+        feature4Title: 'E-Mail im richtigen Kontext',
+        feature4Body: 'Nachrichten landen beim richtigen Kunden oder Projekt. Antworten, Notizen und Dateien bleiben zusammen.',
+        feature5Title: 'Flexible Prozesse',
+        feature5Body: 'Oktavius passt sich Ihren Prozessen an, ohne aufwendige Einrichtung.',
+        feature6Title: 'Alles in einem Workspace',
+        feature6Body: 'Projekte, Kontakte, Notizen, Dateien, Zeiteinträge und Aufgaben bleiben verknüpft.',
+        demoWindowLabel: 'Projektbereich',
+        demoSidebarLabel1: 'Arbeitsbereich',
+        demoSidebarDashboard: 'Dashboard',
+        demoSidebarAssistant: 'Oktavius',
+        demoSidebarGroupChat: 'Teamchat',
+        demoSidebarSupport: 'Support',
+        demoSidebarLabel2: 'Module',
+        demoSidebarProjects: 'Projekte',
+        demoSidebarContacts: 'Kontakte',
+        demoSidebarStaff: 'Personal',
+        demoSidebarCatalog: 'Katalog',
+        demoSidebarStorage: 'Lager',
+        demoBack: '← Zurück',
+        demoStatus: 'Geplant',
+        demoProjectTitle: 'P-2026-0010 - Elektrosanierung Gasthof Goldener Hirsch Steyr',
+        demoActionStart: '▶ Projekt starten',
+        demoActionEdit: '✎ Bearbeiten',
+        demoLocationTitle: 'Standort',
+        demoTasksTitle: 'Aufgaben',
+        demoTaskLine: 'Lokalaugenschein - Gasthof Goldener Hirsch Steyr',
+        demoTaskTag: 'offen',
+        demoTimeTitle: 'Zeiteinträge',
+        demoTimeEmpty: 'Noch keine Zeiten erfasst.',
+        demoTimePlaceholder: 'Woran haben Sie gearbeitet?',
+        demoBillable: 'Abrechenbar',
+        demoNotesTitle: 'Notizen',
+        demoNotesEmpty: 'Noch keine Notizen.',
+        demoNoteBody: 'Erstkontakt: E-Mail von thomas.wagner@gasthof-goldener-hirsch.at. Gewünschter Baubeginn Anfang April 2026. Lokalaugenschein noch zu vereinbaren.',
+        demoNotesPlaceholder: 'Notiz hinzufügen...',
+        demoAddNote: '➜ Notiz hinzufügen',
+        assistantTitle: 'Wie kann ich helfen?',
+        assistantLead: 'Fragen Sie mich nach Kunden, offenen Aufgaben oder dem nächsten sinnvollen Schritt.',
+        assistantSuggestion1: 'Zeige die heutige Vertriebsübersicht',
+        assistantSuggestion2: 'Finde überfällige Rechnungen',
+        assistantSuggestion3: 'Lege einen neuen Lieferanten an',
+        assistantSuggestion4: 'Welche Produkte liefen diesen Monat am besten?',
+        assistantInput: 'Stellen Sie eine Frage...',
+        howLabel: 'So funktioniert\'s',
+        howTitle: 'Arbeit rein.<br>Der Prozess läuft weiter.',
+        howSubtitle: 'Dateien, Nachrichten und Aufgaben bleiben in einem Fluss. So geht weniger Zeit durch Kontextwechsel verloren.',
+        step1Title: 'Eingänge erfassen',
+        step1Body: 'Holen Sie Dateien, E-Mails, Notizen und Anfragen aus Ihren bestehenden Kanälen hinein. Der Kontext bleibt von Anfang an erhalten.',
+        step2Title: 'Einmal strukturieren',
+        step2Body: 'Wichtige Details werden erfasst, mit den richtigen Datensätzen verknüpft und für den nächsten Schritt vorbereitet.',
+        step3Title: 'Prozess fortführen',
+        step3Body: 'Senden Sie Dokumente, erstellen Sie Rechnungen oder geben Sie Aufgaben weiter, sobald die Grundlage steht.',
+        industriesLabel: 'Branchen',
+        industriesTitle: 'Gebaut für Teams,<br>die unterschiedlich arbeiten.',
+        industriesSubtitle: 'Der Kern bleibt gleich, während sich Abläufe, Datensätze und Module an jedes Unternehmen anpassen.',
+        pill1: 'Handwerk',
+        pill2: 'Hausverwaltung',
+        pill3: 'Steuerberatung',
+        pill4: 'Agenturen',
+        pill5: 'E-Commerce',
+        pill6: 'Bestattungswesen',
+        industry1Title: 'Auftragserfassung',
+        industry1Body: 'Machen Sie aus Anrufen, E-Mails und Dokumenten strukturierte Arbeit, ohne Infos doppelt zu erfassen.',
+        industry2Title: 'Material und Bestand',
+        industry2Body: 'Behalten Sie Lagerstände, Materialbedarf und projektbezogenen Verbrauch über Teams und Standorte hinweg im Blick.',
+        industry3Title: 'Zeit und Kilometer',
+        industry3Body: 'Erfassen Sie Stunden und Fahrten im Ablauf und verknüpfen Sie sie mit Projekt und Rechnung.',
+        industry4Title: 'Angebote und Rechnungen',
+        industry4Body: 'Erstellen Sie kaufmännische Dokumente aus vorhandenen Daten und behalten Sie Freigaben im Blick.',
+        industry5Title: 'Kundenhistorie',
+        industry5Body: 'Sehen Sie Dokumente, Nachrichten, Aufgaben und Entscheidungen in einer gemeinsamen Zeitleiste.',
+        industry6Title: 'Unternehmensspezifische Module',
+        industry6Body: 'Oktavius bildet Sonderfälle ab, ohne Ihr Team in ein generisches Setup zu zwingen.',
+        diffQuote: 'Software, die sich anpasst,<br><span class="gradient">statt Ihr Team zu verbiegen.</span>',
+        diffBody: 'Oktavius hält Prozesse, Datensätze und den Assistenten an einem Ort, damit die Software zu Ihrem Team passt.',
+        diffPoint1Title: 'Arbeit bleibt im Kontext',
+        diffPoint1Body: 'Projekte, Notizen, Dateien, Kommunikation und nächste Schritte bleiben verbunden.',
+        diffPoint2Title: 'Weniger Verwaltung dazwischen',
+        diffPoint2Body: 'Wiederkehrende Schritte laufen im Hintergrund, sodass Ihr Team weniger kopiert.',
+        diffPoint3Title: 'Anpassbar ohne Ballast',
+        diffPoint3Body: 'Oktavius bildet individuelle Abläufe ab, ohne schwerfällig zu werden.',
+        ctaTitle: 'Erleben Sie Ihren Workflow<br><span class="gradient">in Oktavius.</span>',
+        ctaBody: 'Fordern Sie Frühzugang an und sehen Sie, wie Oktavius zu Ihrem Workflow und Ihrer Datenstruktur passt.',
+        ctaButton: 'Frühzugang anfragen',
+        footerText: '&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
+        footerContact: 'Kontakt',
+        footerTexterous: 'Texterous'
+      }
+    };
+
+    const nav = document.getElementById('nav');
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function applyTranslations(lang) {
+      const copy = translations[lang] || translations.en;
+
+      document.documentElement.lang = lang;
+      document.title = copy.title;
+      metaDescription.setAttribute('content', copy.description);
+
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const key = element.dataset.i18n;
+        if (copy[key]) {
+          element.textContent = copy[key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach((element) => {
+        const key = element.dataset.i18nHtml;
+        if (copy[key]) {
+          element.innerHTML = copy[key];
+        }
+      });
+
+      langButtons.forEach((button) => {
+        button.classList.toggle('active', button.dataset.lang === lang);
+      });
+
+      window.localStorage.setItem('oktavius-language', lang);
+    }
+
+    const storedLanguage = window.localStorage.getItem('oktavius-language');
+    const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
+    const initialLanguage = storedLanguage || browserLanguage;
+    applyTranslations(initialLanguage);
+
+    langButtons.forEach((button) => {
+      button.addEventListener('click', () => applyTranslations(button.dataset.lang));
+    });
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    if (!reduceMotion) {
+      let pointerFrame = null;
+
+      window.addEventListener('pointermove', (event) => {
+        if (pointerFrame) {
+          window.cancelAnimationFrame(pointerFrame);
+        }
+
+        pointerFrame = window.requestAnimationFrame(() => {
+          document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
+          document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
+        });
+      }, { passive: true });
+    }
+
+    if (!reduceMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -48px 0px' });
+
+      document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+    } else {
+      document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
