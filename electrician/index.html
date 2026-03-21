@@ -20,11 +20,11 @@
       --border-strong: rgba(255, 255, 255, 0.14);
       --text: #f7f7fb;
       --text-secondary: #a4a6b6;
-      --accent: #8b7cff;
-      --accent-strong: #a391ff;
-      --accent-cyan: #5f9bff;
-      --accent-glow: rgba(139, 124, 255, 0.16);
-      --accent-glow-strong: rgba(139, 124, 255, 0.3);
+      --accent: #4696ff;
+      --accent-strong: #8fd6ff;
+      --accent-cyan: #5fabff;
+      --accent-glow: rgba(64, 150, 255, 0.16);
+      --accent-glow-strong: rgba(64, 150, 255, 0.3);
       --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
       --mouse-x: 50%;
       --mouse-y: 20%;
@@ -51,8 +51,8 @@
       pointer-events: none;
       overflow: hidden;
       background:
-        radial-gradient(720px circle at var(--mouse-x) var(--mouse-y), rgba(139, 124, 255, 0.12), transparent 36%),
-        radial-gradient(520px circle at 14% 16%, rgba(139, 124, 255, 0.11), transparent 32%),
+        radial-gradient(720px circle at var(--mouse-x) var(--mouse-y), rgba(64, 150, 255, 0.12), transparent 36%),
+        radial-gradient(520px circle at 14% 16%, rgba(64, 150, 255, 0.11), transparent 32%),
         radial-gradient(420px circle at 86% 6%, rgba(95, 155, 255, 0.09), transparent 28%);
     }
 
@@ -206,7 +206,7 @@
       border-radius: 2px;
       transform-origin: left center;
       transform: scaleX(0);
-      background: linear-gradient(90deg, #3d9eff, #7ed0ff, #a391ff);
+      background: linear-gradient(90deg, #3d9eff, #7ed0ff, #b8ecff);
       box-shadow: 0 0 12px rgba(95, 180, 255, 0.55);
       animation: elektrikerUnderlinePaint 3.4s ease-in-out infinite;
     }
@@ -269,14 +269,14 @@
       background-size: 200% 200%;
       background-position: 0% 50%;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(139, 124, 255, 0.2);
+      border: 1px solid rgba(64, 150, 255, 0.2);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.5s ease, border-color 0.2s ease;
     }
 
     .btn-primary:hover {
       background-position: 100% 50%;
-      box-shadow: 0 4px 12px rgba(139, 124, 255, 0.2);
-      border-color: rgba(163, 145, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(64, 150, 255, 0.2);
+      border-color: rgba(120, 198, 255, 0.3);
     }
 
     .btn-ghost {
@@ -309,7 +309,7 @@
 
     .btn:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(139, 124, 255, 0.4);
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(64, 150, 255, 0.4);
     }
 
     .btn-large {
@@ -321,7 +321,7 @@
     section { padding: 104px 0; }
 
     .gradient {
-      background: linear-gradient(90deg, var(--accent-strong) 0%, #d3ccff 30%, var(--accent-cyan) 60%, var(--accent-strong) 100%);
+      background: linear-gradient(90deg, var(--accent-strong) 0%, #c8e8ff 30%, var(--accent-cyan) 60%, var(--accent-strong) 100%);
       background-size: 200% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -348,7 +348,7 @@
       transform: translateX(-50%);
       width: min(1120px, 94vw);
       height: 700px;
-      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.17) 0%, rgba(95, 155, 255, 0.08) 38%, transparent 72%);
+      background: radial-gradient(ellipse at center, rgba(64, 150, 255, 0.17) 0%, rgba(95, 155, 255, 0.08) 38%, transparent 72%);
       filter: blur(22px);
       pointer-events: none;
     }
@@ -372,7 +372,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #b2a6ff;
+      color: #78b8f5;
       margin-bottom: 20px;
     }
 
@@ -417,7 +417,7 @@
       border-radius: 1rem;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 124, 255, 0.06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(64, 150, 255, 0.06);
     }
 
     .hero-image img {
@@ -461,7 +461,7 @@
 
     .pain-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(163, 145, 255, 0.2);
+      border-color: rgba(120, 198, 255, 0.2);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
@@ -470,7 +470,7 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(139, 124, 255, 0.12), transparent 40%);
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(64, 150, 255, 0.12), transparent 40%);
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
@@ -483,8 +483,8 @@
       width: 44px;
       height: 44px;
       border-radius: 0.5rem;
-      background: rgba(139, 124, 255, 0.08);
-      border: 1px solid rgba(139, 124, 255, 0.15);
+      background: rgba(64, 150, 255, 0.08);
+      border: 1px solid rgba(64, 150, 255, 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -511,7 +511,7 @@
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: #b2a6ff;
+      color: #78b8f5;
       font-weight: 700;
       margin-bottom: 14px;
     }
@@ -596,8 +596,8 @@
       width: 32px;
       height: 32px;
       border-radius: 0.5rem;
-      background: rgba(139, 124, 255, 0.1);
-      border: 1px solid rgba(139, 124, 255, 0.15);
+      background: rgba(64, 150, 255, 0.1);
+      border: 1px solid rgba(64, 150, 255, 0.15);
       margin-bottom: 12px;
       font-size: 14px;
       color: var(--accent-strong);
@@ -630,7 +630,7 @@
 
     .wf-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(163, 145, 255, 0.2);
+      border-color: rgba(120, 198, 255, 0.2);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
@@ -639,7 +639,7 @@
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(139, 124, 255, 0.12), transparent 40%);
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(64, 150, 255, 0.12), transparent 40%);
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
@@ -664,8 +664,8 @@
       width: 44px;
       height: 44px;
       border-radius: 0.5rem;
-      background: rgba(139, 124, 255, 0.08);
-      border: 1px solid rgba(139, 124, 255, 0.15);
+      background: rgba(64, 150, 255, 0.08);
+      border: 1px solid rgba(64, 150, 255, 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -689,7 +689,7 @@
       transform: translateX(-50%);
       width: min(760px, 90vw);
       height: 420px;
-      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.16) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(64, 150, 255, 0.16) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -873,7 +873,7 @@
         </a>
         <div class="nav-links">
           <a href="#pain" class="btn btn-ghost" style="font-size: 13px;">Warum Oktavius</a>
-          <a href="https://texterous.com/de/contact/" class="btn btn-primary">Gespräch vereinbaren</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary">Gespräch vereinbaren</a>
         </div>
       </div>
     </nav>
@@ -889,12 +889,12 @@
           <h1 class="reveal">Mehr Aufträge.<br><span class="gradient">Weniger Papierkram.</span></h1>
           <p class="reveal">Oktavius übernimmt den Bürokram in Ihrem Elektrobetrieb — von der Auftragserfassung bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
           <div class="hero-ctas reveal">
-            <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Jetzt Gespräch vereinbaren</a>
+            <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Jetzt Gespräch vereinbaren</a>
             <a href="#pain" class="btn btn-ghost btn-large">Mehr erfahren</a>
           </div>
         </div>
         <div class="hero-image reveal">
-          <img src="hero.png" alt="Elektrikerin bei der Arbeit an einem Schaltkasten" loading="eager">
+          <img src="hero.png" alt="Elektriker bei der Arbeit an einem Außen-Schaltkasten mit Solaranschluss" loading="eager">
         </div>
       </div>
     </section>
@@ -1021,7 +1021,7 @@
         <h2 class="reveal">Bereit für einen<br><span class="gradient">KI-Mitarbeiter?</span></h2>
         <p class="reveal">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Elektrobetriebs angepasst wird.</p>
         <div class="reveal">
-          <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
         </div>
       </div>
     </section>
@@ -1030,7 +1030,7 @@
       <div class="container">
         <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
         <div class="footer-links">
-          <a href="https://texterous.com/de/contact/">Kontakt</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ">Kontakt</a>
           <a href="/">oktavius.ai</a>
         </div>
       </div>
@@ -1106,7 +1106,7 @@
               vy: (Math.random() - 0.5) * 0.24,
               r: Math.random() * 1.2 + 0.4,
               baseAlpha: Math.random() * 0.18 + 0.05,
-              rgb: isBlue ? '95,155,255' : '163,145,255'
+              rgb: isBlue ? '95,155,255' : '130,205,255'
             });
           }
         }
@@ -1158,7 +1158,7 @@
                 ctx.beginPath();
                 ctx.moveTo(a.x, a.y);
                 ctx.lineTo(b.x, b.y);
-                ctx.strokeStyle = 'rgba(139,124,255,' + lineAlpha + ')';
+                ctx.strokeStyle = 'rgba(64,150,255,' + lineAlpha + ')';
                 ctx.lineWidth = 0.5;
                 ctx.stroke();
               }
