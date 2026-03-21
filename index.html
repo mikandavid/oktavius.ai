@@ -951,6 +951,32 @@
 
     .industry-card { padding: 28px; }
 
+    .industry-cta {
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .industry-cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(163, 145, 255, 0.24);
+      background: rgba(139, 124, 255, 0.08);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .industry-cta-link:hover {
+      background: rgba(139, 124, 255, 0.16);
+      border-color: rgba(163, 145, 255, 0.44);
+      transform: translateY(-1px);
+    }
+
     .diff {
       border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
@@ -1361,12 +1387,13 @@
         </div>
 
         <div class="industries-pills reveal" aria-label="Industry switcher">
-          <button type="button" class="pill active" data-i18n="pill1" data-industry-index="0" aria-pressed="true">Trades</button>
-          <button type="button" class="pill" data-i18n="pill2" data-industry-index="1" aria-pressed="false">Property management</button>
-          <button type="button" class="pill" data-i18n="pill3" data-industry-index="2" aria-pressed="false">Tax advisory</button>
-          <button type="button" class="pill" data-i18n="pill4" data-industry-index="3" aria-pressed="false">Agencies</button>
-          <button type="button" class="pill" data-i18n="pill5" data-industry-index="4" aria-pressed="false">E-commerce</button>
-          <button type="button" class="pill" data-i18n="pill6" data-industry-index="5" aria-pressed="false">Funeral services</button>
+          <button type="button" class="pill active" data-i18n="pill1" data-industry-index="0" aria-pressed="true">Painters</button>
+          <button type="button" class="pill" data-i18n="pill2" data-industry-index="1" aria-pressed="false">Electricians</button>
+          <button type="button" class="pill" data-i18n="pill3" data-industry-index="2" aria-pressed="false">Property management</button>
+          <button type="button" class="pill" data-i18n="pill4" data-industry-index="3" aria-pressed="false">Tax advisory</button>
+          <button type="button" class="pill" data-i18n="pill5" data-industry-index="4" aria-pressed="false">Agencies</button>
+          <button type="button" class="pill" data-i18n="pill6" data-industry-index="5" aria-pressed="false">E-commerce</button>
+          <button type="button" class="pill" data-i18n="pill7" data-industry-index="6" aria-pressed="false">Funeral services</button>
         </div>
 
         <div class="industry-grid">
@@ -1394,6 +1421,13 @@
             <h3 data-i18n="industry6Title" data-industry-title>Company-specific modules</h3>
             <p data-i18n="industry6Body" data-industry-body>Oktavius can handle special cases without forcing a generic setup.</p>
           </div>
+        </div>
+
+        <div class="industry-cta reveal" id="industry-discover">
+          <a href="painter/" class="industry-cta-link" id="industry-discover-link">
+            <span id="industry-discover-label">See how Oktavius works for painters</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1525,12 +1559,13 @@
         industriesLabel: 'Industries',
         industriesTitle: 'Built for the way each team works.',
         industriesSubtitle: 'The core stays the same while workflows, records, and modules adapt to each business.',
-        pill1: 'Trades',
-        pill2: 'Property management',
-        pill3: 'Tax advisory',
-        pill4: 'Agencies',
-        pill5: 'E-commerce',
-        pill6: 'Funeral services',
+        pill1: 'Painters',
+        pill2: 'Electricians',
+        pill3: 'Property management',
+        pill4: 'Tax advisory',
+        pill5: 'Agencies',
+        pill6: 'E-commerce',
+        pill7: 'Funeral services',
         industry1Title: 'Order capture',
         industry1Body: 'Turn calls, emails, and documents into structured work without entering the same info twice.',
         industry2Title: 'Materials and inventory',
@@ -1638,12 +1673,13 @@
         industriesLabel: 'Branchen',
         industriesTitle: 'Gebaut für Teams, die unterschiedlich arbeiten.',
         industriesSubtitle: 'Der Kern bleibt gleich, während sich Abläufe, Datensätze und Module an jedes Unternehmen anpassen.',
-        pill1: 'Handwerk',
-        pill2: 'Hausverwaltung',
-        pill3: 'Steuerberatung',
-        pill4: 'Agenturen',
-        pill5: 'E-Commerce',
-        pill6: 'Bestattungswesen',
+        pill1: 'Maler',
+        pill2: 'Elektriker',
+        pill3: 'Hausverwaltung',
+        pill4: 'Steuerberatung',
+        pill5: 'Agenturen',
+        pill6: 'E-Commerce',
+        pill7: 'Bestattungswesen',
         industry1Title: 'Auftragserfassung',
         industry1Body: 'Machen Sie aus Anrufen, E-Mails und Dokumenten strukturierte Arbeit, ohne Infos doppelt zu erfassen.',
         industry2Title: 'Material und Bestand',
@@ -1678,12 +1714,20 @@
     const industryContent = {
       en: [
         [
-          { title: 'Order capture', body: 'Turn calls, emails, and documents into structured work without entering the same info twice.' },
-          { title: 'Materials and inventory', body: 'Track stock, required materials, and project usage across teams and locations.' },
-          { title: 'Time and mileage', body: 'Capture hours and travel in the workflow, then link them to the right project and invoice.' },
-          { title: 'Quotes and invoices', body: 'Prepare commercial documents from existing data and keep approvals clear.' },
-          { title: 'Customer history', body: 'See documents, messages, tasks, and decisions in one timeline.' },
-          { title: 'Company-specific modules', body: 'Oktavius can handle special cases without forcing a generic setup.' }
+          { title: 'Quote preparation', body: 'Turn consultation notes, site photos, and surface measurements into detailed quotes without re-entering information.' },
+          { title: 'Materials planning', body: 'Track paint, primers, and consumables per project and generate purchase lists automatically.' },
+          { title: 'Time and mileage', body: 'Log hours on site and travel between jobs, then link them directly to the invoice.' },
+          { title: 'Quotes and invoices', body: 'Prepare itemised quotes with materials and labour, and convert them to invoices once the job is done.' },
+          { title: 'Customer history', body: 'See previous jobs, colour choices, and communications for every client in one timeline.' },
+          { title: 'Job scheduling', body: 'Coordinate crews, surface types, and drying times with tasks tied to each project.' }
+        ],
+        [
+          { title: 'Job capture', body: 'Turn service calls, installation requests, and email enquiries into structured work orders in one step.' },
+          { title: 'Materials and parts', body: 'Track cables, fittings, and circuit components per project and generate purchase lists before work starts.' },
+          { title: 'Time and mileage', body: 'Log hours on site and travel between jobs, then link them directly to the invoice.' },
+          { title: 'Quotes and invoices', body: 'Prepare itemised quotes with parts and labour, and convert them to invoices once the job is signed off.' },
+          { title: 'Customer history', body: 'Keep inspection reports, wiring diagrams, and past jobs tied to each site and client.' },
+          { title: 'Compliance tracking', body: 'Log inspections, certification deadlines, and safety sign-offs without paper checklists.' }
         ],
         [
           { title: 'Tenant requests', body: 'Capture maintenance requests from email, phone, or portals and route them to the right property and unit.' },
@@ -1728,12 +1772,20 @@
       ],
       de: [
         [
-          { title: 'Auftragserfassung', body: 'Machen Sie aus Anrufen, E-Mails und Dokumenten strukturierte Arbeit, ohne Infos doppelt zu erfassen.' },
-          { title: 'Material und Bestand', body: 'Behalten Sie Lagerstände, Materialbedarf und projektbezogenen Verbrauch über Teams und Standorte hinweg im Blick.' },
-          { title: 'Zeit und Kilometer', body: 'Erfassen Sie Stunden und Fahrten im Ablauf und verknüpfen Sie sie mit Projekt und Rechnung.' },
-          { title: 'Angebote und Rechnungen', body: 'Erstellen Sie kaufmännische Dokumente aus vorhandenen Daten und behalten Sie Freigaben im Blick.' },
-          { title: 'Kundenhistorie', body: 'Sehen Sie Dokumente, Nachrichten, Aufgaben und Entscheidungen in einer gemeinsamen Zeitleiste.' },
-          { title: 'Unternehmensspezifische Module', body: 'Oktavius bildet Sonderfälle ab, ohne Ihr Team in ein generisches Setup zu zwingen.' }
+          { title: 'Angebotserfassung', body: 'Machen Sie aus Beratungsnotizen, Fotos und Flächenmaßen ein vollständiges Angebot ohne doppelte Dateneingabe.' },
+          { title: 'Materialbedarf', body: 'Behalten Sie Farbe, Grundierung und Verbrauchsmaterial pro Auftrag im Blick und erstellen Sie Einkaufslisten automatisch.' },
+          { title: 'Zeit und Kilometer', body: 'Erfassen Sie Stunden vor Ort und Fahrten zwischen Baustellen und verknüpfen Sie alles direkt mit der Rechnung.' },
+          { title: 'Angebote und Rechnungen', body: 'Erstellen Sie Angebote mit Material und Lohn und wandeln Sie sie nach Auftragsabschluss in Rechnungen um.' },
+          { title: 'Kundenhistorie', body: 'Sehen Sie frühere Aufträge, Farbtöne und Kommunikation für jeden Kunden in einer gemeinsamen Zeitleiste.' },
+          { title: 'Auftragsplanung', body: 'Koordinieren Sie Teams, Untergrundarten und Trocknungszeiten mit Aufgaben, die direkt am Projekt hängen.' }
+        ],
+        [
+          { title: 'Auftragserfassung', body: 'Machen Sie aus Serviceanrufen, Installationsanfragen und E-Mails strukturierte Arbeitsaufträge in einem Schritt.' },
+          { title: 'Material und Ersatzteile', body: 'Behalten Sie Kabel, Fittings und Schaltkomponenten je Projekt im Blick und erstellen Sie Einkaufslisten vor Arbeitsbeginn.' },
+          { title: 'Zeit und Kilometer', body: 'Erfassen Sie Stunden vor Ort und Fahrten zwischen Baustellen und verknüpfen Sie alles direkt mit der Rechnung.' },
+          { title: 'Angebote und Rechnungen', body: 'Erstellen Sie Angebote mit Material und Lohn und wandeln Sie sie nach Abnahme in Rechnungen um.' },
+          { title: 'Kundenhistorie', body: 'Halten Sie Prüfberichte, Schaltpläne und frühere Aufträge je Standort und Kunde zusammen.' },
+          { title: 'Compliance und Prüfungen', body: 'Dokumentieren Sie Abnahmen, Zertifizierungsfristen und Sicherheitsfreigaben ohne Papierformulare.' }
         ],
         [
           { title: 'Mieteranliegen', body: 'Erfassen Sie Wartungsanfragen aus E-Mail, Telefon oder Portalen und ordnen Sie sie sofort Objekt und Einheit zu.' },
@@ -1788,6 +1840,16 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let activeIndustry = 0;
 
+    const discoverEl = document.getElementById('industry-discover');
+    const discoverLabel = document.getElementById('industry-discover-label');
+    const discoverLink = document.getElementById('industry-discover-link');
+
+    const discoverConfig = {
+      0: { href: 'painter/', en: 'See how Oktavius works for painters', de: 'Oktavius für Malerbetriebe entdecken' },
+      1: { href: 'electrician/', en: 'See how Oktavius works for electricians', de: 'Oktavius für Elektrobetriebe entdecken' },
+      6: { href: 'bestatter/', en: 'See how Oktavius works for funeral services', de: 'Oktavius für Bestattungsunternehmen entdecken' }
+    };
+
     function renderIndustry(index, lang) {
       const sets = industryContent[lang] || industryContent.en;
       activeIndustry = Math.max(0, Math.min(index, sets.length - 1));
@@ -1807,6 +1869,15 @@
         title.textContent = item.title;
         body.textContent = item.body;
       });
+
+      const config = discoverConfig[activeIndustry];
+      if (config) {
+        discoverEl.style.display = '';
+        discoverLink.href = config.href;
+        discoverLabel.textContent = lang === 'de' ? config.de : config.en;
+      } else {
+        discoverEl.style.display = 'none';
+      }
     }
 
     function applyTranslations(lang) {
