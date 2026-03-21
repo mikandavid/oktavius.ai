@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oktavius für Bestatter — Mehr Zeit für das, was wirklich zählt</title>
+  <meta name="description" content="Oktavius ist kein Software-Tool, sondern ein KI-Mitarbeiter, der Verwaltungsprozesse in Ihrem Bestattungsunternehmen Ende zu Ende übernimmt. Damit Sie sich auf die Familien konzentrieren können.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0908;
+      --bg-elevated: rgba(24, 21, 17, 0.86);
+      --bg-card: rgba(22, 20, 16, 0.82);
+      --bg-card-strong: rgba(28, 25, 20, 0.92);
+      --border: rgba(255, 255, 255, 0.07);
+      --border-strong: rgba(255, 255, 255, 0.12);
+      --text: #f5f3ef;
+      --text-secondary: #a8a49c;
+      --accent: #c9a55c;
+      --accent-strong: #dbb96e;
+      --accent-warm: #b8944a;
+      --accent-glow: rgba(201, 165, 92, 0.14);
+      --accent-glow-strong: rgba(201, 165, 92, 0.26);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      --mouse-x: 50%;
+      --mouse-y: 20%;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, #080706 0%, #0a0908 42%, #080706 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; }
+
+    .page-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(720px circle at var(--mouse-x) var(--mouse-y), rgba(201, 165, 92, 0.08), transparent 36%),
+        radial-gradient(520px circle at 14% 16%, rgba(201, 165, 92, 0.07), transparent 32%),
+        radial-gradient(420px circle at 86% 6%, rgba(184, 148, 74, 0.05), transparent 28%);
+    }
+
+    .page-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(8, 7, 6, 0.08) 0%, rgba(8, 7, 6, 0.74) 100%),
+        radial-gradient(circle at center, transparent 0%, rgba(8, 7, 6, 0.16) 72%, rgba(8, 7, 6, 0.38) 100%);
+    }
+
+    #constellation {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-repeat: repeat;
+      mix-blend-mode: overlay;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(10, 9, 8, 0.7);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: rgba(255, 255, 255, 0.06);
+      background: rgba(10, 9, 8, 0.86);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.12;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-main {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .logo-main span { color: var(--accent); }
+
+    .logo-bestatter {
+      position: relative;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      color: rgba(168, 164, 156, 0.95);
+      background-image: linear-gradient(
+        90deg,
+        rgba(168, 164, 156, 0.95) 0%,
+        rgba(168, 164, 156, 0.95) 35%,
+        rgba(201, 165, 92, 0.85) 40%,
+        rgba(219, 185, 110, 0.95) 45%,
+        rgba(245, 225, 170, 0.98) 48%,
+        rgba(219, 185, 110, 0.95) 52%,
+        rgba(201, 165, 92, 0.85) 56%,
+        rgba(168, 164, 156, 0.95) 62%,
+        rgba(168, 164, 156, 0.95) 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: bestatterGlow 20s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(201, 165, 92, 0.18));
+    }
+
+    .logo-bestatter::before {
+      content: '';
+      position: absolute;
+      left: -3px;
+      right: -5px;
+      top: -2px;
+      bottom: 2px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.7;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 38%,
+        rgba(201, 165, 92, 0.12) 44%,
+        rgba(219, 185, 110, 0.2) 48%,
+        rgba(201, 165, 92, 0.1) 54%,
+        transparent 60%,
+        transparent 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      animation: bestatterGlow 20s ease-in-out infinite;
+      border-radius: 4px;
+      filter: blur(1px);
+    }
+
+    @keyframes bestatterGlow {
+      0% { background-position: 100% 50%; }
+      45% { background-position: 0% 50%; }
+      75% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 0.5rem;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-warm) 50%, var(--accent) 100%);
+      background-size: 200% 200%;
+      background-position: 0% 50%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(201, 165, 92, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.5s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-position: 100% 50%;
+      box-shadow: 0 4px 12px rgba(201, 165, 92, 0.18);
+      border-color: rgba(219, 185, 110, 0.35);
+    }
+
+    .btn-ghost {
+      position: relative;
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+      overflow: hidden;
+    }
+
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-warm));
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .btn-ghost:hover::before { transform: scaleY(1); }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(201, 165, 92, 0.35);
+    }
+
+    .btn-large {
+      padding: 14px 28px;
+      font-size: 15px;
+      border-radius: 0.5rem;
+    }
+
+    section { padding: 104px 0; }
+
+    .gradient {
+      background: linear-gradient(90deg, var(--accent-strong) 0%, #f0daa8 30%, var(--accent-warm) 60%, var(--accent-strong) 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShimmer 8s ease-in-out infinite;
+    }
+
+    @keyframes textShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ---- HERO ---- */
+
+    .hero {
+      padding: 160px 0 0;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: -40px auto auto 50%;
+      transform: translateX(-50%);
+      width: min(1120px, 94vw);
+      height: 700px;
+      background: radial-gradient(ellipse at center, rgba(201, 165, 92, 0.1) 0%, rgba(184, 148, 74, 0.05) 38%, transparent 72%);
+      filter: blur(22px);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-content { max-width: 580px; }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-strong);
+      margin-bottom: 20px;
+    }
+
+    .hero-label .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(201, 165, 92, 0.1);
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 1.4vw, 18px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(201, 165, 92, 0.04);
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(10, 9, 8, 0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* ---- PAIN POINTS ---- */
+
+    .pain {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .pain-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(22, 20, 16, 0.82) 0%, rgba(14, 13, 10, 0.9) 100%);
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .pain-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(201, 165, 92, 0.18);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .pain-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(201, 165, 92, 0.08), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .pain-card:hover::after { opacity: 1; }
+
+    .pain-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 0.5rem;
+      background: rgba(201, 165, 92, 0.06);
+      border: 1px solid rgba(201, 165, 92, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .pain-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .pain-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .section-header { margin-bottom: 56px; }
+    .section-header-center { text-align: center; }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-strong);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.14;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 650px;
+      line-height: 1.75;
+    }
+
+    .section-header-center .section-subtitle { margin: 0 auto; }
+
+    /* ---- NOT SOFTWARE ---- */
+
+    .not-software {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ns-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .ns-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(22, 20, 16, 0.82) 0%, rgba(14, 13, 10, 0.9) 100%);
+      padding: 48px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ns-card blockquote {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .ns-card p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .ns-points {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .ns-point h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .ns-point p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .ns-point-marker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 0.5rem;
+      background: rgba(201, 165, 92, 0.08);
+      border: 1px solid rgba(201, 165, 92, 0.12);
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    /* ---- WORKFLOWS ---- */
+
+    .workflows {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .wf-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .wf-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(22, 20, 16, 0.82) 0%, rgba(14, 13, 10, 0.9) 100%);
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .wf-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(201, 165, 92, 0.18);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .wf-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(201, 165, 92, 0.08), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .wf-card:hover::after { opacity: 1; }
+
+    .wf-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .wf-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .wf-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 0.5rem;
+      background: rgba(201, 165, 92, 0.06);
+      border: 1px solid rgba(201, 165, 92, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    /* ---- CTA ---- */
+
+    .cta {
+      text-align: center;
+      padding: 118px 0;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: min(760px, 90vw);
+      height: 420px;
+      background: radial-gradient(ellipse at center, rgba(201, 165, 92, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 34px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* ---- FOOTER ---- */
+
+    footer {
+      padding: 34px 0 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    footer p,
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ---- REVEAL ---- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- RESPONSIVE ---- */
+
+    @media (max-width: 900px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-content { max-width: 100%; text-align: center; }
+
+      .hero-ctas { justify-content: center; }
+
+      .hero-image img { height: 360px; }
+
+      .pain-grid,
+      .ns-grid,
+      .wf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      section { padding: 84px 0; }
+
+      .hero { padding: 144px 0 0; }
+
+      .section-header { margin-bottom: 42px; }
+
+      .cta { padding: 96px 0; }
+
+      footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 18px; }
+
+      .hero { padding: 130px 0 0; }
+
+      .hero h1 {
+        font-size: clamp(32px, 9vw, 44px);
+      }
+
+      .hero p { font-size: 15px; }
+
+      .hero-ctas {
+        flex-direction: column;
+      }
+
+      .hero-ctas .btn,
+      .cta .btn-large {
+        width: 100%;
+      }
+
+      .hero-image img { height: 280px; }
+
+      section { padding: 72px 0; }
+
+      .section-header { margin-bottom: 32px; }
+
+      .section-subtitle {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .cta { padding: 80px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      #constellation { display: none; }
+
+      .hero-label .dot,
+      .gradient,
+      .reveal,
+      .logo-bestatter,
+      .logo-bestatter::before {
+        animation: none !important;
+        transition: none;
+      }
+
+      .logo-bestatter {
+        background: none;
+        -webkit-text-fill-color: var(--accent-strong);
+        color: var(--accent-strong);
+        filter: drop-shadow(0 0 6px rgba(201, 165, 92, 0.2));
+      }
+
+      .logo-bestatter::before {
+        display: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="constellation" aria-hidden="true"></canvas>
+  <div class="page-background" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <div class="page-shell">
+    <nav id="nav">
+      <div class="container">
+        <a href="/" class="logo-stack" aria-label="Oktavius für Bestatter">
+          <span class="logo-main">oktavius<span>.</span></span>
+          <span class="logo-bestatter" aria-hidden="true">Bestatter</span>
+        </a>
+        <div class="nav-links">
+          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;">Warum Oktavius</a>
+          <a href="https://texterous.com/de/contact/" class="btn btn-primary">Gespräch vereinbaren</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-label reveal">
+            <span class="dot"></span>
+            KI für Bestatter
+          </div>
+          <h1 class="reveal">Mehr Zeit für<br><span class="gradient">das, was zählt.</span></h1>
+          <p class="reveal">Sie begleiten Familien in den schwersten Stunden. Oktavius übernimmt die Verwaltung dahinter — von der Dokumentation bis zur Abrechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der Ihrem Unternehmen den Rücken freihält.</p>
+          <div class="hero-ctas reveal">
+            <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Unverbindlich sprechen</a>
+            <a href="#pain" class="btn btn-ghost btn-large">Mehr erfahren</a>
+          </div>
+        </div>
+        <div class="hero-image reveal">
+          <img src="hero.png" alt="Kerzen in stiller Atmosphäre" loading="eager">
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIN POINTS -->
+    <section id="pain" class="pain">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label">Die Herausforderung</p>
+          <h2 class="section-title">Familien brauchen Ihre volle<br>Aufmerksamkeit — nicht der Papierkram.</h2>
+          <p class="section-subtitle">Zwischen Trauergespräch und Beisetzung liegt ein Berg an Verwaltung: Behördengänge, Koordination, Dokumente, Abrechnungen. Zeit, die eigentlich den Hinterbliebenen gehört.</p>
+        </div>
+        <div class="pain-grid">
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">📋</div>
+            <h3>Dokumente und Behörden</h3>
+            <p>Sterbeurkunden, Abmeldungen, Rentenversicherung, Krankenkasse — jeder Sterbefall bringt ein Dutzend Formulare mit sich. Fehler verzögern alles.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">🤝</div>
+            <h3>Abstimmung mit vielen Partnern</h3>
+            <p>Friedhof, Kirche, Krematorium, Florist, Steinmetz, Musiker — jeder Beteiligte braucht Informationen, Termine und Bestätigungen. Die Koordination frisst Stunden.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">🕐</div>
+            <h3>Rund um die Uhr erreichbar</h3>
+            <p>Ein Sterbefall kennt keine Bürozeiten. Die Anfragen kommen nachts, am Wochenende, an Feiertagen — und jede einzelne verdient eine würdevolle Antwort.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">💸</div>
+            <h3>Abrechnungen und Kostenvoranschläge</h3>
+            <p>Leistungspositionen zusammenstellen, Fremdkosten einrechnen, Kostenvoranschläge erstellen — in einer Phase, in der Sensibilität wichtiger ist als Kalkulation.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">📱</div>
+            <h3>Informationen verteilt</h3>
+            <p>Wünsche der Familie im Gespräch, Termine per Telefon, Dokumente per Mail. Wenn mehrere Sterbefälle parallel laufen, wird es unübersichtlich.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">🫶</div>
+            <h3>Emotionale Belastung</h3>
+            <p>Sie tragen die Last der Trauer mit — und müssen gleichzeitig Organisation, Verwaltung und Kommunikation stemmen. Unterstützung, die wirklich entlastet, fehlt oft.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOT SOFTWARE -->
+    <section class="not-software">
+      <div class="container">
+        <div class="ns-grid">
+          <div class="ns-card reveal">
+            <blockquote>Kein Software-Tool.<br><span class="gradient">Stille Unterstützung.</span></blockquote>
+            <p>Oktavius ist keine weitere App, die Sie zwischen Trauergesprächen bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der im Hintergrund arbeitet — und Ihnen den Verwaltungsaufwand abnimmt, damit Sie sich ganz auf die Familien konzentrieren können.</p>
+          </div>
+
+          <div class="ns-points reveal">
+            <div class="ns-point">
+              <div class="ns-point-marker">1</div>
+              <h3>Arbeitet, nicht nur zeigt an</h3>
+              <p>Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie: Dokumente werden erstellt, Termine koordiniert, Abrechnungen vorbereitet — automatisch.</p>
+            </div>
+            <div class="ns-point">
+              <div class="ns-point-marker">2</div>
+              <h3>Ende-zu-Ende Automatisierung</h3>
+              <p>Nicht nur ein Schritt, sondern der gesamte Verwaltungsprozess. Von der Erstaufnahme über die Behördenkommunikation bis zur fertigen Rechnung.</p>
+            </div>
+            <div class="ns-point">
+              <div class="ns-point-marker">3</div>
+              <h3>Versteht Ihr Unternehmen</h3>
+              <p>Oktavius wird auf Ihre Abläufe, Ihre Partner und Ihre Art zu arbeiten eingestellt. Sie passen sich nicht an — Oktavius passt sich an Sie an.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOWS -->
+    <section class="workflows">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label">Angepasst auf Ihr Unternehmen</p>
+          <h2 class="section-title">Ihre Abläufe. <span class="gradient">Entlastet.</span></h2>
+          <p class="section-subtitle">Jedes Bestattungsunternehmen arbeitet anders. Oktavius passt sich an Ihre konkreten Prozesse an — nicht Sie sich an ein starres System.</p>
+        </div>
+        <div class="wf-grid">
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📞</div>
+            <h3>Sterbefälle erfassen</h3>
+            <p>Eingehende Meldungen werden erfasst, strukturiert und als Vorgang angelegt — mit allen relevanten Daten für die nächsten Schritte.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📋</div>
+            <h3>Dokumente und Formulare</h3>
+            <p>Sterbeurkunden, Abmeldungen und Behördenformulare werden automatisch vorbereitet und mit den erfassten Daten befüllt.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">🤝</div>
+            <h3>Koordination mit Partnern</h3>
+            <p>Terminanfragen an Friedhof, Kirche, Krematorium und weitere Dienstleister werden vorbereitet und Bestätigungen nachverfolgt.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">🧾</div>
+            <h3>Kostenvoranschläge und Rechnungen</h3>
+            <p>Leistungen und Fremdkosten werden zusammengestellt und als Kostenvoranschlag oder Rechnung zur Freigabe vorbereitet.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📧</div>
+            <h3>Kommunikation</h3>
+            <p>Eingehende Nachrichten werden dem richtigen Vorgang zugeordnet. Antworten, Bestätigungen und Statusmeldungen werden vorbereitet.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📊</div>
+            <h3>Übersicht behalten</h3>
+            <p>Laufende Sterbefälle, offene Aufgaben, ausstehende Dokumente — alles an einem Ort, damit bei parallelen Vorgängen nichts untergeht.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container">
+        <h2 class="reveal">Bereit für<br><span class="gradient">stille Entlastung?</span></h2>
+        <p class="reveal">Lassen Sie uns in einem unverbindlichen Gespräch schauen, wie Oktavius Ihr Bestattungsunternehmen im Hintergrund unterstützen kann.</p>
+        <div class="reveal">
+          <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+        <div class="footer-links">
+          <a href="https://texterous.com/de/contact/">Kontakt</a>
+          <a href="/">oktavius.ai</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    var nav = document.getElementById('nav');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    window.addEventListener('scroll', function() {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    document.querySelectorAll('.pain-grid, .wf-grid').forEach(function(grid) {
+      var items = grid.querySelectorAll('.reveal');
+      for (var i = 0; i < items.length; i++) {
+        items[i].dataset.stagger = String(i * 75);
+      }
+    });
+
+    if (!reduceMotion) {
+      var pointerFrame = null;
+      window.addEventListener('pointermove', function(event) {
+        if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+        pointerFrame = window.requestAnimationFrame(function() {
+          document.documentElement.style.setProperty('--mouse-x', event.clientX + 'px');
+          document.documentElement.style.setProperty('--mouse-y', event.clientY + 'px');
+        });
+      }, { passive: true });
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var delay = parseInt(entry.target.dataset.stagger || '0', 10);
+            if (delay > 0) {
+              setTimeout(function() { entry.target.classList.add('visible'); }, delay);
+            } else {
+              entry.target.classList.add('visible');
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -48px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+    }
+
+    if (!reduceMotion) {
+      (function() {
+        var canvas = document.getElementById('constellation');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w, h, particles = [];
+        var mouse = { x: -9999, y: -9999 };
+
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+
+        function createParticles() {
+          var count = Math.min(Math.floor((w * h) / 20000), 100);
+          particles = [];
+          for (var i = 0; i < count; i++) {
+            var isWarm = Math.random() > 0.4;
+            particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.16,
+              vy: (Math.random() - 0.5) * 0.16,
+              r: Math.random() * 1.0 + 0.3,
+              baseAlpha: Math.random() * 0.12 + 0.03,
+              rgb: isWarm ? '201,165,92' : '184,148,74'
+            });
+          }
+        }
+
+        function frame() {
+          ctx.clearRect(0, 0, w, h);
+          var mRadius = 200;
+          var cRadius = 120;
+
+          for (var k = 0; k < particles.length; k++) {
+            var p = particles[k];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < -10) p.x = w + 10;
+            if (p.x > w + 10) p.x = -10;
+            if (p.y < -10) p.y = h + 10;
+            if (p.y > h + 10) p.y = -10;
+
+            var dx = p.x - mouse.x;
+            var dy = p.y - mouse.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var prox = Math.max(0, 1 - dist / mRadius);
+            var alpha = p.baseAlpha + prox * 0.35;
+            var radius = p.r + prox * 1.2;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, 6.2832);
+            ctx.fillStyle = 'rgba(' + p.rgb + ',' + alpha + ')';
+            ctx.fill();
+          }
+
+          for (var i = 0; i < particles.length; i++) {
+            var a = particles[i];
+            var dax = a.x - mouse.x;
+            var day = a.y - mouse.y;
+            var daDist = Math.sqrt(dax * dax + day * day);
+            if (daDist > mRadius) continue;
+            for (var j = i + 1; j < particles.length; j++) {
+              var b = particles[j];
+              var dbx = b.x - mouse.x;
+              var dby = b.y - mouse.y;
+              var dbDist = Math.sqrt(dbx * dbx + dby * dby);
+              if (dbDist > mRadius) continue;
+              var abx = a.x - b.x;
+              var aby = a.y - b.y;
+              var abDist = Math.sqrt(abx * abx + aby * aby);
+              if (abDist < cRadius) {
+                var lineAlpha = (1 - abDist / cRadius) * 0.12;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = 'rgba(201,165,92,' + lineAlpha + ')';
+                ctx.lineWidth = 0.4;
+                ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+
+        resize();
+        createParticles();
+        frame();
+        window.addEventListener('resize', function() { resize(); createParticles(); });
+        window.addEventListener('pointermove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+      })();
+    }
+
+    (function() {
+      var overlay = document.querySelector('.noise-overlay');
+      if (!overlay) return;
+      var c = document.createElement('canvas');
+      c.width = c.height = 128;
+      var nctx = c.getContext('2d');
+      var img = nctx.createImageData(128, 128);
+      for (var i = 0; i < img.data.length; i += 4) {
+        var v = Math.random() * 255;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+        img.data[i + 3] = 255;
+      }
+      nctx.putImageData(img, 0, 0);
+      overlay.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
+    })();
+
+    document.querySelectorAll('.pain-card, .wf-card, .ns-card').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty('--spotlight-x', (e.clientX - rect.left) + 'px');
+        card.style.setProperty('--spotlight-y', (e.clientY - rect.top) + 'px');
+      }, { passive: true });
+    });
+  </script>
+</body>
+</html>

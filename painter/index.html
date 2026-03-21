@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oktavius für Maler — Mehr Aufträge, weniger Papierkram</title>
+  <meta name="description" content="Oktavius ist kein Software-Tool, sondern ein KI-Mitarbeiter, der Prozesse in Ihrem Malerbetrieb Ende zu Ende automatisiert. Komplett anpassbar auf Ihren Betrieb.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #090910;
+      --bg-elevated: rgba(21, 21, 30, 0.86);
+      --bg-card: rgba(20, 20, 28, 0.82);
+      --bg-card-strong: rgba(26, 26, 36, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text: #f7f7fb;
+      --text-secondary: #a4a6b6;
+      --accent: #8b7cff;
+      --accent-strong: #a391ff;
+      --accent-cyan: #5f9bff;
+      --accent-glow: rgba(139, 124, 255, 0.16);
+      --accent-glow-strong: rgba(139, 124, 255, 0.3);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      --mouse-x: 50%;
+      --mouse-y: 20%;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, #06070c 0%, #090910 42%, #07070d 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; }
+
+    .page-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(720px circle at var(--mouse-x) var(--mouse-y), rgba(139, 124, 255, 0.12), transparent 36%),
+        radial-gradient(520px circle at 14% 16%, rgba(139, 124, 255, 0.11), transparent 32%),
+        radial-gradient(420px circle at 86% 6%, rgba(95, 155, 255, 0.09), transparent 28%);
+    }
+
+    .page-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7, 7, 13, 0.08) 0%, rgba(7, 7, 13, 0.74) 100%),
+        radial-gradient(circle at center, transparent 0%, rgba(7, 7, 13, 0.16) 72%, rgba(7, 7, 13, 0.38) 100%);
+    }
+
+    #constellation {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.03;
+      background-repeat: repeat;
+      mix-blend-mode: overlay;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(9, 9, 16, 0.7);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      background: rgba(9, 9, 16, 0.84);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.12;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-main {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .logo-main span { color: var(--accent); }
+
+    /* „Maler“: weißer Pinselstrich L → R (nur CSS — kein Bild; trockene linke Kante) */
+    .logo-maler {
+      position: relative;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      color: rgba(108, 110, 128, 0.96);
+      background-image: linear-gradient(
+        90deg,
+        rgba(100, 102, 118, 0.98) 0%,
+        rgba(100, 102, 118, 0.98) 31%,
+        /* trockener Pinsel-Anlauf (feine Streifen) */
+        rgba(100, 102, 118, 0.92) 32%,
+        rgba(255, 255, 255, 0.18) 32.7%,
+        rgba(100, 102, 118, 0.88) 33.2%,
+        rgba(255, 255, 255, 0.42) 34%,
+        rgba(115, 114, 128, 0.55) 34.6%,
+        rgba(255, 255, 255, 0.68) 35.4%,
+        rgba(255, 255, 255, 0.22) 36%,
+        rgba(245, 245, 248, 0.88) 36.8%,
+        rgba(255, 255, 255, 0.95) 38%,
+        #ffffff 40%,
+        #fefefe 46%,
+        #ffffff 50%,
+        rgba(255, 255, 255, 0.98) 52%,
+        rgba(252, 252, 255, 0.62) 54.2%,
+        rgba(255, 255, 255, 0.28) 55.5%,
+        rgba(100, 102, 118, 0.85) 56.8%,
+        rgba(100, 102, 118, 0.98) 60%,
+        rgba(100, 102, 118, 0.98) 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: malerPaintSweep 3.4s ease-in-out infinite;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.14))
+        drop-shadow(0 0 4px rgba(255, 255, 255, 0.08));
+    }
+
+    /* weicher weißer Schmiere hinter den Buchstaben (gleiche Bewegung) */
+    .logo-maler::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      right: -7px;
+      top: -3px;
+      bottom: 1px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.9;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(255, 255, 255, 0.05) 32.5%,
+        rgba(255, 255, 255, 0.14) 34.5%,
+        rgba(255, 255, 255, 0.32) 37%,
+        rgba(255, 255, 255, 0.48) 40%,
+        rgba(255, 255, 255, 0.38) 48%,
+        rgba(255, 255, 255, 0.22) 53%,
+        rgba(255, 255, 255, 0.09) 56%,
+        transparent 59%,
+        transparent 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      animation: malerPaintSweep 3.4s ease-in-out infinite;
+      border-radius: 4px;
+      filter: blur(0.75px);
+    }
+
+    @keyframes malerPaintSweep {
+      0% {
+        background-position: 100% 50%;
+      }
+      42% {
+        background-position: 0% 50%;
+      }
+      72% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 0.5rem;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-cyan) 50%, var(--accent) 100%);
+      background-size: 200% 200%;
+      background-position: 0% 50%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(139, 124, 255, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.5s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-position: 100% 50%;
+      box-shadow: 0 4px 12px rgba(139, 124, 255, 0.2);
+      border-color: rgba(163, 145, 255, 0.3);
+    }
+
+    .btn-ghost {
+      position: relative;
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+      overflow: hidden;
+    }
+
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-cyan));
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-ghost:hover::before { transform: scaleY(1); }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(139, 124, 255, 0.4);
+    }
+
+    .btn-large {
+      padding: 14px 28px;
+      font-size: 15px;
+      border-radius: 0.5rem;
+    }
+
+    section { padding: 104px 0; }
+
+    .gradient {
+      background: linear-gradient(90deg, var(--accent-strong) 0%, #d3ccff 30%, var(--accent-cyan) 60%, var(--accent-strong) 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShimmer 8s ease-in-out infinite;
+    }
+
+    @keyframes textShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ---- HERO ---- */
+
+    .hero {
+      padding: 160px 0 0;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: -40px auto auto 50%;
+      transform: translateX(-50%);
+      width: min(1120px, 94vw);
+      height: 700px;
+      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.17) 0%, rgba(95, 155, 255, 0.08) 38%, transparent 72%);
+      filter: blur(22px);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-content { max-width: 580px; }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #b2a6ff;
+      margin-bottom: 20px;
+    }
+
+    .hero-label .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #5ce1a5;
+      box-shadow: 0 0 0 6px rgba(92, 225, 165, 0.12);
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.56; transform: scale(0.92); }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 1.4vw, 18px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 124, 255, 0.06);
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(9, 9, 16, 0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* ---- PAIN POINTS ---- */
+
+    .pain {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .pain-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24, 24, 34, 0.82) 0%, rgba(15, 15, 23, 0.9) 100%);
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .pain-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(163, 145, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .pain-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(139, 124, 255, 0.12), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .pain-card:hover::after { opacity: 1; }
+
+    .pain-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 0.5rem;
+      background: rgba(139, 124, 255, 0.08);
+      border: 1px solid rgba(139, 124, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .pain-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .pain-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .section-header { margin-bottom: 56px; }
+    .section-header-center { text-align: center; }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #b2a6ff;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.14;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 650px;
+      line-height: 1.75;
+    }
+
+    .section-header-center .section-subtitle { margin: 0 auto; }
+
+    /* ---- NOT SOFTWARE ---- */
+
+    .not-software {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ns-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .ns-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24, 24, 34, 0.82) 0%, rgba(15, 15, 23, 0.9) 100%);
+      padding: 48px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ns-card blockquote {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .ns-card p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .ns-points {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .ns-point h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .ns-point p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .ns-point-marker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 0.5rem;
+      background: rgba(139, 124, 255, 0.1);
+      border: 1px solid rgba(139, 124, 255, 0.15);
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    /* ---- WORKFLOWS ---- */
+
+    .workflows {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .wf-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .wf-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24, 24, 34, 0.82) 0%, rgba(15, 15, 23, 0.9) 100%);
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .wf-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(163, 145, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .wf-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(480px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(139, 124, 255, 0.12), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .wf-card:hover::after { opacity: 1; }
+
+    .wf-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .wf-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .wf-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 0.5rem;
+      background: rgba(139, 124, 255, 0.08);
+      border: 1px solid rgba(139, 124, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    /* ---- CTA ---- */
+
+    .cta {
+      text-align: center;
+      padding: 118px 0;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: min(760px, 90vw);
+      height: 420px;
+      background: radial-gradient(ellipse at center, rgba(139, 124, 255, 0.16) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 34px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* ---- FOOTER ---- */
+
+    footer {
+      padding: 34px 0 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    footer p,
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ---- REVEAL ---- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- RESPONSIVE ---- */
+
+    @media (max-width: 900px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-content { max-width: 100%; text-align: center; }
+
+      .hero-ctas { justify-content: center; }
+
+      .hero-image img { height: 360px; }
+
+      .pain-grid,
+      .ns-grid,
+      .wf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      section { padding: 84px 0; }
+
+      .hero { padding: 144px 0 0; }
+
+      .section-header { margin-bottom: 42px; }
+
+      .cta { padding: 96px 0; }
+
+      footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 18px; }
+
+      .hero { padding: 130px 0 0; }
+
+      .hero h1 {
+        font-size: clamp(32px, 9vw, 44px);
+      }
+
+      .hero p { font-size: 15px; }
+
+      .hero-ctas {
+        flex-direction: column;
+      }
+
+      .hero-ctas .btn,
+      .cta .btn-large {
+        width: 100%;
+      }
+
+      .hero-image img { height: 280px; }
+
+      section { padding: 72px 0; }
+
+      .section-header { margin-bottom: 32px; }
+
+      .section-subtitle {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .cta { padding: 80px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      #constellation { display: none; }
+
+      .hero-label .dot,
+      .gradient,
+      .reveal,
+      .logo-maler,
+      .logo-maler::before {
+        animation: none !important;
+        transition: none;
+      }
+
+      .logo-maler {
+        background: none;
+        -webkit-text-fill-color: #f6f6f8;
+        color: #f6f6f8;
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.12));
+      }
+
+      .logo-maler::before {
+        display: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="constellation" aria-hidden="true"></canvas>
+  <div class="page-background" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <div class="page-shell">
+    <nav id="nav">
+      <div class="container">
+        <a href="/" class="logo-stack" aria-label="Oktavius für Maler">
+          <span class="logo-main">oktavius<span>.</span></span>
+          <span class="logo-maler" aria-hidden="true">Maler</span>
+        </a>
+        <div class="nav-links">
+          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;">Warum Oktavius</a>
+          <a href="https://texterous.com/de/contact/" class="btn btn-primary">Gespräch vereinbaren</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-label reveal">
+            <span class="dot"></span>
+            KI für Maler
+          </div>
+          <h1 class="reveal">Mehr streichen.<br><span class="gradient">Weniger verwalten.</span></h1>
+          <p class="reveal">Oktavius übernimmt den Bürokram in Ihrem Malerbetrieb — von der Anfrage bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
+          <div class="hero-ctas reveal">
+            <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Jetzt Gespräch vereinbaren</a>
+            <a href="#pain" class="btn btn-ghost btn-large">Mehr erfahren</a>
+          </div>
+        </div>
+        <div class="hero-image reveal">
+          <img src="hero.png" alt="Maler bei der Arbeit an einer Fassade" loading="eager">
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIN POINTS -->
+    <section id="pain" class="pain">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label">Das Problem</p>
+          <h2 class="section-title">Ihr Betrieb wächst — <br>aber das Büro bremst.</h2>
+          <p class="section-subtitle">Aufträge kommen per Anruf, Mail und WhatsApp. Aufmaße müssen berechnet, Angebote geschrieben, Rechnungen gestellt werden. Und am Ende des Tages fehlt die Zeit für die eigentliche Arbeit.</p>
+        </div>
+        <div class="pain-grid">
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">📐</div>
+            <h3>Aufmaße & Flächenberechnung</h3>
+            <p>Räume ausmessen, Flächen berechnen, Fenster und Türen abziehen — alles von Hand. Fehler kosten Zeit und Geld, wenn Material falsch kalkuliert wird.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">⏱️</div>
+            <h3>Angebote dauern ewig</h3>
+            <p>Jedes Angebot ein Einzelstück: Flächen berechnen, Leistungen aufschlüsseln, Preise kalkulieren. Bis das Angebot raus ist, hat der Kunde schon woanders unterschrieben.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">💸</div>
+            <h3>Rechnungen zu spät</h3>
+            <p>Die Wände sind gestrichen, aber die Rechnung geht erst Wochen später raus. Cashflow leidet, Mahnungen häufen sich, Geld bleibt liegen.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">🪣</div>
+            <h3>Materialmengen aus dem Bauch</h3>
+            <p>Wie viel Farbe für 120&thinsp;m²? Welche Grundierung für den Untergrund? Wer kalkuliert, schätzt oft — und bestellt zu viel oder fährt nochmal zum Großhandel.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">📱</div>
+            <h3>Infos verstreut</h3>
+            <p>Fotos vom Baustellenbesuch auf dem Handy, Farbcodes in der Mail, Kundenwünsche auf Zetteln. Wenn Sie etwas suchen, suchen Sie überall.</p>
+          </div>
+          <div class="pain-card reveal">
+            <div class="pain-icon" aria-hidden="true">🧑‍💼</div>
+            <h3>Kein Büropersonal</h3>
+            <p>Eine Vollzeitkraft für die Verwaltung? Zu teuer. Selbst machen? Zu wenig Zeit. Sie brauchen eine Lösung, die wirklich mitdenkt.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOT SOFTWARE -->
+    <section class="not-software">
+      <div class="container">
+        <div class="ns-grid">
+          <div class="ns-card reveal">
+            <blockquote>Kein Software-Tool.<br><span class="gradient">Ein KI-Mitarbeiter.</span></blockquote>
+            <p>Oktavius ist keine App, die Sie zusätzlich bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der von Grund auf mit KI arbeitet — und Prozesse in Ihrem Malerbetrieb Ende zu Ende automatisiert. Von der eingehenden Anfrage bis zur versandten Rechnung.</p>
+          </div>
+
+          <div class="ns-points reveal">
+            <div class="ns-point">
+              <div class="ns-point-marker">1</div>
+              <h3>Arbeitet, nicht nur zeigt an</h3>
+              <p>Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie. Aufmaße werden berechnet, Angebote erstellt, Rechnungen geschrieben — automatisch.</p>
+            </div>
+            <div class="ns-point">
+              <div class="ns-point-marker">2</div>
+              <h3>Ende-zu-Ende Automatisierung</h3>
+              <p>Nicht nur ein Schritt, sondern der ganze Prozess. Vom Auftragseingang über Flächenberechnung und Materialkalkulation bis zur fertigen Rechnung.</p>
+            </div>
+            <div class="ns-point">
+              <div class="ns-point-marker">3</div>
+              <h3>Lernt Ihren Betrieb kennen</h3>
+              <p>Oktavius wird auf Ihre Abläufe, Ihre Kunden und Ihre Art zu arbeiten eingestellt — nicht umgekehrt.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOWS -->
+    <section class="workflows">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label">Angepasst auf Ihren Betrieb</p>
+          <h2 class="section-title">Ihre Abläufe. <span class="gradient">Automatisiert.</span></h2>
+          <p class="section-subtitle">Jeder Malerbetrieb arbeitet anders. Oktavius passt sich an Ihre konkreten Workflows an — nicht Sie sich an ein starres System.</p>
+        </div>
+        <div class="wf-grid">
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📞</div>
+            <h3>Aufträge erfassen</h3>
+            <p>Anfragen per Mail, Anruf oder Nachricht werden automatisch erfasst, einem Kunden zugeordnet und als Auftrag angelegt. Nichts geht verloren.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📐</div>
+            <h3>Aufmaße & Flächenberechnung</h3>
+            <p>Raummaße werden erfasst, Wand- und Deckenflächen automatisch berechnet, Fenster und Türen abgezogen. Keine Tippfehler, keine Rundungsfehler.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">🧾</div>
+            <h3>Angebote & Rechnungen</h3>
+            <p>Aus Aufmaßen und Leistungspositionen werden Angebote und Rechnungen erstellt und zur Freigabe vorbereitet. Ein Klick, fertig.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">🪣</div>
+            <h3>Materialkalkulation</h3>
+            <p>Farbbedarf, Grundierung, Spachtelmasse — Mengen werden aus den Flächen automatisch berechnet und Bestelllisten vorbereitet.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">⏱️</div>
+            <h3>Stunden & Fahrten</h3>
+            <p>Arbeitszeiten und Kilometer werden im Ablauf erfasst und direkt mit Projekt und Rechnung verknüpft — ohne Zettelwirtschaft.</p>
+          </div>
+          <div class="wf-card reveal">
+            <div class="wf-icon" aria-hidden="true">📧</div>
+            <h3>Kundenkommunikation</h3>
+            <p>E-Mails werden gelesen, klassifiziert und dem richtigen Auftrag zugeordnet. Antworten und Statusupdates werden vorbereitet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container">
+        <h2 class="reveal">Bereit für einen<br><span class="gradient">KI-Mitarbeiter?</span></h2>
+        <p class="reveal">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Malerbetriebs angepasst wird.</p>
+        <div class="reveal">
+          <a href="https://texterous.com/de/contact/" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+        <div class="footer-links">
+          <a href="https://texterous.com/de/contact/">Kontakt</a>
+          <a href="/">oktavius.ai</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    var nav = document.getElementById('nav');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    window.addEventListener('scroll', function() {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    document.querySelectorAll('.pain-grid, .wf-grid').forEach(function(grid) {
+      var items = grid.querySelectorAll('.reveal');
+      for (var i = 0; i < items.length; i++) {
+        items[i].dataset.stagger = String(i * 75);
+      }
+    });
+
+    if (!reduceMotion) {
+      var pointerFrame = null;
+      window.addEventListener('pointermove', function(event) {
+        if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+        pointerFrame = window.requestAnimationFrame(function() {
+          document.documentElement.style.setProperty('--mouse-x', event.clientX + 'px');
+          document.documentElement.style.setProperty('--mouse-y', event.clientY + 'px');
+        });
+      }, { passive: true });
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var delay = parseInt(entry.target.dataset.stagger || '0', 10);
+            if (delay > 0) {
+              setTimeout(function() { entry.target.classList.add('visible'); }, delay);
+            } else {
+              entry.target.classList.add('visible');
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -48px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+    }
+
+    if (!reduceMotion) {
+      (function() {
+        var canvas = document.getElementById('constellation');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w, h, particles = [];
+        var mouse = { x: -9999, y: -9999 };
+
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+
+        function createParticles() {
+          var count = Math.min(Math.floor((w * h) / 16000), 140);
+          particles = [];
+          for (var i = 0; i < count; i++) {
+            var isBlue = Math.random() > 0.72;
+            particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.24,
+              vy: (Math.random() - 0.5) * 0.24,
+              r: Math.random() * 1.2 + 0.4,
+              baseAlpha: Math.random() * 0.18 + 0.05,
+              rgb: isBlue ? '95,155,255' : '163,145,255'
+            });
+          }
+        }
+
+        function frame() {
+          ctx.clearRect(0, 0, w, h);
+          var mRadius = 220;
+          var cRadius = 130;
+
+          for (var k = 0; k < particles.length; k++) {
+            var p = particles[k];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < -10) p.x = w + 10;
+            if (p.x > w + 10) p.x = -10;
+            if (p.y < -10) p.y = h + 10;
+            if (p.y > h + 10) p.y = -10;
+
+            var dx = p.x - mouse.x;
+            var dy = p.y - mouse.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var prox = Math.max(0, 1 - dist / mRadius);
+            var alpha = p.baseAlpha + prox * 0.5;
+            var radius = p.r + prox * 1.6;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, 6.2832);
+            ctx.fillStyle = 'rgba(' + p.rgb + ',' + alpha + ')';
+            ctx.fill();
+          }
+
+          for (var i = 0; i < particles.length; i++) {
+            var a = particles[i];
+            var dax = a.x - mouse.x;
+            var day = a.y - mouse.y;
+            var daDist = Math.sqrt(dax * dax + day * day);
+            if (daDist > mRadius) continue;
+            for (var j = i + 1; j < particles.length; j++) {
+              var b = particles[j];
+              var dbx = b.x - mouse.x;
+              var dby = b.y - mouse.y;
+              var dbDist = Math.sqrt(dbx * dbx + dby * dby);
+              if (dbDist > mRadius) continue;
+              var abx = a.x - b.x;
+              var aby = a.y - b.y;
+              var abDist = Math.sqrt(abx * abx + aby * aby);
+              if (abDist < cRadius) {
+                var lineAlpha = (1 - abDist / cRadius) * 0.18;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = 'rgba(139,124,255,' + lineAlpha + ')';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+
+        resize();
+        createParticles();
+        frame();
+        window.addEventListener('resize', function() { resize(); createParticles(); });
+        window.addEventListener('pointermove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+      })();
+    }
+
+    (function() {
+      var overlay = document.querySelector('.noise-overlay');
+      if (!overlay) return;
+      var c = document.createElement('canvas');
+      c.width = c.height = 128;
+      var nctx = c.getContext('2d');
+      var img = nctx.createImageData(128, 128);
+      for (var i = 0; i < img.data.length; i += 4) {
+        var v = Math.random() * 255;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+        img.data[i + 3] = 255;
+      }
+      nctx.putImageData(img, 0, 0);
+      overlay.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
+    })();
+
+    document.querySelectorAll('.pain-card, .wf-card, .ns-card').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty('--spotlight-x', (e.clientX - rect.left) + 'px');
+        card.style.setProperty('--spotlight-y', (e.clientY - rect.top) + 'px');
+      }, { passive: true });
+    });
+  </script>
+</body>
+</html>
