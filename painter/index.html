@@ -725,6 +725,13 @@
       color: var(--text-secondary);
     }
 
+    .footer-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
     .footer-links {
       display: flex;
       gap: 24px;
@@ -1015,7 +1022,10 @@
 
     <footer>
       <div class="container">
-        <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+        <div class="footer-meta">
+          <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+          <p>Entwickelt in Österreich 🇦🇹</p>
+        </div>
         <div class="footer-links">
           <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ">Kontakt</a>
           <a href="/">oktavius.ai</a>

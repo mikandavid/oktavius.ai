@@ -1060,6 +1060,13 @@
       color: var(--text-secondary);
     }
 
+    .footer-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
     .footer-links {
       display: flex;
       gap: 24px;
@@ -1474,7 +1481,10 @@
 
     <footer>
       <div class="container">
-        <p data-i18n-html="footerText">&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+        <div class="footer-meta">
+          <p data-i18n-html="footerText">&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+          <p data-i18n="footerMadeIn">Developed in Austria 🇦🇹</p>
+        </div>
         <div class="footer-links">
           <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" data-i18n="footerContact" data-contact-link>Contact</a>
           <a href="https://texterous.com" data-i18n="footerTexterous">Texterous</a>
@@ -1594,6 +1604,7 @@
         ctaBody: 'Get early access and see how Oktavius can be tailored to your workflows, data model, and industry.',
         ctaButton: 'Get early access',
         footerText: '&copy; 2026 Oktavius · A product by <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
+        footerMadeIn: 'Developed in Austria 🇦🇹',
         footerContact: 'Contact',
         footerTexterous: 'Texterous',
         contactHref: 'https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ',
@@ -1708,6 +1719,7 @@
         ctaBody: 'Fordern Sie Frühzugang an und sehen Sie, wie Oktavius an Ihre Abläufe, Datenstruktur und Branche angepasst wird.',
         ctaButton: 'Frühzugang anfragen',
         footerText: '&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
+        footerMadeIn: 'Entwickelt in Österreich 🇦🇹',
         footerContact: 'Kontakt',
         footerTexterous: 'Texterous',
         contactHref: 'https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ',
