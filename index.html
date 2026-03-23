@@ -376,6 +376,459 @@
       flex-wrap: wrap;
     }
 
+    .hero-sublogos-wrap {
+      margin-top: 32px;
+    }
+
+    .hero-sublogos-label {
+      margin: 0 0 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .hero-sublogos-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: clamp(24px, 5vw, 48px);
+    }
+
+    .hero-sublogos {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: center;
+      gap: clamp(22px, 5vw, 44px);
+      margin-top: 0;
+    }
+
+    .hero-sublogos-more {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      max-width: 112px;
+      overflow: visible;
+      /* Leicht unter der oktavius.-Zeile, Punktbox näher an den Logos */
+      padding-top: 8px;
+    }
+
+    .hero-sublogos-more-box {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 3px 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+
+    .hero-sublogos-more-dots {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-sublogos-more-dots span {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(164, 166, 182, 0.48);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    /* Basis-Schrift größer, dann zoom: Browserrand (Mindestgröße / iOS text-size-adjust) umgehen */
+    .hero-sublogos-more-caption {
+      width: 215px;
+      zoom: 0.504;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+    }
+
+    .hero-sublogos-more-text {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+      text-align: center;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+    }
+
+    .hero-sublogos .logo-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.12;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: transform 0.22s ease, opacity 0.2s ease;
+    }
+
+    .hero-sublogos .logo-stack:hover {
+      transform: translateY(-3px);
+      opacity: 0.98;
+    }
+
+    .hero-sublogos .logo-stack:focus-visible {
+      outline: none;
+      border-radius: 8px;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(139, 124, 255, 0.45);
+    }
+
+    .hero-sublogos .logo-main {
+      font-family: 'Archivo', 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .hero-sublogos .logo-main span {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: var(--accent);
+    }
+
+    /* Punktfarben wie auf den Branchen-Landingpages */
+    .hero-sublogo--electrician .logo-main span {
+      color: #4696ff;
+    }
+
+    .hero-sublogo--painter .logo-main span {
+      color: #8b7cff;
+    }
+
+    .hero-sublogo--bestatter .logo-main span {
+      color: #c9a55c;
+    }
+
+    .logo-maler {
+      position: relative;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      color: rgba(108, 110, 128, 0.96);
+      background-image: linear-gradient(
+        90deg,
+        rgba(100, 102, 118, 0.98) 0%,
+        rgba(100, 102, 118, 0.98) 31%,
+        rgba(100, 102, 118, 0.92) 32%,
+        rgba(255, 255, 255, 0.18) 32.7%,
+        rgba(100, 102, 118, 0.88) 33.2%,
+        rgba(255, 255, 255, 0.42) 34%,
+        rgba(115, 114, 128, 0.55) 34.6%,
+        rgba(255, 255, 255, 0.68) 35.4%,
+        rgba(255, 255, 255, 0.22) 36%,
+        rgba(245, 245, 248, 0.88) 36.8%,
+        rgba(255, 255, 255, 0.95) 38%,
+        #ffffff 40%,
+        #fefefe 46%,
+        #ffffff 50%,
+        rgba(255, 255, 255, 0.98) 52%,
+        rgba(252, 252, 255, 0.62) 54.2%,
+        rgba(255, 255, 255, 0.28) 55.5%,
+        rgba(100, 102, 118, 0.85) 56.8%,
+        rgba(100, 102, 118, 0.98) 60%,
+        rgba(100, 102, 118, 0.98) 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: malerPaintSweep 3.4s ease-in-out infinite;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.14))
+        drop-shadow(0 0 4px rgba(255, 255, 255, 0.08));
+    }
+
+    .logo-maler::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      right: -7px;
+      top: -3px;
+      bottom: 1px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.9;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(255, 255, 255, 0.05) 32.5%,
+        rgba(255, 255, 255, 0.14) 34.5%,
+        rgba(255, 255, 255, 0.32) 37%,
+        rgba(255, 255, 255, 0.48) 40%,
+        rgba(255, 255, 255, 0.38) 48%,
+        rgba(255, 255, 255, 0.22) 53%,
+        rgba(255, 255, 255, 0.09) 56%,
+        transparent 59%,
+        transparent 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      animation: malerPaintSweep 3.4s ease-in-out infinite;
+      border-radius: 4px;
+      filter: blur(0.75px);
+    }
+
+    @keyframes malerPaintSweep {
+      0% { background-position: 100% 50%; }
+      42% { background-position: 0% 50%; }
+      72% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .logo-elektriker {
+      position: relative;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding-bottom: 6px;
+      color: rgba(88, 98, 118, 0.95);
+      -webkit-text-fill-color: currentColor;
+      filter: drop-shadow(0 0 7px rgba(95, 180, 255, 0.14));
+      animation: elektrikerShockText 4.8s ease-in-out infinite;
+    }
+
+    .logo-elektriker::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      right: -10px;
+      top: -5px;
+      bottom: 0;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 6px;
+      opacity: 0;
+      background:
+        radial-gradient(ellipse 45% 90% at 12% 50%, rgba(140, 220, 255, 0.55), transparent 62%),
+        radial-gradient(ellipse 40% 85% at 88% 45%, rgba(100, 190, 255, 0.5), transparent 58%),
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(180, 240, 255, 0.45), transparent 70%);
+      filter: blur(3px);
+      animation: elektrikerShockAura 4.8s ease-in-out infinite;
+    }
+
+    .logo-elektriker::after {
+      content: '';
+      position: absolute;
+      left: -3px;
+      right: -3px;
+      bottom: 0;
+      height: 5px;
+      pointer-events: none;
+      opacity: 0.22;
+      background: linear-gradient(
+        90deg,
+        rgba(45, 120, 210, 0.15) 0%,
+        rgba(100, 200, 255, 0.55) 22%,
+        rgba(220, 248, 255, 0.95) 48%,
+        rgba(90, 185, 255, 0.6) 72%,
+        rgba(45, 120, 210, 0.12) 100%
+      );
+      clip-path: polygon(
+        0% 100%, 0% 58%, 4% 100%, 8% 38%, 12% 100%, 17% 52%, 21% 100%, 25% 32%, 29% 100%, 33% 62%,
+        37% 100%, 41% 40%, 45% 100%, 49% 55%, 53% 100%, 57% 28%, 61% 100%, 65% 48%, 69% 100%, 73% 35%,
+        77% 100%, 81% 58%, 85% 100%, 89% 42%, 93% 100%, 97% 50%, 100% 100%, 100% 0%, 0% 0%
+      );
+      box-shadow: 0 0 0 transparent;
+      animation: elektrikerShockArc 4.8s ease-in-out infinite;
+    }
+
+    @keyframes elektrikerShockText {
+      0%, 90%, 100% {
+        color: rgba(88, 98, 118, 0.95);
+        text-shadow: none;
+        filter: drop-shadow(0 0 7px rgba(95, 180, 255, 0.14));
+        transform: translate(0, 0);
+      }
+      91% {
+        color: #eaf8ff;
+        text-shadow:
+          0 0 12px rgba(120, 215, 255, 0.95),
+          0 0 24px rgba(80, 180, 255, 0.75),
+          -2px 0 8px rgba(200, 240, 255, 0.9),
+          2px 0 8px rgba(60, 160, 255, 0.85);
+        filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.9));
+        transform: translate(-0.5px, 0);
+      }
+      91.7% {
+        color: rgba(95, 108, 128, 0.92);
+        text-shadow: 0 0 4px rgba(100, 180, 255, 0.35);
+        filter: drop-shadow(0 0 5px rgba(95, 180, 255, 0.25));
+        transform: translate(0.5px, 0);
+      }
+      92.4% {
+        color: #f5fcff;
+        text-shadow:
+          0 0 14px #8bdcff,
+          0 0 28px rgba(90, 175, 255, 0.8),
+          0 0 4px #fff;
+        filter: drop-shadow(0 0 14px rgba(120, 220, 255, 1));
+        transform: translate(0, 0);
+      }
+      93.1% {
+        color: rgba(100, 112, 132, 0.9);
+        text-shadow: 0 0 6px rgba(120, 200, 255, 0.4);
+        filter: drop-shadow(0 0 6px rgba(100, 190, 255, 0.45));
+        transform: translate(-0.3px, 0);
+      }
+      93.8% {
+        color: #dff6ff;
+        text-shadow:
+          0 0 10px rgba(150, 225, 255, 0.9),
+          -1px 0 6px rgba(184, 236, 255, 0.85),
+          1px 0 6px rgba(61, 158, 255, 0.7);
+        filter: drop-shadow(0 0 12px rgba(95, 200, 255, 0.85));
+        transform: translate(0.3px, 0);
+      }
+      94.8%, 97% {
+        color: rgba(88, 98, 118, 0.95);
+        text-shadow: 0 0 8px rgba(100, 190, 255, 0.22);
+        filter: drop-shadow(0 0 8px rgba(95, 180, 255, 0.16));
+        transform: translate(0, 0);
+      }
+    }
+
+    @keyframes elektrikerShockAura {
+      0%, 90%, 100% { opacity: 0; transform: scale(0.92); }
+      91% { opacity: 1; transform: scale(1.06); }
+      91.7% { opacity: 0.2; transform: scale(1); }
+      92.4% { opacity: 0.95; transform: scale(1.08); }
+      93.1% { opacity: 0.15; transform: scale(0.98); }
+      93.8% { opacity: 0.75; transform: scale(1.04); }
+      94.8%, 97% { opacity: 0; transform: scale(0.95); }
+    }
+
+    @keyframes elektrikerShockArc {
+      0%, 90%, 100% {
+        opacity: 0.2;
+        filter: brightness(0.85) blur(0.2px);
+        box-shadow: 0 0 0 transparent;
+      }
+      91% {
+        opacity: 1;
+        filter: brightness(1.35) blur(0);
+        box-shadow:
+          0 0 14px rgba(120, 220, 255, 0.95),
+          0 0 28px rgba(80, 170, 255, 0.55),
+          0 2px 20px rgba(200, 245, 255, 0.5);
+      }
+      91.7% {
+        opacity: 0.35;
+        filter: brightness(0.9);
+        box-shadow: 0 0 6px rgba(100, 190, 255, 0.35);
+      }
+      92.4% {
+        opacity: 1;
+        filter: brightness(1.45) blur(0);
+        box-shadow:
+          0 0 18px rgba(150, 235, 255, 1),
+          0 0 32px rgba(70, 160, 255, 0.65);
+      }
+      93.1% {
+        opacity: 0.4;
+        filter: brightness(0.95);
+        box-shadow: 0 0 8px rgba(120, 210, 255, 0.4);
+      }
+      93.8% {
+        opacity: 0.85;
+        filter: brightness(1.2);
+        box-shadow: 0 0 16px rgba(110, 210, 255, 0.75);
+      }
+      94.8%, 97% {
+        opacity: 0.22;
+        filter: brightness(0.9) blur(0.2px);
+        box-shadow: 0 0 4px rgba(100, 190, 255, 0.2);
+      }
+    }
+
+    .logo-bestatter {
+      position: relative;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      color: rgba(168, 164, 156, 0.95);
+      background-image: linear-gradient(
+        90deg,
+        rgba(168, 164, 156, 0.95) 0%,
+        rgba(168, 164, 156, 0.95) 35%,
+        rgba(201, 165, 92, 0.85) 40%,
+        rgba(219, 185, 110, 0.95) 45%,
+        rgba(245, 225, 170, 0.98) 48%,
+        rgba(219, 185, 110, 0.95) 52%,
+        rgba(201, 165, 92, 0.85) 56%,
+        rgba(168, 164, 156, 0.95) 62%,
+        rgba(168, 164, 156, 0.95) 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: bestatterGlow 20s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(201, 165, 92, 0.18));
+    }
+
+    .logo-bestatter::before {
+      content: '';
+      position: absolute;
+      left: -3px;
+      right: -5px;
+      top: -2px;
+      bottom: 2px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.7;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 38%,
+        rgba(201, 165, 92, 0.12) 44%,
+        rgba(219, 185, 110, 0.2) 48%,
+        rgba(201, 165, 92, 0.1) 54%,
+        transparent 60%,
+        transparent 100%
+      );
+      background-size: 320% 100%;
+      background-position: 100% 50%;
+      animation: bestatterGlow 20s ease-in-out infinite;
+      border-radius: 4px;
+      filter: blur(1px);
+    }
+
+    @keyframes bestatterGlow {
+      0% { background-position: 100% 50%; }
+      45% { background-position: 0% 50%; }
+      75% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
     .proof {
       padding: 34px 0;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -438,7 +891,8 @@
     .feature-card,
     .step,
     .diff-card,
-    .industry-card {
+    .industry-card,
+    .security-card {
       position: relative;
       overflow: hidden;
       border-radius: 0.75rem;
@@ -457,7 +911,8 @@
     .feature-card:hover,
     .step:hover,
     .industry-card:hover,
-    .diff-card:hover {
+    .diff-card:hover,
+    .security-card:hover {
       transform: translateY(-2px);
       border-color: rgba(163, 145, 255, 0.2);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -466,7 +921,8 @@
     .feature-card::after,
     .step::after,
     .diff-card::after,
-    .industry-card::after {
+    .industry-card::after,
+    .security-card::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -481,7 +937,8 @@
     .feature-card:hover::after,
     .step:hover::after,
     .diff-card:hover::after,
-    .industry-card:hover::after {
+    .industry-card:hover::after,
+    .security-card:hover::after {
       opacity: 1;
     }
 
@@ -985,6 +1442,73 @@
       border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
+    .security {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .security-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 220px;
+      padding: 28px 26px;
+      color: var(--text-secondary);
+    }
+
+    .security-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      background-size: 14px 14px;
+    }
+
+    .security-card-icon-wrap {
+      position: relative;
+      z-index: 2;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      opacity: 0.92;
+    }
+
+    .security-card-icon-wrap svg {
+      width: 52px;
+      height: 52px;
+    }
+
+    .security-card-copy {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.72;
+      color: var(--text-secondary);
+    }
+
+    .security-card-copy strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
     .diff-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -1098,7 +1622,8 @@
       .steps,
       .industry-grid,
       .demo-grid-two,
-      .diff-grid {
+      .diff-grid,
+      .security-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1186,6 +1711,21 @@
         flex-direction: column;
       }
 
+      .hero-sublogos-wrap {
+        margin-top: 24px;
+      }
+
+      .hero-sublogos {
+        gap: 20px 28px;
+      }
+
+      .hero-sublogos-more {
+        max-width: 112px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 8px;
+      }
+
       nav .container {
         gap: 12px;
       }
@@ -1246,7 +1786,14 @@
       .hero-badge .dot,
       .hero-badge,
       .gradient,
-      .reveal {
+      .reveal,
+      .logo-maler,
+      .logo-maler::before,
+      .logo-elektriker,
+      .logo-elektriker::before,
+      .logo-elektriker::after,
+      .logo-bestatter,
+      .logo-bestatter::before {
         animation: none !important;
         transition: none;
       }
@@ -1254,6 +1801,54 @@
       .reveal {
         opacity: 1;
         transform: none;
+      }
+
+      .hero-sublogos .logo-stack {
+        transition: none;
+      }
+
+      .hero-sublogos .logo-stack:hover {
+        transform: none;
+      }
+
+      .logo-maler {
+        background: none;
+        -webkit-text-fill-color: #f6f6f8;
+        color: #f6f6f8;
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.12));
+      }
+
+      .logo-maler::before {
+        display: none;
+      }
+
+      .logo-elektriker {
+        background: none;
+        -webkit-text-fill-color: #dff6ff;
+        color: #dff6ff;
+        text-shadow: none;
+        filter: drop-shadow(0 0 8px rgba(95, 200, 255, 0.4));
+      }
+
+      .logo-elektriker::before {
+        display: none;
+      }
+
+      .logo-elektriker::after {
+        opacity: 0.45 !important;
+        filter: none !important;
+        box-shadow: none !important;
+      }
+
+      .logo-bestatter {
+        background: none;
+        -webkit-text-fill-color: var(--accent-strong);
+        color: var(--accent-strong);
+        filter: drop-shadow(0 0 6px rgba(201, 165, 92, 0.2));
+      }
+
+      .logo-bestatter::before {
+        display: none;
       }
 
       .hero-badge {
@@ -1291,6 +1886,7 @@
           <a href="#features" data-i18n="navFeatures">Features</a>
           <a href="#how" data-i18n="navHow">How it works</a>
           <a href="#industries" data-i18n="navIndustries">Industries</a>
+          <a href="#security" data-i18n="navSecurity">Security</a>
           <div class="lang-switch" aria-label="Language switcher">
             <button type="button" class="lang-btn active" data-lang="en">EN</button>
             <button type="button" class="lang-btn" data-lang="de">DE</button>
@@ -1312,6 +1908,37 @@
         <div class="hero-ctas reveal">
           <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large" data-i18n="heroCtaPrimary" data-contact-link>Get early access</a>
           <a href="#how" class="btn btn-ghost btn-large" data-i18n="heroCtaSecondary">How it works</a>
+        </div>
+        <div class="hero-sublogos-wrap reveal">
+          <p class="hero-sublogos-label" data-i18n="heroSublogosLabel">Choose your industry:</p>
+          <div class="hero-sublogos-row">
+            <div class="hero-sublogos">
+              <a href="electrician/" class="logo-stack hero-sublogo--electrician" data-aria-i18n="heroSublogoElektrikerAria" aria-label="Oktavius for electricians">
+                <span class="logo-main">oktavius<span>.</span></span>
+                <span class="logo-elektriker" data-i18n="heroSublogoElektrikerWord" aria-hidden="true">Electricians</span>
+              </a>
+              <a href="painter/" class="logo-stack hero-sublogo--painter" data-aria-i18n="heroSublogoMalerAria" aria-label="Oktavius for painters">
+                <span class="logo-main">oktavius<span>.</span></span>
+                <span class="logo-maler" data-i18n="heroSublogoMalerWord" aria-hidden="true">Painters</span>
+              </a>
+              <a href="bestatter/" class="logo-stack hero-sublogo--bestatter" data-aria-i18n="heroSublogoBestatterAria" aria-label="Oktavius for funeral services">
+                <span class="logo-main">oktavius<span>.</span></span>
+                <span class="logo-bestatter" data-i18n="heroSublogoBestatterWord" aria-hidden="true">Funeral services</span>
+              </a>
+            </div>
+            <div class="hero-sublogos-more">
+              <div class="hero-sublogos-more-box">
+                <div class="hero-sublogos-more-dots" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <div class="hero-sublogos-more-caption">
+                <p class="hero-sublogos-more-text" data-i18n="heroSublogosMore">More industries added over time</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1354,7 +1981,7 @@
           <div class="feature-card reveal">
             <div class="feature-icon" aria-hidden="true">🧩</div>
             <h3 data-i18n="feature5Title">Industry-specific modules</h3>
-            <p data-i18n="feature5Body">Modules are tailored to trades, property management, tax advisory, agencies, e-commerce, and more.</p>
+            <p data-i18n="feature5Body">Modules are tailored to trades, property management, agencies, e-commerce, funeral services, and more.</p>
           </div>
           <div class="feature-card reveal">
             <div class="feature-icon" aria-hidden="true">🔗</div>
@@ -1393,18 +2020,17 @@
       <div class="container">
         <div class="section-header reveal">
           <p class="section-label" data-i18n="industriesLabel">Industries</p>
-          <h2 class="section-title" data-i18n="industriesTitle">Built for the way each team works.</h2>
+          <h2 class="section-title" data-i18n="industriesTitle">Built for teams with complex workflows.</h2>
           <p class="section-subtitle" data-i18n="industriesSubtitle">The core stays the same while workflows, records, and modules adapt to each business.</p>
         </div>
 
         <div class="industries-pills reveal" aria-label="Industry switcher">
           <button type="button" class="pill active" data-i18n="pill1" data-industry-index="0" aria-pressed="true">Painters</button>
           <button type="button" class="pill" data-i18n="pill2" data-industry-index="1" aria-pressed="false">Electricians</button>
-          <button type="button" class="pill" data-i18n="pill3" data-industry-index="2" aria-pressed="false">Property management</button>
-          <button type="button" class="pill" data-i18n="pill4" data-industry-index="3" aria-pressed="false">Tax advisory</button>
+          <button type="button" class="pill" data-i18n="pill3" data-industry-index="2" aria-pressed="false">Funeral services</button>
+          <button type="button" class="pill" data-i18n="pill4" data-industry-index="3" aria-pressed="false">Property management</button>
           <button type="button" class="pill" data-i18n="pill5" data-industry-index="4" aria-pressed="false">Agencies</button>
           <button type="button" class="pill" data-i18n="pill6" data-industry-index="5" aria-pressed="false">E-commerce</button>
-          <button type="button" class="pill" data-i18n="pill7" data-industry-index="6" aria-pressed="false">Funeral services</button>
         </div>
 
         <div class="industry-grid">
@@ -1469,6 +2095,96 @@
       </div>
     </section>
 
+    <section class="security" id="security">
+      <div class="container">
+        <div class="section-header section-header-center reveal">
+          <p class="section-label" data-i18n="securityLabel">Security &amp; privacy</p>
+        </div>
+        <div class="security-grid">
+          <div class="security-card reveal">
+            <div class="security-card-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="currentColor" stroke-width="1.25" opacity="0.32"/>
+                <g fill="currentColor" opacity="0.5" transform="translate(40 40)">
+                  <circle cy="-30" r="2"/>
+                  <g transform="rotate(30)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(60)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(90)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(120)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(150)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(180)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(210)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(240)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(270)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(300)"><circle cy="-30" r="2"/></g>
+                  <g transform="rotate(330)"><circle cy="-30" r="2"/></g>
+                </g>
+                <text x="40" y="44" text-anchor="middle" font-size="11.5" font-weight="700" fill="currentColor" font-family="Inter, system-ui, sans-serif">GDPR</text>
+              </svg>
+            </div>
+            <p class="security-card-copy" data-i18n-html="securityCard1Html"><strong>GDPR-ready:</strong> Personal data is handled to EU privacy expectations—clear accountability, strong safeguards, and transparent processing.</p>
+          </div>
+          <div class="security-card reveal">
+            <div class="security-card-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 56 64" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <defs>
+                  <pattern id="secShieldHatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(22)">
+                    <line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+                  </pattern>
+                  <clipPath id="secShieldRight">
+                    <path d="M28 6 L48 16 V34 C48 48 28 58 28 58 V6 Z"/>
+                  </clipPath>
+                </defs>
+                <path d="M28 6 L48 16 V34 C48 48 28 58 28 58 C28 58 8 48 8 34 V16 L28 6 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.42"/>
+                <rect x="0" y="0" width="56" height="64" fill="url(#secShieldHatch)" clip-path="url(#secShieldRight)" opacity="0.35"/>
+              </svg>
+            </div>
+            <p class="security-card-copy" data-i18n-html="securityCard2Html"><strong>No model training on your data:</strong> Your business content is not fed into public or third-party model training—it stays scoped to your workspace.</p>
+          </div>
+          <div class="security-card reveal">
+            <div class="security-card-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <circle cx="26" cy="30" r="16.5" fill="none" stroke="currentColor" stroke-width="1.35" opacity="0.34"/>
+                <ellipse cx="26" cy="30" rx="16.5" ry="5.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.24"/>
+                <ellipse cx="26" cy="30" rx="16.5" ry="10.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.18"/>
+                <path d="M26 13.5v33" fill="none" stroke="currentColor" stroke-width="1" opacity="0.26"/>
+                <path d="M13.5 23.5q12.5-4.5 25 0M13.5 36.5q12.5 4.5 25 0" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.2"/>
+                <circle cx="41" cy="22" r="11" fill="none" stroke="currentColor" stroke-width="1.15" opacity="0.38"/>
+                <g fill="currentColor" opacity="0.52" transform="translate(41 22)">
+                  <circle cy="-7.5" r="1.65"/>
+                  <g transform="rotate(30)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(60)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(90)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(120)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(150)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(180)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(210)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(240)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(270)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(300)"><circle cy="-7.5" r="1.65"/></g>
+                  <g transform="rotate(330)"><circle cy="-7.5" r="1.65"/></g>
+                </g>
+              </svg>
+            </div>
+            <p class="security-card-copy" data-i18n-html="securityCard3Html"><strong>EU hosting:</strong> Your data is hosted and processed only in the EU—storage and infrastructure stay within European jurisdictions, aligned with regional compliance and sovereignty expectations.</p>
+          </div>
+          <div class="security-card reveal">
+            <div class="security-card-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <line x1="8" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.32"/>
+                <circle cx="30" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.35" opacity="0.5"/>
+                <line x1="8" y1="28" x2="48" y2="28" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.32"/>
+                <circle cx="18" cy="28" r="5" fill="none" stroke="currentColor" stroke-width="1.35" opacity="0.5"/>
+                <line x1="8" y1="40" x2="48" y2="40" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.32"/>
+                <circle cx="38" cy="40" r="5" fill="none" stroke="currentColor" stroke-width="1.35" opacity="0.5"/>
+              </svg>
+            </div>
+            <p class="security-card-copy" data-i18n-html="securityCard4Html"><strong>Full control:</strong> You stay in charge at all times—only grant the AI agent the permissions you choose.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta">
       <div class="container">
         <h2 class="reveal" data-i18n-html="ctaTitle">See your business OS<br><span class="gradient">inside Oktavius.</span></h2>
@@ -1501,12 +2217,21 @@
         navFeatures: 'Features',
         navHow: 'How it works',
         navIndustries: 'Industries',
+        navSecurity: 'Security',
         navCta: 'Contact',
         heroBadge: 'Now live for early teams',
         heroTitle: 'Your Back Office<br><span class="gradient">Fully Automated</span>',
         heroBody: 'Oktavius is the AI-native business OS for SMEs. Documents in, invoices out, automatically, with workflows tailored to your business.',
         heroCtaPrimary: 'Get early access',
         heroCtaSecondary: 'How it works',
+        heroSublogosLabel: 'Choose your industry:',
+        heroSublogosMore: 'More industries added over time',
+        heroSublogoElektrikerAria: 'Oktavius for electricians',
+        heroSublogoMalerAria: 'Oktavius for painters',
+        heroSublogoBestatterAria: 'Oktavius for funeral services',
+        heroSublogoElektrikerWord: 'Electricians',
+        heroSublogoMalerWord: 'Painters',
+        heroSublogoBestatterWord: 'Funeral services',
         proofLabel: 'A product by',
         proofBody: 'Texterous. We build AI that people actually use.',
         featuresLabel: 'Capabilities',
@@ -1521,7 +2246,7 @@
         feature4Title: 'Email integration',
         feature4Body: 'Incoming emails are parsed, classified, and routed. Outgoing correspondence is drafted and queued for your approval.',
         feature5Title: 'Industry-specific modules',
-        feature5Body: 'Modules are tailored to trades, property management, tax advisory, agencies, e-commerce, and more.',
+        feature5Body: 'Modules are tailored to trades, property management, agencies, e-commerce, funeral services, and more.',
         feature6Title: 'One system, no fragmentation',
         feature6Body: 'CRM, invoicing, project management, document archive, and calendar stay in one business OS instead of across ten tools.',
         demoWindowLabel: 'Project workspace',
@@ -1571,15 +2296,14 @@
         step3Title: 'Review and send',
         step3Body: 'Invoices, reports, and correspondence are generated and queued. You approve with one click.',
         industriesLabel: 'Industries',
-        industriesTitle: 'Built for the way each team works.',
+        industriesTitle: 'Built for teams with complex workflows.',
         industriesSubtitle: 'The core stays the same while workflows, records, and modules adapt to each business.',
         pill1: 'Painters',
         pill2: 'Electricians',
-        pill3: 'Property management',
-        pill4: 'Tax advisory',
+        pill3: 'Funeral services',
+        pill4: 'Property management',
         pill5: 'Agencies',
         pill6: 'E-commerce',
-        pill7: 'Funeral services',
         industry1Title: 'Order capture',
         industry1Body: 'Turn calls, emails, and documents into structured work without entering the same info twice.',
         industry2Title: 'Materials and inventory',
@@ -1600,6 +2324,11 @@
         diffPoint2Body: 'Documents are processed, data is structured, and invoices, reports, or emails are prepared automatically.',
         diffPoint3Title: 'Tailored modules, not generic SaaS',
         diffPoint3Body: 'Industry and company-specific modules keep the system useful without turning it into a patchwork.',
+        securityLabel: 'Security & privacy',
+        securityCard1Html: '<strong>GDPR-ready:</strong> Personal data is handled to EU privacy expectations—clear accountability, strong safeguards, and transparent processing.',
+        securityCard2Html: '<strong>No model training on your data:</strong> Your business content is not fed into public or third-party model training—it stays scoped to your workspace.',
+        securityCard3Html: '<strong>EU hosting:</strong> Your data is hosted and processed only in the EU—storage and infrastructure stay within European jurisdictions, aligned with regional compliance and sovereignty expectations.',
+        securityCard4Html: '<strong>Full control:</strong> You stay in charge at all times—only grant the AI agent the permissions you choose.',
         ctaTitle: 'See your business OS<br><span class="gradient">inside Oktavius.</span>',
         ctaBody: 'Get early access and see how Oktavius can be tailored to your workflows, data model, and industry.',
         ctaButton: 'Get early access',
@@ -1612,16 +2341,25 @@
       },
       de: {
         title: 'Oktavius — Die Büroarbeit voll automatisiert',
-        description: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die zu Ihrem Unternehmen passen.',
+        description: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die wir an Ihr Unternehmen anpassen.',
         navFeatures: 'Funktionen',
         navHow: 'So funktioniert\'s',
         navIndustries: 'Branchen',
+        navSecurity: 'Sicherheit',
         navCta: 'Kontakt',
         heroBadge: 'Jetzt live für erste Teams',
         heroTitle: 'Die Büroarbeit<br><span class="gradient">voll automatisiert</span>',
-        heroBody: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die zu Ihrem Unternehmen passen.',
+        heroBody: 'Oktavius ist das KI-native Business-OS für KMU. Dokumente rein, Rechnungen raus, automatisch, mit Abläufen, die wir an Ihr Unternehmen anpassen.',
         heroCtaPrimary: 'Frühzugang anfragen',
         heroCtaSecondary: 'So funktioniert\'s',
+        heroSublogosLabel: 'Wählen Sie Ihre Branche aus:',
+        heroSublogosMore: 'Weitere werden laufend ergänzt',
+        heroSublogoElektrikerAria: 'Oktavius für Elektriker',
+        heroSublogoMalerAria: 'Oktavius für Maler',
+        heroSublogoBestatterAria: 'Oktavius für Bestatter',
+        heroSublogoElektrikerWord: 'Elektriker',
+        heroSublogoMalerWord: 'Maler',
+        heroSublogoBestatterWord: 'Bestatter',
         proofLabel: 'Ein Produkt von',
         proofBody: 'Texterous. Wir entwickeln KI, die Menschen wirklich nutzen.',
         featuresLabel: 'Funktionen',
@@ -1630,13 +2368,13 @@
         feature1Title: 'Dokumente mit System',
         feature1Body: 'Laden Sie PDFs, Excel-Dateien, eingescannte Rechnungen oder Arbeitsaufträge hoch. Oktavius liest aus, extrahiert und strukturiert die Daten automatisch.',
         feature2Title: 'Integrierter KI-Agent',
-        feature2Body: 'Ein persistenter KI-Assistent lebt in jedem Workspace. Geben Sie Dokumente hinein, stellen Sie Fragen und starten Sie Abläufe in natürlicher Sprache.',
+        feature2Body: 'Ein KI-Mitarbeiter kann für Sie allerlei Aufgaben erledigen und Fragen beantworten. Im Gegensatz zu ChatGPT & Co versteht er Ihr Unternehmen und kann Tasks vollständig erledigen.',
         feature3Title: 'Automatisierte Ausgabe',
         feature3Body: 'Rechnungen, Berichte, Benachrichtigungen und Exportdateien entstehen aus Ihren Daten und werden zur Freigabe vorbereitet.',
         feature4Title: 'E-Mail-Integration',
         feature4Body: 'Eingehende E-Mails werden erfasst, klassifiziert und weitergeleitet. Ausgehende Kommunikation wird zur Freigabe vorbereitet.',
         feature5Title: 'Branchenspezifische Module',
-        feature5Body: 'Module passen sich Handwerk, Hausverwaltung, Steuerberatung, Agenturen, E-Commerce und weiteren Branchen an.',
+        feature5Body: 'Module passen sich Handwerk, Hausverwaltung, Agenturen, E-Commerce, Bestattungswesen und weiteren Branchen an.',
         feature6Title: 'Ein System ohne Brüche',
         feature6Body: 'CRM, Faktura, Projektsteuerung, Dokumentenarchiv und Kalender bleiben in einem Business-OS statt in zehn getrennten Tools.',
         demoWindowLabel: 'Projektbereich',
@@ -1677,7 +2415,7 @@
         assistantSuggestion4: 'Welche Produkte liefen diesen Monat am besten?',
         assistantInput: 'Stellen Sie eine Frage...',
         howLabel: 'So funktioniert\'s',
-        howTitle: 'Dokumente rein.<br>Rechnungen raus.',
+        howTitle: 'Dokumente rein.<br>Ergebnisse raus.',
         howSubtitle: 'Laden Sie Dateien hoch, leiten Sie E-Mails weiter oder verbinden Sie bestehende Systeme. Oktavius verarbeitet, strukturiert und bereitet die Ausgabe zur Prüfung vor.',
         step1Title: 'Dokumente verbinden',
         step1Body: 'Laden Sie Dateien hoch, leiten Sie E-Mails weiter oder binden Sie bestehende Systeme an. Oktavius übernimmt alles.',
@@ -1686,15 +2424,14 @@
         step3Title: 'Prüfen und versenden',
         step3Body: 'Rechnungen, Berichte und Kommunikation werden vorbereitet. Sie geben mit einem Klick frei.',
         industriesLabel: 'Branchen',
-        industriesTitle: 'Gebaut für Teams, die unterschiedlich arbeiten.',
+        industriesTitle: 'Gebaut für Teams, mit komplexen Arbeitsabläufen',
         industriesSubtitle: 'Der Kern bleibt gleich, während sich Abläufe, Datensätze und Module an jedes Unternehmen anpassen.',
         pill1: 'Maler',
         pill2: 'Elektriker',
-        pill3: 'Hausverwaltung',
-        pill4: 'Steuerberatung',
+        pill3: 'Bestattungswesen',
+        pill4: 'Hausverwaltung',
         pill5: 'Agenturen',
         pill6: 'E-Commerce',
-        pill7: 'Bestattungswesen',
         industry1Title: 'Auftragserfassung',
         industry1Body: 'Machen Sie aus Anrufen, E-Mails und Dokumenten strukturierte Arbeit, ohne Infos doppelt zu erfassen.',
         industry2Title: 'Material und Bestand',
@@ -1715,7 +2452,12 @@
         diffPoint2Body: 'Dokumente werden verarbeitet, Daten strukturiert und Rechnungen, Berichte oder E-Mails automatisch vorbereitet.',
         diffPoint3Title: 'Module statt generischer SaaS',
         diffPoint3Body: 'Branchen- und firmenspezifische Module halten das System nützlich, ohne zum Flickwerk zu werden.',
-        ctaTitle: 'Sehen Sie Ihr Business-OS<br><span class="gradient">in Oktavius.</span>',
+        securityLabel: 'Sicherheit & Datenschutz',
+        securityCard1Html: '<strong>DSGVO-konform:</strong> Personenbezogene Daten verarbeiten wir entlang klarer Abläufe im europäischen Datenschutzrahmen – nachvollziehbar, eingegrenzt und mit sorgfältigem Umgang.',
+        securityCard2Html: '<strong>Kein Modelltraining:</strong> Ihre Dokumente und Inhalte fließen nicht in das Training öffentlicher oder generischer KI-Modelle ein – sie bleiben in Ihrem geschäftlichen Kontext.',
+        securityCard3Html: '<strong>EU-Hosting:</strong> Ihre Daten werden in der Europäischen Union gehostet und verarbeitet – etwaige Speicherung und Infrastruktur bleiben im EU-Rechtsraum.',
+        securityCard4Html: '<strong>Volle Kontrolle:</strong> Sie haben immer die volle Kontrolle und erteilen dem KI-Agenten die Befugnisse, die Sie wollen.',
+        ctaTitle: 'Transformieren Sie Ihren Betrieb<br><span class="gradient">mit Oktavius</span>',
         ctaBody: 'Fordern Sie Frühzugang an und sehen Sie, wie Oktavius an Ihre Abläufe, Datenstruktur und Branche angepasst wird.',
         ctaButton: 'Frühzugang anfragen',
         footerText: '&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a>',
@@ -1746,20 +2488,20 @@
           { title: 'Compliance tracking', body: 'Log inspections, certification deadlines, and safety sign-offs without paper checklists.' }
         ],
         [
+          { title: 'Case intake', body: 'Capture first-call details, family preferences, and service requirements in one structured record.' },
+          { title: 'Family communication', body: 'Keep promises, updates, and sensitive coordination visible to the right team members.' },
+          { title: 'Document coordination', body: 'Track certificates, authorizations, and municipal paperwork without missed steps.' },
+          { title: 'Service planning', body: 'Coordinate ceremony details, transport, timing, and internal tasks from one workflow.' },
+          { title: 'Supplier orchestration', body: 'Manage florists, venues, transport, and other partners with clear status tracking.' },
+          { title: 'Billing and records', body: 'Prepare invoices, cost overviews, and case documentation with less administrative effort.' }
+        ],
+        [
           { title: 'Tenant requests', body: 'Capture maintenance requests from email, phone, or portals and route them to the right property and unit.' },
           { title: 'Work orders and vendors', body: 'Coordinate external trades, approvals, and status updates without losing context between teams.' },
           { title: 'Service charges', body: 'Prepare billable costs, recurring fees, and supporting documents from one workflow.' },
           { title: 'Object files', body: 'Keep leases, handover reports, photos, and correspondence tied to each building and tenant.' },
           { title: 'Maintenance cycles', body: 'Track inspections, deadlines, and recurring tasks before they turn into fire drills.' },
           { title: 'Owner reporting', body: 'Generate summaries, activity logs, and key figures for each property without manual consolidation.' }
-        ],
-        [
-          { title: 'Document intake', body: 'Collect statements, invoices, and receipts from clients and structure them as they arrive.' },
-          { title: 'Booking suggestions', body: 'Prepare proposed entries with extracted data, checks, and source references for review.' },
-          { title: 'VAT and compliance checks', body: 'Flag missing fields, unusual tax treatments, and items that need an expert look.' },
-          { title: 'Deadline tracking', body: 'Keep filing dates, open questions, and client dependencies visible across the team.' },
-          { title: 'Client communication', body: 'Draft follow-ups, request missing documents, and log every interaction in one place.' },
-          { title: 'Audit trail', body: 'Maintain clear source links, approval history, and export-ready records for every case.' }
         ],
         [
           { title: 'Leads and briefs', body: 'Turn inbound requests, emails, and notes into structured opportunities and project briefs.' },
@@ -1776,14 +2518,6 @@
           { title: 'Customer support workflows', body: 'Route inquiries, order issues, and refund cases with full order context attached.' },
           { title: 'Margin visibility', body: 'See product, shipping, and discount effects quickly instead of stitching reports together.' },
           { title: 'Finance exports', body: 'Prepare reconciled summaries and downstream exports for accounting and operations.' }
-        ],
-        [
-          { title: 'Case intake', body: 'Capture first-call details, family preferences, and service requirements in one structured record.' },
-          { title: 'Family communication', body: 'Keep promises, updates, and sensitive coordination visible to the right team members.' },
-          { title: 'Document coordination', body: 'Track certificates, authorizations, and municipal paperwork without missed steps.' },
-          { title: 'Service planning', body: 'Coordinate ceremony details, transport, timing, and internal tasks from one workflow.' },
-          { title: 'Supplier orchestration', body: 'Manage florists, venues, transport, and other partners with clear status tracking.' },
-          { title: 'Billing and records', body: 'Prepare invoices, cost overviews, and case documentation with less administrative effort.' }
         ]
       ],
       de: [
@@ -1804,20 +2538,20 @@
           { title: 'Compliance und Prüfungen', body: 'Dokumentieren Sie Abnahmen, Zertifizierungsfristen und Sicherheitsfreigaben ohne Papierformulare.' }
         ],
         [
+          { title: 'Falldaten erfassen', body: 'Erfassen Sie Angaben aus dem Erstgespraech, Wuensche der Familie und Leistungsbedarf in einem strukturierten Fall.' },
+          { title: 'Kommunikation mit Familien', body: 'Halten Sie Zusagen, Updates und sensible Abstimmungen fuer das richtige Team sichtbar.' },
+          { title: 'Dokumentenkoordination', body: 'Verfolgen Sie Urkunden, Genehmigungen und behoerdliche Unterlagen ohne uebersehene Schritte.' },
+          { title: 'Ablaufplanung', body: 'Koordinieren Sie Zeremonie, Transport, Zeitplan und interne Aufgaben in einem Workflow.' },
+          { title: 'Partnersteuerung', body: 'Steuern Sie Floristik, Orte, Transporte und weitere Partner mit klaren Statusangaben.' },
+          { title: 'Abrechnung und Akten', body: 'Bereiten Sie Rechnungen, Kostenuebersichten und Falldokumentation mit weniger Verwaltungsaufwand vor.' }
+        ],
+        [
           { title: 'Mieteranliegen', body: 'Erfassen Sie Wartungsanfragen aus E-Mail, Telefon oder Portalen und ordnen Sie sie sofort Objekt und Einheit zu.' },
           { title: 'Aufträge und Dienstleister', body: 'Koordinieren Sie externe Gewerke, Freigaben und Statusupdates, ohne Kontext zwischen Teams zu verlieren.' },
           { title: 'Betriebskosten', body: 'Bereiten Sie verrechenbare Kosten, wiederkehrende Gebühren und Belege in einem Ablauf auf.' },
           { title: 'Objektakten', body: 'Halten Sie Verträge, Uebergabeprotokolle, Fotos und Kommunikation je Gebaeude und Mieter zusammen.' },
           { title: 'Wartungszyklen', body: 'Behalten Sie Pruefungen, Fristen und wiederkehrende Aufgaben im Blick, bevor es dringend wird.' },
           { title: 'Eigentuemer-Reporting', body: 'Erstellen Sie Berichte, Aktivitaetsprotokolle und Kennzahlen je Objekt ohne manuelle Konsolidierung.' }
-        ],
-        [
-          { title: 'Dokumenteneingang', body: 'Sammeln Sie Kontoauszuege, Rechnungen und Belege Ihrer Mandanten und strukturieren Sie sie beim Eingang.' },
-          { title: 'Buchungsvorschlaege', body: 'Bereiten Sie vorgeschlagene Buchungen mit extrahierten Daten, Pruefungen und Quellen fuer die Freigabe vor.' },
-          { title: 'USt- und Compliance-Pruefung', body: 'Markieren Sie fehlende Angaben, ungewoehnliche Steuerfaelle und Positionen mit Beratungsbedarf.' },
-          { title: 'Fristensteuerung', body: 'Halten Sie Abgabetermine, offene Punkte und Mandantenabhaengigkeiten teamweit sichtbar.' },
-          { title: 'Mandantenkommunikation', body: 'Formulieren Sie Rueckfragen, fordern Sie Unterlagen an und dokumentieren Sie jede Interaktion an einem Ort.' },
-          { title: 'Nachvollziehbarkeit', body: 'Sichern Sie Quellen, Freigaben und exportierbare Unterlagen fuer jeden Fall transparent ab.' }
         ],
         [
           { title: 'Anfragen und Briefings', body: 'Machen Sie aus Leads, E-Mails und Notizen strukturierte Chancen und Projektbriefings.' },
@@ -1834,14 +2568,6 @@
           { title: 'Support-Workflows', body: 'Leiten Sie Anfragen, Bestellprobleme und Rueckerstattungen mit vollem Bestellkontext weiter.' },
           { title: 'Margenuebersicht', body: 'Sehen Sie Produkt-, Versand- und Rabattwirkungen schnell, statt Reports zusammenzubauen.' },
           { title: 'Finanzexporte', body: 'Bereiten Sie abgestimmte Uebersichten und Folgeexporte fuer Buchhaltung und Operations vor.' }
-        ],
-        [
-          { title: 'Falldaten erfassen', body: 'Erfassen Sie Angaben aus dem Erstgespraech, Wuensche der Familie und Leistungsbedarf in einem strukturierten Fall.' },
-          { title: 'Kommunikation mit Familien', body: 'Halten Sie Zusagen, Updates und sensible Abstimmungen fuer das richtige Team sichtbar.' },
-          { title: 'Dokumentenkoordination', body: 'Verfolgen Sie Urkunden, Genehmigungen und behoerdliche Unterlagen ohne uebersehene Schritte.' },
-          { title: 'Ablaufplanung', body: 'Koordinieren Sie Zeremonie, Transport, Zeitplan und interne Aufgaben in einem Workflow.' },
-          { title: 'Partnersteuerung', body: 'Steuern Sie Floristik, Orte, Transporte und weitere Partner mit klaren Statusangaben.' },
-          { title: 'Abrechnung und Akten', body: 'Bereiten Sie Rechnungen, Kostenuebersichten und Falldokumentation mit weniger Verwaltungsaufwand vor.' }
         ]
       ]
     };
@@ -1863,7 +2589,7 @@
     const discoverConfig = {
       0: { href: 'painter/', en: 'See how Oktavius works for painters', de: 'Oktavius für Malerbetriebe entdecken' },
       1: { href: 'electrician/', en: 'See how Oktavius works for electricians', de: 'Oktavius für Elektrobetriebe entdecken' },
-      6: { href: 'bestatter/', en: 'See how Oktavius works for funeral services', de: 'Oktavius für Bestattungsunternehmen entdecken' }
+      2: { href: 'bestatter/', en: 'See how Oktavius works for funeral services', de: 'Oktavius für Bestattungsunternehmen entdecken' }
     };
 
     function renderIndustry(index, lang) {
@@ -1914,6 +2640,13 @@
         const key = element.dataset.i18nHtml;
         if (copy[key]) {
           element.innerHTML = copy[key];
+        }
+      });
+
+      document.querySelectorAll('[data-aria-i18n]').forEach((element) => {
+        const key = element.dataset.ariaI18n;
+        if (copy[key]) {
+          element.setAttribute('aria-label', copy[key]);
         }
       });
 
@@ -1976,7 +2709,7 @@
       }, { passive: true });
     }
 
-    document.querySelectorAll('.features-grid, .steps, .industry-grid').forEach(function(grid) {
+    document.querySelectorAll('.features-grid, .steps, .industry-grid, .security-grid').forEach(function(grid) {
       var items = grid.querySelectorAll('.reveal');
       for (var i = 0; i < items.length; i++) {
         items[i].dataset.stagger = String(i * 75);
@@ -2122,7 +2855,7 @@
       overlay.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
     })();
 
-    document.querySelectorAll('.feature-card, .step, .diff-card, .industry-card').forEach(function(card) {
+    document.querySelectorAll('.feature-card, .step, .diff-card, .industry-card, .security-card').forEach(function(card) {
       card.addEventListener('mousemove', function(e) {
         var rect = card.getBoundingClientRect();
         card.style.setProperty('--spotlight-x', (e.clientX - rect.left) + 'px');
