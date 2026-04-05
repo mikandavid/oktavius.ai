@@ -742,29 +742,55 @@
 
     .footer-links a:hover { color: var(--text); }
 
-    .lang-switch {
+    .lang-dropdown {
+      position: relative;
       display: inline-flex;
       align-items: center;
-      gap: 2px;
-      padding: 2px;
-      border-radius: 0.375rem;
+    }
+
+    .lang-dropdown::after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      margin-top: -2px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--text-secondary);
+      pointer-events: none;
+    }
+
+    .lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+      padding: 7px 28px 7px 10px;
+      border-radius: 0.5rem;
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.02);
-    }
-
-    .lang-btn {
-      min-width: 30px;
-      padding: 6px 8px;
-      border-radius: 0.25rem;
+      font-family: inherit;
       font-size: 11px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--text);
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      min-width: 118px;
     }
 
-    .lang-btn.active {
-      background: rgba(255, 255, 255, 0.1);
+    .lang-select:hover {
+      border-color: var(--border-strong);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .lang-select:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(255, 255, 255, 0.22);
+    }
+
+    .lang-select option {
+      background: var(--bg-card-strong);
       color: var(--text);
     }
 
@@ -895,10 +921,12 @@
           <span class="logo-maler" aria-hidden="true">Maler</span>
         </a>
         <div class="nav-links">
-          <div class="lang-switch" aria-label="Language / Sprache / Taal">
-            <button type="button" class="lang-btn" data-lang="en">EN</button>
-            <button type="button" class="lang-btn active" data-lang="de">DE</button>
-            <button type="button" class="lang-btn" data-lang="nl">NL</button>
+          <div class="lang-dropdown">
+            <select id="industry-lang" class="lang-select" data-lang-select aria-label="Language">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+              <option value="nl">Nederlands</option>
+            </select>
           </div>
           <a href="#pain" class="btn btn-ghost" style="font-size: 13px;" data-i18n="navWhy">Warum Oktavius</a>
           <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary" data-i18n="navCta">Gespräch vereinbaren</a>

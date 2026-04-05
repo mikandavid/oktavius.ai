@@ -196,9 +196,11 @@
     });
     var heroImg = document.querySelector('[data-i18n-alt]');
     if (heroImg && copy.heroImgAlt) heroImg.setAttribute('alt', copy.heroImgAlt);
-    document.querySelectorAll('.lang-btn').forEach(function (b) {
-      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
-    });
+    var langSelect = document.querySelector('[data-lang-select]');
+    if (langSelect) {
+      langSelect.value = lang;
+      langSelect.setAttribute('aria-label', { en: 'Language', de: 'Sprache', nl: 'Taal' }[lang] || 'Language');
+    }
     try {
       localStorage.setItem(STORAGE, lang);
       localStorage.setItem('oktavius-language', lang);
@@ -227,11 +229,12 @@
     }
     if (['en', 'de', 'nl'].indexOf(chosen) === -1) chosen = detect();
     apply(chosen);
-    document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        apply(btn.getAttribute('data-lang'));
+    var langSelectEl = document.querySelector('[data-lang-select]');
+    if (langSelectEl) {
+      langSelectEl.addEventListener('change', function () {
+        apply(langSelectEl.value);
       });
-    });
+    }
   }
 
   if (document.readyState === 'loading') {
