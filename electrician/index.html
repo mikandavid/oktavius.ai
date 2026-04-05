@@ -7,6 +7,7 @@
   <meta name="description" content="Oktavius ist kein Software-Tool, sondern ein KI-Mitarbeiter, der Prozesse in Ihrem Elektrobetrieb Ende zu Ende automatisiert. Komplett anpassbar auf Ihren Betrieb.">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/favicon.png">
+  <script src="i18n.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -838,6 +839,32 @@
 
     .footer-links a:hover { color: var(--text); }
 
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px;
+      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .lang-btn {
+      min-width: 30px;
+      padding: 6px 8px;
+      border-radius: 0.25rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: rgba(70, 150, 255, 0.14);
+      color: var(--text);
+    }
+
     /* ---- REVEAL ---- */
 
     .reveal {
@@ -973,8 +1000,13 @@
           <span class="logo-elektriker" aria-hidden="true">Elektriker</span>
         </a>
         <div class="nav-links">
-          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;">Warum Oktavius</a>
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary">Gespräch vereinbaren</a>
+          <div class="lang-switch" aria-label="Language / Sprache / Taal">
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+            <button type="button" class="lang-btn active" data-lang="de">DE</button>
+            <button type="button" class="lang-btn" data-lang="nl">NL</button>
+          </div>
+          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;" data-i18n="navWhy">Warum Oktavius</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary" data-i18n="navCta">Gespräch vereinbaren</a>
         </div>
       </div>
     </nav>
@@ -985,17 +1017,17 @@
         <div class="hero-content">
           <div class="hero-label reveal">
             <span class="dot"></span>
-            KI für Elektriker
+            <span data-i18n="heroLabel">KI für Elektriker</span>
           </div>
-          <h1 class="reveal">Mehr Aufträge.<br><span class="gradient">Weniger Papierkram.</span></h1>
-          <p class="reveal">Oktavius übernimmt den Bürokram in Ihrem Elektrobetrieb — von der Auftragserfassung bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
+          <h1 class="reveal" data-i18n-html="heroTitle">Mehr Aufträge.<br><span class="gradient">Weniger Papierkram.</span></h1>
+          <p class="reveal" data-i18n="heroBody">Oktavius übernimmt den Bürokram in Ihrem Elektrobetrieb — von der Auftragserfassung bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
           <div class="hero-ctas reveal">
-            <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Jetzt Gespräch vereinbaren</a>
-            <a href="#pain" class="btn btn-ghost btn-large">Mehr erfahren</a>
+            <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large" data-i18n="heroCta1">Jetzt Gespräch vereinbaren</a>
+            <a href="#pain" class="btn btn-ghost btn-large" data-i18n="heroCta2">Mehr erfahren</a>
           </div>
         </div>
         <div class="hero-image reveal">
-          <img src="hero.png" alt="Elektriker bei der Arbeit an einem Außen-Schaltkasten mit Solaranschluss" loading="eager">
+          <img src="hero.png" data-i18n-alt alt="Elektriker bei der Arbeit an einem Außen-Schaltkasten mit Solaranschluss" loading="eager">
         </div>
       </div>
     </section>
@@ -1004,40 +1036,40 @@
     <section id="pain" class="pain">
       <div class="container">
         <div class="section-header section-header-center reveal">
-          <p class="section-label">Das Problem</p>
-          <h2 class="section-title">Ihr Betrieb wächst — <br>aber das Büro bremst.</h2>
-          <p class="section-subtitle">Aufträge kommen per Anruf, Mail und WhatsApp. Stundenzettel stapeln sich. Rechnungen gehen spät raus. Und am Ende des Tages fehlt die Zeit für das, was zählt.</p>
+          <p class="section-label" data-i18n="painLabel">Das Problem</p>
+          <h2 class="section-title" data-i18n-html="painTitle">Ihr Betrieb wächst — <br>aber das Büro bremst.</h2>
+          <p class="section-subtitle" data-i18n="painSub">Aufträge kommen per Anruf, Mail und WhatsApp. Stundenzettel stapeln sich. Rechnungen gehen spät raus. Und am Ende des Tages fehlt die Zeit für das, was zählt.</p>
         </div>
         <div class="pain-grid">
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">⏱️</div>
-            <h3>Stunden für Papierkram</h3>
-            <p>Aufmaße abtippen, Stundenzettel übertragen, Rechnungen schreiben — alles manuell, alles doppelt. Wertvolle Stunden, die auf der Baustelle fehlen.</p>
+            <h3 data-i18n="p1t">Stunden für Papierkram</h3>
+            <p data-i18n="p1b">Aufmaße abtippen, Stundenzettel übertragen, Rechnungen schreiben — alles manuell, alles doppelt. Wertvolle Stunden, die auf der Baustelle fehlen.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">📋</div>
-            <h3>Aufträge gehen unter</h3>
-            <p>Anfragen per Mail, Telefon und Nachricht. Ohne System landet nichts dort, wo es hingehört — und Kunden warten vergeblich auf Rückmeldung.</p>
+            <h3 data-i18n="p2t">Aufträge gehen unter</h3>
+            <p data-i18n="p2b">Anfragen per Mail, Telefon und Nachricht. Ohne System landet nichts dort, wo es hingehört — und Kunden warten vergeblich auf Rückmeldung.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">💸</div>
-            <h3>Rechnungen zu spät</h3>
-            <p>Die Arbeit ist erledigt, aber die Rechnung geht erst Wochen später raus. Cashflow leidet, Mahnungen häufen sich, Geld bleibt liegen.</p>
+            <h3 data-i18n="p3t">Rechnungen zu spät</h3>
+            <p data-i18n="p3b">Die Arbeit ist erledigt, aber die Rechnung geht erst Wochen später raus. Cashflow leidet, Mahnungen häufen sich, Geld bleibt liegen.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">🔧</div>
-            <h3>Software, die nicht passt</h3>
-            <p>Jedes Tool verspricht Ordnung — aber keines versteht, wie Ihr Betrieb wirklich arbeitet. Am Ende nutzt es niemand im Team.</p>
+            <h3 data-i18n="p4t">Software, die nicht passt</h3>
+            <p data-i18n="p4b">Jedes Tool verspricht Ordnung — aber keines versteht, wie Ihr Betrieb wirklich arbeitet. Am Ende nutzt es niemand im Team.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">📱</div>
-            <h3>Infos verstreut</h3>
-            <p>Fotos auf dem Handy, Notizen auf Zetteln, Pläne in der Mail. Wenn Sie etwas suchen, suchen Sie überall.</p>
+            <h3 data-i18n="p5t">Infos verstreut</h3>
+            <p data-i18n="p5b">Fotos auf dem Handy, Notizen auf Zetteln, Pläne in der Mail. Wenn Sie etwas suchen, suchen Sie überall.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">🧑‍💼</div>
-            <h3>Kein Büropersonal</h3>
-            <p>Eine Vollzeitkraft für die Verwaltung? Zu teuer. Selbst machen? Zu wenig Zeit. Sie brauchen eine Lösung, die wirklich mitdenkt.</p>
+            <h3 data-i18n="p6t">Kein Büropersonal</h3>
+            <p data-i18n="p6b">Eine Vollzeitkraft für die Verwaltung? Zu teuer. Selbst machen? Zu wenig Zeit. Sie brauchen eine Lösung, die wirklich mitdenkt.</p>
           </div>
         </div>
       </div>
@@ -1048,25 +1080,25 @@
       <div class="container">
         <div class="ns-grid">
           <div class="ns-card reveal">
-            <blockquote>Kein Software-Tool.<br><span class="gradient">Ein KI-Mitarbeiter.</span></blockquote>
-            <p>Oktavius ist keine App, die Sie zusätzlich bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der von Grund auf mit KI arbeitet — und Prozesse in Ihrem Betrieb Ende zu Ende automatisiert. Von der eingehenden Anfrage bis zur versandten Rechnung.</p>
+            <blockquote data-i18n-html="nsQuote">Kein Software-Tool.<br><span class="gradient">Ein KI-Mitarbeiter.</span></blockquote>
+            <p data-i18n="nsBody">Oktavius ist keine App, die Sie zusätzlich bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der von Grund auf mit KI arbeitet — und Prozesse in Ihrem Betrieb Ende zu Ende automatisiert. Von der eingehenden Anfrage bis zur versandten Rechnung.</p>
           </div>
 
           <div class="ns-points reveal">
             <div class="ns-point">
               <div class="ns-point-marker">1</div>
-              <h3>Arbeitet aktiv mit, zeigt nicht nur an</h3>
-              <p>Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie. Dokumente werden gelesen, Daten extrahiert, Rechnungen erstellt — automatisch.</p>
+              <h3 data-i18n="ns1t">Arbeitet aktiv mit, zeigt nicht nur an</h3>
+              <p data-i18n="ns1b">Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie. Dokumente werden gelesen, Daten extrahiert, Rechnungen erstellt — automatisch.</p>
             </div>
             <div class="ns-point">
               <div class="ns-point-marker">2</div>
-              <h3>Ende-zu-Ende Automatisierung</h3>
-              <p>Nicht nur ein Schritt, sondern der ganze Prozess. Vom Auftragseingang über Zeiterfassung und Material bis zur fertigen Rechnung.</p>
+              <h3 data-i18n="ns2t">Ende-zu-Ende Automatisierung</h3>
+              <p data-i18n="ns2b">Nicht nur ein Schritt, sondern der ganze Prozess. Vom Auftragseingang über Zeiterfassung und Material bis zur fertigen Rechnung.</p>
             </div>
             <div class="ns-point">
               <div class="ns-point-marker">3</div>
-              <h3>Lernt Ihren Betrieb kennen</h3>
-              <p>Oktavius wird auf Ihre Abläufe, Ihre Kunden und Ihre Art zu arbeiten eingestellt — nicht umgekehrt.</p>
+              <h3 data-i18n="ns3t">Lernt Ihren Betrieb kennen</h3>
+              <p data-i18n="ns3b">Oktavius wird auf Ihre Abläufe, Ihre Kunden und Ihre Art zu arbeiten eingestellt — nicht umgekehrt.</p>
             </div>
           </div>
         </div>
@@ -1077,40 +1109,40 @@
     <section class="workflows">
       <div class="container">
         <div class="section-header section-header-center reveal">
-          <p class="section-label">Angepasst auf Ihren Betrieb</p>
-          <h2 class="section-title">Ihre Abläufe. <span class="gradient">Automatisiert.</span></h2>
-          <p class="section-subtitle">Jeder Elektrobetrieb arbeitet anders. Oktavius passt sich an Ihre konkreten Workflows an — nicht Sie sich an ein starres System.</p>
+          <p class="section-label" data-i18n="wfLabel">Angepasst auf Ihren Betrieb</p>
+          <h2 class="section-title" data-i18n-html="wfTitle">Ihre Abläufe. <span class="gradient">Automatisiert.</span></h2>
+          <p class="section-subtitle" data-i18n="wfSub">Jeder Elektrobetrieb arbeitet anders. Oktavius passt sich an Ihre konkreten Workflows an — nicht Sie sich an ein starres System.</p>
         </div>
         <div class="wf-grid">
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📞</div>
-            <h3>Aufträge erfassen</h3>
-            <p>Anfragen per Mail, Anruf oder Nachricht werden automatisch erfasst, einem Kunden zugeordnet und als Auftrag angelegt. Nichts geht verloren.</p>
+            <h3 data-i18n="wf1t">Aufträge erfassen</h3>
+            <p data-i18n="wf1b">Anfragen per Mail, Anruf oder Nachricht werden automatisch erfasst, einem Kunden zugeordnet und als Auftrag angelegt. Nichts geht verloren.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📐</div>
-            <h3>Aufmaße & Dokumentation</h3>
-            <p>Fotos, Messprotokolle und Notizen werden automatisch dem richtigen Projekt zugeordnet und strukturiert abgelegt.</p>
+            <h3 data-i18n="wf2t">Aufmaße & Dokumentation</h3>
+            <p data-i18n="wf2b">Fotos, Messprotokolle und Notizen werden automatisch dem richtigen Projekt zugeordnet und strukturiert abgelegt.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">⏱️</div>
-            <h3>Stunden & Fahrten</h3>
-            <p>Arbeitszeiten und Kilometer werden im Ablauf erfasst und direkt mit Projekt und Rechnung verknüpft — ohne Zettelwirtschaft.</p>
+            <h3 data-i18n="wf3t">Stunden & Fahrten</h3>
+            <p data-i18n="wf3b">Arbeitszeiten und Kilometer werden im Ablauf erfasst und direkt mit Projekt und Rechnung verknüpft — ohne Zettelwirtschaft.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">🧾</div>
-            <h3>Angebote & Rechnungen</h3>
-            <p>Aus erfassten Daten werden Angebote und Rechnungen erstellt und zur Freigabe vorbereitet. Ein Klick, fertig.</p>
+            <h3 data-i18n="wf4t">Angebote & Rechnungen</h3>
+            <p data-i18n="wf4b">Aus erfassten Daten werden Angebote und Rechnungen erstellt und zur Freigabe vorbereitet. Ein Klick, fertig.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📦</div>
-            <h3>Material & Bestellungen</h3>
-            <p>Materialbedarf wird pro Projekt erfasst, Bestellungen vorbereitet und Lieferscheine automatisch verarbeitet.</p>
+            <h3 data-i18n="wf5t">Material & Bestellungen</h3>
+            <p data-i18n="wf5b">Materialbedarf wird pro Projekt erfasst, Bestellungen vorbereitet und Lieferscheine automatisch verarbeitet.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📧</div>
-            <h3>Kundenkommunikation</h3>
-            <p>E-Mails werden gelesen, klassifiziert und dem richtigen Auftrag zugeordnet. Antworten und Statusupdates werden vorbereitet.</p>
+            <h3 data-i18n="wf6t">Kundenkommunikation</h3>
+            <p data-i18n="wf6b">E-Mails werden gelesen, klassifiziert und dem richtigen Auftrag zugeordnet. Antworten und Statusupdates werden vorbereitet.</p>
           </div>
         </div>
       </div>
@@ -1119,10 +1151,10 @@
     <!-- CTA -->
     <section class="cta">
       <div class="container">
-        <h2 class="reveal">Bereit für<br><span class="gradient">Ihre KI-Mitarbeiter?</span></h2>
-        <p class="reveal">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Elektrobetriebs angepasst wird.</p>
+        <h2 class="reveal" data-i18n-html="ctaTitle">Bereit für<br><span class="gradient">Ihre KI-Mitarbeiter?</span></h2>
+        <p class="reveal" data-i18n="ctaBody">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Elektrobetriebs angepasst wird.</p>
         <div class="reveal">
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large" data-i18n="ctaBtn">Gespräch vereinbaren</a>
         </div>
       </div>
     </section>
@@ -1130,12 +1162,12 @@
     <footer>
       <div class="container">
         <div class="footer-meta">
-          <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
-          <p>Entwickelt in Österreich 🇦🇹</p>
+          <p data-i18n-html="footerLine">&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+          <p data-i18n="footerMadeIn">Entwickelt in Österreich 🇦🇹</p>
         </div>
         <div class="footer-links">
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ">Kontakt</a>
-          <a href="/">oktavius.ai</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" data-i18n="footerContact">Kontakt</a>
+          <a href="/" data-i18n="footerHome">oktavius.ai</a>
         </div>
       </div>
     </footer>

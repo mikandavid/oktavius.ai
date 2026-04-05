@@ -7,6 +7,7 @@
   <meta name="description" content="Oktavius ist kein Software-Tool, sondern ein KI-Mitarbeiter, der Prozesse in Ihrem Malerbetrieb Ende zu Ende automatisiert. Komplett anpassbar auf Ihren Betrieb.">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/favicon.png">
+  <script src="i18n.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -741,6 +742,32 @@
 
     .footer-links a:hover { color: var(--text); }
 
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px;
+      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .lang-btn {
+      min-width: 30px;
+      padding: 6px 8px;
+      border-radius: 0.25rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+
     /* ---- REVEAL ---- */
 
     .reveal {
@@ -868,8 +895,13 @@
           <span class="logo-maler" aria-hidden="true">Maler</span>
         </a>
         <div class="nav-links">
-          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;">Warum Oktavius</a>
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary">Gespräch vereinbaren</a>
+          <div class="lang-switch" aria-label="Language / Sprache / Taal">
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+            <button type="button" class="lang-btn active" data-lang="de">DE</button>
+            <button type="button" class="lang-btn" data-lang="nl">NL</button>
+          </div>
+          <a href="#pain" class="btn btn-ghost" style="font-size: 13px;" data-i18n="navWhy">Warum Oktavius</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary" data-i18n="navCta">Gespräch vereinbaren</a>
         </div>
       </div>
     </nav>
@@ -880,17 +912,17 @@
         <div class="hero-content">
           <div class="hero-label reveal">
             <span class="dot"></span>
-            KI für Maler
+            <span data-i18n="heroLabel">KI für Maler</span>
           </div>
-          <h1 class="reveal">Mehr streichen.<br><span class="gradient">Weniger verwalten.</span></h1>
-          <p class="reveal">Oktavius übernimmt den Bürokram in Ihrem Malerbetrieb — von der Anfrage bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
+          <h1 class="reveal" data-i18n-html="heroTitle">Mehr streichen.<br><span class="gradient">Weniger verwalten.</span></h1>
+          <p class="reveal" data-i18n="heroBody">Oktavius übernimmt den Bürokram in Ihrem Malerbetrieb — von der Anfrage bis zur fertigen Rechnung. Kein neues Software-Tool, sondern ein KI-Mitarbeiter, der sich an Ihren Betrieb anpasst.</p>
           <div class="hero-ctas reveal">
-            <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Jetzt Gespräch vereinbaren</a>
-            <a href="#pain" class="btn btn-ghost btn-large">Mehr erfahren</a>
+            <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large" data-i18n="heroCta1">Jetzt Gespräch vereinbaren</a>
+            <a href="#pain" class="btn btn-ghost btn-large" data-i18n="heroCta2">Mehr erfahren</a>
           </div>
         </div>
         <div class="hero-image reveal">
-          <img src="hero.png" alt="Maler bei der Arbeit an einer Fassade" loading="eager">
+          <img src="hero.png" data-i18n-alt alt="Maler bei der Arbeit an einer Fassade" loading="eager">
         </div>
       </div>
     </section>
@@ -899,40 +931,40 @@
     <section id="pain" class="pain">
       <div class="container">
         <div class="section-header section-header-center reveal">
-          <p class="section-label">Das Problem</p>
-          <h2 class="section-title">Ihr Betrieb wächst — <br>aber das Büro bremst.</h2>
-          <p class="section-subtitle">Aufträge kommen per Anruf, Mail und WhatsApp. Aufmaße müssen berechnet, Angebote geschrieben, Rechnungen gestellt werden. Und am Ende des Tages fehlt die Zeit für die eigentliche Arbeit.</p>
+          <p class="section-label" data-i18n="painLabel">Das Problem</p>
+          <h2 class="section-title" data-i18n-html="painTitle">Ihr Betrieb wächst — <br>aber das Büro bremst.</h2>
+          <p class="section-subtitle" data-i18n="painSub">Aufträge kommen per Anruf, Mail und WhatsApp. Aufmaße müssen berechnet, Angebote geschrieben, Rechnungen gestellt werden. Und am Ende des Tages fehlt die Zeit für die eigentliche Arbeit.</p>
         </div>
         <div class="pain-grid">
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">📐</div>
-            <h3>Aufmaße & Flächenberechnung</h3>
-            <p>Räume ausmessen, Flächen berechnen, Fenster und Türen abziehen — alles von Hand. Fehler kosten Zeit und Geld, wenn Material falsch kalkuliert wird.</p>
+            <h3 data-i18n="p1t">Aufmaße & Flächenberechnung</h3>
+            <p data-i18n="p1b">Räume ausmessen, Flächen berechnen, Fenster und Türen abziehen — alles von Hand. Fehler kosten Zeit und Geld, wenn Material falsch kalkuliert wird.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">⏱️</div>
-            <h3>Angebote dauern ewig</h3>
-            <p>Jedes Angebot ein Einzelstück: Flächen berechnen, Leistungen aufschlüsseln, Preise kalkulieren. Bis das Angebot raus ist, hat der Kunde schon woanders unterschrieben.</p>
+            <h3 data-i18n="p2t">Angebote dauern ewig</h3>
+            <p data-i18n="p2b">Jedes Angebot ein Einzelstück: Flächen berechnen, Leistungen aufschlüsseln, Preise kalkulieren. Bis das Angebot raus ist, hat der Kunde schon woanders unterschrieben.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">💸</div>
-            <h3>Rechnungen zu spät</h3>
-            <p>Die Wände sind gestrichen, aber die Rechnung geht erst Wochen später raus. Cashflow leidet, Mahnungen häufen sich, Geld bleibt liegen.</p>
+            <h3 data-i18n="p3t">Rechnungen zu spät</h3>
+            <p data-i18n="p3b">Die Wände sind gestrichen, aber die Rechnung geht erst Wochen später raus. Cashflow leidet, Mahnungen häufen sich, Geld bleibt liegen.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">🪣</div>
-            <h3>Materialmengen aus dem Bauch</h3>
-            <p>Wie viel Farbe für 120&thinsp;m²? Welche Grundierung für den Untergrund? Wer kalkuliert, schätzt oft — und bestellt zu viel oder fährt nochmal zum Großhandel.</p>
+            <h3 data-i18n="p4t">Materialmengen aus dem Bauch</h3>
+            <p data-i18n="p4b">Wie viel Farbe für 120&thinsp;m²? Welche Grundierung für den Untergrund? Wer kalkuliert, schätzt oft — und bestellt zu viel oder fährt nochmal zum Großhandel.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">📱</div>
-            <h3>Infos verstreut</h3>
-            <p>Fotos vom Baustellenbesuch auf dem Handy, Farbcodes in der Mail, Kundenwünsche auf Zetteln. Wenn Sie etwas suchen, suchen Sie überall.</p>
+            <h3 data-i18n="p5t">Infos verstreut</h3>
+            <p data-i18n="p5b">Fotos vom Baustellenbesuch auf dem Handy, Farbcodes in der Mail, Kundenwünsche auf Zetteln. Wenn Sie etwas suchen, suchen Sie überall.</p>
           </div>
           <div class="pain-card reveal">
             <div class="pain-icon" aria-hidden="true">🧑‍💼</div>
-            <h3>Kein Büropersonal</h3>
-            <p>Eine Vollzeitkraft für die Verwaltung? Zu teuer. Selbst machen? Zu wenig Zeit. Sie brauchen eine Lösung, die wirklich mitdenkt.</p>
+            <h3 data-i18n="p6t">Kein Büropersonal</h3>
+            <p data-i18n="p6b">Eine Vollzeitkraft für die Verwaltung? Zu teuer. Selbst machen? Zu wenig Zeit. Sie brauchen eine Lösung, die wirklich mitdenkt.</p>
           </div>
         </div>
       </div>
@@ -943,25 +975,25 @@
       <div class="container">
         <div class="ns-grid">
           <div class="ns-card reveal">
-            <blockquote>Kein Software-Tool.<br><span class="gradient">Ein KI-Mitarbeiter.</span></blockquote>
-            <p>Oktavius ist keine App, die Sie zusätzlich bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der von Grund auf mit KI arbeitet — und Prozesse in Ihrem Malerbetrieb Ende zu Ende automatisiert. Von der eingehenden Anfrage bis zur versandten Rechnung.</p>
+            <blockquote data-i18n-html="nsQuote">Kein Software-Tool.<br><span class="gradient">Ein KI-Mitarbeiter.</span></blockquote>
+            <p data-i18n="nsBody">Oktavius ist keine App, die Sie zusätzlich bedienen müssen. Oktavius ist ein digitaler Mitarbeiter, der von Grund auf mit KI arbeitet — und Prozesse in Ihrem Malerbetrieb Ende zu Ende automatisiert. Von der eingehenden Anfrage bis zur versandten Rechnung.</p>
           </div>
 
           <div class="ns-points reveal">
             <div class="ns-point">
               <div class="ns-point-marker">1</div>
-              <h3>Arbeitet aktiv mit, zeigt nicht nur an</h3>
-              <p>Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie. Aufmaße werden berechnet, Angebote erstellt, Rechnungen geschrieben — automatisch.</p>
+              <h3 data-i18n="ns1t">Arbeitet aktiv mit, zeigt nicht nur an</h3>
+              <p data-i18n="ns1b">Herkömmliche Software zeigt Ihnen Daten. Oktavius verarbeitet sie. Aufmaße werden berechnet, Angebote erstellt, Rechnungen geschrieben — automatisch.</p>
             </div>
             <div class="ns-point">
               <div class="ns-point-marker">2</div>
-              <h3>Ende-zu-Ende Automatisierung</h3>
-              <p>Nicht nur ein Schritt, sondern der ganze Prozess. Vom Auftragseingang über Flächenberechnung und Materialkalkulation bis zur fertigen Rechnung.</p>
+              <h3 data-i18n="ns2t">Ende-zu-Ende Automatisierung</h3>
+              <p data-i18n="ns2b">Nicht nur ein Schritt, sondern der ganze Prozess. Vom Auftragseingang über Flächenberechnung und Materialkalkulation bis zur fertigen Rechnung.</p>
             </div>
             <div class="ns-point">
               <div class="ns-point-marker">3</div>
-              <h3>Lernt Ihren Betrieb kennen</h3>
-              <p>Oktavius wird auf Ihre Abläufe, Ihre Kunden und Ihre Art zu arbeiten eingestellt — nicht umgekehrt.</p>
+              <h3 data-i18n="ns3t">Lernt Ihren Betrieb kennen</h3>
+              <p data-i18n="ns3b">Oktavius wird auf Ihre Abläufe, Ihre Kunden und Ihre Art zu arbeiten eingestellt — nicht umgekehrt.</p>
             </div>
           </div>
         </div>
@@ -972,40 +1004,40 @@
     <section class="workflows">
       <div class="container">
         <div class="section-header section-header-center reveal">
-          <p class="section-label">Angepasst auf Ihren Betrieb</p>
-          <h2 class="section-title">Ihre Abläufe. <span class="gradient">Automatisiert.</span></h2>
-          <p class="section-subtitle">Jeder Malerbetrieb arbeitet anders. Oktavius passt sich an Ihre konkreten Workflows an — nicht Sie sich an ein starres System.</p>
+          <p class="section-label" data-i18n="wfLabel">Angepasst auf Ihren Betrieb</p>
+          <h2 class="section-title" data-i18n-html="wfTitle">Ihre Abläufe. <span class="gradient">Automatisiert.</span></h2>
+          <p class="section-subtitle" data-i18n="wfSub">Jeder Malerbetrieb arbeitet anders. Oktavius passt sich an Ihre konkreten Workflows an — nicht Sie sich an ein starres System.</p>
         </div>
         <div class="wf-grid">
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📞</div>
-            <h3>Aufträge erfassen</h3>
-            <p>Anfragen per Mail, Anruf oder Nachricht werden automatisch erfasst, einem Kunden zugeordnet und als Auftrag angelegt. Nichts geht verloren.</p>
+            <h3 data-i18n="wf1t">Aufträge erfassen</h3>
+            <p data-i18n="wf1b">Anfragen per Mail, Anruf oder Nachricht werden automatisch erfasst, einem Kunden zugeordnet und als Auftrag angelegt. Nichts geht verloren.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📐</div>
-            <h3>Aufmaße & Flächenberechnung</h3>
-            <p>Raummaße werden erfasst, Wand- und Deckenflächen automatisch berechnet, Fenster und Türen abgezogen. Keine Tippfehler, keine Rundungsfehler.</p>
+            <h3 data-i18n="wf2t">Aufmaße & Flächenberechnung</h3>
+            <p data-i18n="wf2b">Raummaße werden erfasst, Wand- und Deckenflächen automatisch berechnet, Fenster und Türen abgezogen. Keine Tippfehler, keine Rundungsfehler.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">🧾</div>
-            <h3>Angebote & Rechnungen</h3>
-            <p>Aus Aufmaßen und Leistungspositionen werden Angebote und Rechnungen erstellt und zur Freigabe vorbereitet. Ein Klick, fertig.</p>
+            <h3 data-i18n="wf3t">Angebote & Rechnungen</h3>
+            <p data-i18n="wf3b">Aus Aufmaßen und Leistungspositionen werden Angebote und Rechnungen erstellt und zur Freigabe vorbereitet. Ein Klick, fertig.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">🪣</div>
-            <h3>Materialkalkulation</h3>
-            <p>Farbbedarf, Grundierung, Spachtelmasse — Mengen werden aus den Flächen automatisch berechnet und Bestelllisten vorbereitet.</p>
+            <h3 data-i18n="wf4t">Materialkalkulation</h3>
+            <p data-i18n="wf4b">Farbbedarf, Grundierung, Spachtelmasse — Mengen werden aus den Flächen automatisch berechnet und Bestelllisten vorbereitet.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">⏱️</div>
-            <h3>Stunden & Fahrten</h3>
-            <p>Arbeitszeiten und Kilometer werden im Ablauf erfasst und direkt mit Projekt und Rechnung verknüpft — ohne Zettelwirtschaft.</p>
+            <h3 data-i18n="wf5t">Stunden & Fahrten</h3>
+            <p data-i18n="wf5b">Arbeitszeiten und Kilometer werden im Ablauf erfasst und direkt mit Projekt und Rechnung verknüpft — ohne Zettelwirtschaft.</p>
           </div>
           <div class="wf-card reveal">
             <div class="wf-icon" aria-hidden="true">📧</div>
-            <h3>Kundenkommunikation</h3>
-            <p>E-Mails werden gelesen, klassifiziert und dem richtigen Auftrag zugeordnet. Antworten und Statusupdates werden vorbereitet.</p>
+            <h3 data-i18n="wf6t">Kundenkommunikation</h3>
+            <p data-i18n="wf6b">E-Mails werden gelesen, klassifiziert und dem richtigen Auftrag zugeordnet. Antworten und Statusupdates werden vorbereitet.</p>
           </div>
         </div>
       </div>
@@ -1014,10 +1046,10 @@
     <!-- CTA -->
     <section class="cta">
       <div class="container">
-        <h2 class="reveal">Bereit für<br><span class="gradient">Ihre KI-Mitarbeiter?</span></h2>
-        <p class="reveal">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Malerbetriebs angepasst wird.</p>
+        <h2 class="reveal" data-i18n-html="ctaTitle">Bereit für<br><span class="gradient">Ihre KI-Mitarbeiter?</span></h2>
+        <p class="reveal" data-i18n="ctaBody">Vereinbaren Sie ein Gespräch und sehen Sie, wie Oktavius an die Abläufe Ihres Malerbetriebs angepasst wird.</p>
         <div class="reveal">
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large">Gespräch vereinbaren</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" class="btn btn-primary btn-large" data-i18n="ctaBtn">Gespräch vereinbaren</a>
         </div>
       </div>
     </section>
@@ -1025,12 +1057,12 @@
     <footer>
       <div class="container">
         <div class="footer-meta">
-          <p>&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
-          <p>Entwickelt in Österreich 🇦🇹</p>
+          <p data-i18n-html="footerLine">&copy; 2026 Oktavius · Ein Produkt von <a href="https://texterous.com" style="color: var(--text); text-decoration: underline;">Texterous</a></p>
+          <p data-i18n="footerMadeIn">Entwickelt in Österreich 🇦🇹</p>
         </div>
         <div class="footer-links">
-          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ">Kontakt</a>
-          <a href="/">oktavius.ai</a>
+          <a href="https://calendar.google.com/appointments/schedules/AcZssZ0IbHPx9ErqxathIo0IwAI0qHwFQypiPjQbw1UWbZWbIFU7B-5HF0TI2Hm0tNLyIA-tZpjjUVAZ" data-i18n="footerContact">Kontakt</a>
+          <a href="/" data-i18n="footerHome">oktavius.ai</a>
         </div>
       </div>
     </footer>
